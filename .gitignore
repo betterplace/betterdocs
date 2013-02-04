@@ -1,0 +1,6 @@
+.*.sw[pon]
+.AppleDouble
+.rvmrc
+Gemfile.lock
+coverage
+pkg
