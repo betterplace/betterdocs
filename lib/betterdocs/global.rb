@@ -1,11 +1,15 @@
+require 'pathname'
+
 module Betterdocs
   module Global
     class << self
+      attr_accessor :api_prefix
+
       def sections
         unless @sections
           Dir.chdir Rails.root.join('app/controllers') do
             all_docs = []
-            for cf in Dir['api_v4/**/*_controller.rb']
+            for cf in Dir[api_prefix + '/**/*_controller.rb']
               controller_name = cf.sub(/\.rb$/, '').camelcase
               begin
                 controller = controller_name.constantize
@@ -20,8 +24,7 @@ module Betterdocs
             end
             actions = all_docs.reduce([]) { |a, d| a.concat(d.actions) }
             actions.each_with_object(@sections = {}) do |action, sections|
-              sections[action.section] ||=
-                Section.new(action.section)
+              sections[action.section] ||= Section.new(action.section)
               sections[action.section] << action
             end
           end
@@ -36,5 +39,6 @@ module Betterdocs
 
       attr_accessor :templates_directory
     end
+    self.api_prefix = 'api'
   end
 end
