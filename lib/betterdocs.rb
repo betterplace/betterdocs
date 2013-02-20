@@ -8,4 +8,5 @@ module Betterdocs
   require 'betterdocs/section'
   require 'betterdocs/mix_into_controller'
   require 'betterdocs/generator/markdown'
+  require 'betterdocs/rake_tasks'
 end

@@ -4,6 +4,14 @@ module Betterdocs
       require 'fileutils'
       include FileUtils::Verbose
 
+      def generate
+        if dir = config.output_directory.full?
+          generate_to dir
+        else
+          fail "Specify an output_directory in your configuration!"
+        end
+      end
+
       def generate_to(dirname)
         prepare_dir dirname
         create_sections(dirname)
@@ -39,13 +47,17 @@ module Betterdocs
         self
       end
 
+      def config
+        Betterdocs::Global
+      end
+
       def sections
-        Betterdocs::Global.sections
+        config.sections
       end
 
       def section(name)
         name = name.to_sym
-        Betterdocs::Global.section(name) or warn "Section #{name.inspect} does not exist: Link in readme file won't work."
+        config.section(name) or warn "Section #{name.inspect} does not exist: Link in readme file won't work."
         "sections/#{name}"
       end
 
@@ -59,7 +71,7 @@ module Betterdocs
       end
 
       def provide_template(template_subpath)
-        if templates_directory = Betterdocs::Global.full?(:templates_directory)
+        if templates_directory = config.full?(:templates_directory)
           path = File.expand_path(template_subpath, templates_directory)
           File.file?(path) and return read_template(path)
         end
@@ -86,7 +98,7 @@ module Betterdocs
         begin
           stat = File.stat(dirname)
           if stat.directory?
-            rm_rf Dir[dirname + '/**/*']
+            rm_rf Dir[dirname.to_s + '/**/*']
           else
             raise ArgumentError, "#{dirname.inspect} is not a directory"
           end

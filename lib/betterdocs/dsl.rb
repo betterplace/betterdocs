@@ -114,9 +114,13 @@ module Betterdocs
         )
       end
 
+      def request
+        "#{http_method} #{url}"
+      end
+
       def to_s
         (
-          [ "#{http_method} #{url}", '' ] +
+          [ request, '' ] +
           [ inspect, '' ] +
           params.map { |name, param| "#{name}(=#{param.value}): #{param.description}" } +
           [ '', description, '', action_method.source_location * ':', '' ]) * "\n"

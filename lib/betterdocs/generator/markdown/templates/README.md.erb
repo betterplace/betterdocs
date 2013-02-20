@@ -16,8 +16,8 @@ Yada, yada, even more blubbering…
 API ready for use
 -----------------
 
-- [Organisations](<%= section(:organisations) %>)
-- [Volunteerings](<%= section(:volunteerings) %>)
+<%- for secion in sections >
+- [<%=section.name.to_s.camelcase](<%= section(section.name) %>)
 
 La fin
 ------

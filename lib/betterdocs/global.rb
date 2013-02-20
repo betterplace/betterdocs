@@ -3,8 +3,6 @@ require 'pathname'
 module Betterdocs
   module Global
     class << self
-      attr_accessor :api_prefix
-
       def sections
         unless @sections
           Dir.chdir Rails.root.join('app/controllers') do
@@ -33,12 +31,28 @@ module Betterdocs
         @sections
       end
 
+      def sections_clear
+        @sections = nil
+        self
+      end
+
       def section(name)
         sections[name] if sections.key?(name)
       end
 
+      def config
+        yield self
+      end
+
+      attr_accessor :api_prefix
+
       attr_accessor :templates_directory
+
+      attr_accessor :output_directory
+
+      attr_accessor :publish_git
     end
     self.api_prefix = 'api'
+    self.output_directory = 'api_docs'
   end
 end
