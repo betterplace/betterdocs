@@ -15,6 +15,6 @@ GemHadar do
   title       "#{name.camelize} -- "
 
   dependency             'dslkit', '~>0.2'
-  dependency             'tins', '~>0.7.1' # XXX
+  dependency             'tins',   '~>0.7.1'
   development_dependency 'utils'
 end
