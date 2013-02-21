@@ -2,7 +2,7 @@ require 'dslkit/polite'
 
 module Betterdocs
   module Dsl
-    module Truthiness
+    module Common
       extend DSLKit::Constant
 
       constant :yes, true
@@ -12,6 +12,7 @@ module Betterdocs
 
     class Controller
       extend DSLKit::DSLAccessor
+      include Common
 
       def initialize(controller, &block)
         @controller = controller
@@ -28,7 +29,11 @@ module Betterdocs
 
       def url
         Rails.application.routes.url_for(
-          { controller: controller.name.underscore.sub(/_controller\z/, ''), action: :index }
+          {
+            controller: controller.name.underscore.sub(/_controller\z/, ''),
+            action: :index,
+            format: 'api_json',
+          } | Betterdocs::Global.config.api_url_options
         )
       end
 
@@ -39,10 +44,14 @@ module Betterdocs
 
     class Action < Controller
       extend DSLKit::DSLAccessor
+      include Common
 
       dsl_accessor :action
 
       alias name action
+
+
+      dsl_accessor :title
 
       dsl_accessor :section do
         controller.docs.controller.section || :misc
@@ -67,7 +76,7 @@ module Betterdocs
 
       class Param
         extend DSLKit::DSLAccessor
-        include ::Betterdocs::Dsl::Truthiness # XXX improve the namespacing
+        include ::Betterdocs::Dsl::Common
 
         def initialize(param_name, &block)
           name param_name
@@ -110,7 +119,11 @@ module Betterdocs
 
       def url
         Betterplace::Application.routes.url_for(
-          { controller: controller.name.underscore.sub(/_controller\z/, ''), action: action } | params
+          {
+            controller: controller.name.underscore.sub(/_controller\z/, ''),
+            action:     action,
+            format:     'api_json', # TODO document somewhere which formats are possible
+          } | params | Betterdocs::Global.config.api_url_options
         )
       end
 

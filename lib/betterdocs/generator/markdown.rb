@@ -1,6 +1,7 @@
 module Betterdocs
   module Generator
     class Markdown
+      include ::Betterdocs::Generator::ConfigShortcuts
       require 'fileutils'
       include FileUtils::Verbose
 
@@ -45,20 +46,6 @@ module Betterdocs
           output.write ERB.new(template, nil, '-').result(binding)
         end
         self
-      end
-
-      def config
-        Betterdocs::Global
-      end
-
-      def sections
-        config.sections
-      end
-
-      def section(name)
-        name = name.to_sym
-        config.section(name) or warn "Section #{name.inspect} does not exist: Link in readme file won't work."
-        "sections/#{name}"
       end
 
       def default_templates_directory

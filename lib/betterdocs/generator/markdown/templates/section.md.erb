@@ -2,8 +2,23 @@
 ===================================
 
 <%- for action in section -%>
-- <%= action.name %>
-- <%= action.description %>
-- <%= action.http_method %>
-- <%= action.params %>
+<%= action.title %>
+-------------------
+`<%= action.request %>`
+
+<%= action.description %>
+
+### Input Parameter
+<%- for param in action.params.values -%>
+#### Parameter: <%= param.name %>
+
+<%= param.description %>
+
+- Required: <%= param.required ? '**yes**' : 'no' %>
+
+- Example value: `<%= param.value %>`
+<%- end -%>
+
+### Response
+- TODO
 <%- end -%>

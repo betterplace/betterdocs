@@ -1,8 +1,44 @@
-require 'pathname'
+require 'dslkit/polite'
 
 module Betterdocs
   module Global
     class << self
+      extend DSLKit::DSLAccessor
+
+      dsl_accessor :project_name,        'Project'         # Name of the project
+
+      dsl_accessor :api_prefix,          'api'             # Prefix that denotes the api namespace in URLs
+
+      dsl_accessor :api_protocol,        'https'           # Protocol the API understands
+
+      dsl_accessor :api_host,            'localhost:3000'  # Actually host with port, but rails seems to be confused about the concept
+
+      dsl_accessor :api_base_url do                        # The full api base url
+        "#{api_protocol}://#{api_host}/#{api_prefix}"
+      end
+
+      dsl_accessor :api_url_options do
+        { protocol: api_protocol, host: api_host }
+      end
+
+      dsl_accessor :templates_directory                     # Template directory, where customised templates live if any exist
+
+      dsl_accessor :output_directory,    'api_docs'         # Output directory, where the api docs are created
+
+      dsl_accessor :publish_git                             # URL to the git repo to which the docs are pushed
+
+      def configure(&block)
+        instance_eval(&block)
+      end
+
+      def config
+        if block_given?
+          yield self
+        else
+          self
+        end
+      end
+
       def sections
         unless @sections
           Dir.chdir Rails.root.join('app/controllers') do
@@ -39,20 +75,6 @@ module Betterdocs
       def section(name)
         sections[name] if sections.key?(name)
       end
-
-      def config
-        yield self
-      end
-
-      attr_accessor :api_prefix
-
-      attr_accessor :templates_directory
-
-      attr_accessor :output_directory
-
-      attr_accessor :publish_git
     end
-    self.api_prefix = 'api'
-    self.output_directory = 'api_docs'
   end
 end
