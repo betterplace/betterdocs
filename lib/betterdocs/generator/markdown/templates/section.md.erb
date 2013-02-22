@@ -12,13 +12,12 @@
 ### Input Parameter
 
 <%- for param in action.params.values -%>
-#### Parameter: <%= param.name %>
+#### Parameter: <%= param.name %> (<%= param.required ? 'required' : 'optional' %>)
 
 <%= param.description %>
 
-- Required: <%= param.required ? '**yes**' : 'no' %>
-
 - Example value: `<%= param.value %>`
+
 <%- end -%>
 
 ### Response
