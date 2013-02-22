@@ -126,6 +126,15 @@ module Betterdocs
 
         attr_reader :data
 
+        def set_context(context)
+          @context = context
+          self
+        end
+
+        def to_json(*)
+          JSON.pretty_generate(JSON(JSON(data)), quirks_mode: true) # sigh, don't ask…
+        end
+
         private
 
         def provide_factories
@@ -133,12 +142,18 @@ module Betterdocs
           Dir.chdir(Rails.root.to_s) do
             FactoryGirl.find_definitions
           end
+        rescue FactoryGirl::DuplicateDefinitionError
+          # OK, handling it this way might be a bit ugly
+        end
+
+        def method_missing(*a, &b)
+          @context.ask_and_send(*a, &b) or super
         end
       end
 
       def response(name = :default, &block)
         if block
-          responses[name] = Response.new(name, &block)
+          responses[name] = Response.new(name, &block).set_context(self)
         else
           responses[name]
         end
