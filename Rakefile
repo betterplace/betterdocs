@@ -16,5 +16,6 @@ GemHadar do
 
   dependency             'dslkit', '~>0.2'
   dependency             'tins',   '~>0.7.1'
+  dependency             'rails',  '~>3.0'
   development_dependency 'utils'
 end

@@ -5,8 +5,8 @@ namespace :doc do
   end
 
   namespace :api do
-    desc "Publish the newly created API to the remote git repo"
-    task :publish => :'doc:api' do
+    desc "Push the newly created API documentation to the remote git repo"
+    task :push => :api do
       Betterdocs::Global.config do |config|
         config.publish_git or fail "Configure a git repo as publish_git to publish to"
         cd config.output_directory do
@@ -19,5 +19,8 @@ namespace :doc do
         end
       end
     end
+
+    desc "Publish the newly created API documentation"
+    task :publish => [ :push ]
   end
 end

@@ -10,6 +10,7 @@ module Betterdocs
       end
 
       def sections
+        Dir[config.api_controllers.to_s].each(&method(:load))
         config.sections
       end
 

@@ -1,4 +1,5 @@
 require 'dslkit/polite'
+require 'tins/xt/to'
 
 module Betterdocs
   module Dsl
@@ -108,6 +109,39 @@ module Betterdocs
         param = Param.new(name, &block)
         param.value or param.value params.size + 1
         params[name] = param
+      end
+
+      dsl_accessor :responses do {} end
+
+      class Response
+        extend DSLKit::DSLAccessor
+
+        def initialize(name = :default, &block)
+          @name = name.to_sym
+          provide_factories
+          @data = instance_eval(&block)
+        end
+
+        dsl_accessor :name
+
+        attr_reader :data
+
+        private
+
+        def provide_factories
+          require_maybe 'factory_girl' do return end
+          Dir.chdir(Rails.root.to_s) do
+            FactoryGirl.find_definitions
+          end
+        end
+      end
+
+      def response(name = :default, &block)
+        if block
+          responses[name] = Response.new(name, &block)
+        else
+          responses[name]
+        end
       end
 
       dsl_accessor :description, 'TODO'
