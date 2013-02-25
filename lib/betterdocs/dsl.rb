@@ -118,13 +118,15 @@ module Betterdocs
 
         def initialize(name = :default, &block)
           @name = name.to_sym
-          provide_factories
-          @data = instance_eval(&block)
+          #provide_factories
+          @data_block = block || proc {}
         end
 
         dsl_accessor :name
 
-        attr_reader :data
+        def data
+          @data ||= instance_eval(&@data_block)
+        end
 
         def set_context(context)
           @context = context
