@@ -11,16 +11,24 @@
 
 ### Input Parameter
 
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Example</th>
+    <th>Required/Optional</th>
+    <th>Description</th>
+  </tr>
 <%- for param in action.params.values -%>
-#### Parameter: <%= param.name %> (<%= param.required ? 'required' : 'optional' %>)
-
-<%= param.description %>
-
-- Example value: `<%= param.value %>`
-
+  <tr>
+    <th><%= param.name %></th>
+    <td><code><%= param.value %></code></td>
+    <td><%= param.required ? 'required' : 'optional' %></td>
+    <td><%= param.description %></td>
+  </tr>
 <%- end -%>
+</table>
 
-### Response
+### Example response
 
 ```json
 <%= action.response.to_json %>
