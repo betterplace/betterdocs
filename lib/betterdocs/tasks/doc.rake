@@ -1,7 +1,12 @@
 namespace :doc do
   desc "Create the API documentation"
   task :api => :environment do
-    Betterdocs::Generator::Markdown.new.generate
+    Betterdocs::Global.config do |config|
+      Betterdocs::Generator::Markdown.new.generate
+      cd config.output_directory do
+        File.open('.gitignore', 'w') { |ignore| ignore.puts config.ignore }
+      end
+    end
   end
 
   namespace :api do

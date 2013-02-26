@@ -5,3 +5,4 @@ Gemfile.lock
 coverage
 pkg
 tags
+.DS_Store

@@ -31,7 +31,7 @@ module Betterdocs
 
       dsl_accessor :publish_git                             # URL to the git repo to which the docs are pushed
 
-
+      dsl_accessor :ignore do [] end                        # All lines of the .gitignore file as an array
 
       def configure(&block)
         instance_eval(&block)
