@@ -49,17 +49,19 @@ module Betterdocs
         unless @sections
           Dir.chdir Rails.root.join('app/controllers') do
             all_docs = []
-            for cf in Dir[api_prefix + '/**/*_controller.rb']
+            for cf in Dir[api_prefix.to_s + '/**/*_controller.rb']
               controller_name = cf.sub(/\.rb$/, '').camelcase
-              begin
-                controller = controller_name.constantize
-                if docs = controller.ask_and_send(:docs)
-                  all_docs << docs
-                else
-                  warn "Skipping #{cf.inspect}, #{controller_name.inspect} doesn't respond to :docs method"
+              controller =
+                begin
+                  controller_name.constantize
+                rescue NameError => e
+                  STDERR.puts "Skipping #{cf.inspect}, #{e.class}: #{e}"
+                  next
                 end
-              rescue NameError => e
-                warn "Skipping #{cf.inspect}, #{e.class}: #{e}"
+              if docs = controller.ask_and_send(:docs)
+                all_docs << docs
+              else
+                STDERR.puts "Skipping #{cf.inspect}, #{controller_name.inspect} doesn't respond to :docs method"
               end
             end
             actions = all_docs.reduce([]) { |a, d| a.concat(d.actions) }

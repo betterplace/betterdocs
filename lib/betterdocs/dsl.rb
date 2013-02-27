@@ -9,6 +9,22 @@ module Betterdocs
       constant :yes, true
 
       constant :no,  false
+
+      def set_context(context)
+        @__context__ = context
+        self
+      end
+
+      private
+
+      def method_missing(name, *a, &b)
+        if @__context__ && @__context__.respond_to?(name)
+        then
+          @__context__.__send__(name, *a, &b)
+        else
+          super
+        end
+      end
     end
 
     class Controller
@@ -51,8 +67,7 @@ module Betterdocs
 
       alias name action
 
-
-      dsl_accessor :title
+      dsl_accessor :title do "All about: #{action}" end
 
       dsl_accessor :section do
         controller.docs.controller.section || :misc
@@ -106,14 +121,20 @@ module Betterdocs
       end
 
       def param(name, &block)
-        param = Param.new(name, &block)
-        param.value or param.value params.size + 1
-        params[name] = param
+        name = name.to_sym
+        if block
+          param = Param.new(name, &block)
+          param.value or param.value params.size + 1
+          params[name] = param
+        else
+          params[name]
+        end
       end
 
       dsl_accessor :responses do {} end
 
       class Response
+        include Common
         extend DSLKit::DSLAccessor
 
         def initialize(name = :default, &block)
@@ -126,11 +147,6 @@ module Betterdocs
 
         def data
           @data ||= instance_eval(&@data_block)
-        end
-
-        def set_context(context)
-          @context = context
-          self
         end
 
         def to_json(*)
@@ -148,9 +164,6 @@ module Betterdocs
           # OK, handling it this way might be a bit ugly
         end
 
-        def method_missing(*a, &b)
-          @context.ask_and_send(*a, &b) or super
-        end
       end
 
       def response(name = :default, &block)
