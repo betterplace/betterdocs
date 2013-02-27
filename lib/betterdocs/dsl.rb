@@ -186,7 +186,6 @@ module Betterdocs
           {
             controller: controller.name.underscore.sub(/_controller\z/, ''),
             action:     action,
-            format:     'api_json', # TODO document somewhere which formats are possible
           } | params | Betterdocs::Global.config.api_url_options
         )
       end

@@ -22,7 +22,7 @@ module Betterdocs
       end
 
       dsl_accessor :api_url_options do
-        { protocol: api_protocol, host: api_host }
+        { protocol: api_protocol, host: api_host, format: 'json' }
       end
 
       dsl_accessor :templates_directory                     # Template directory, where customised templates live if any exist
