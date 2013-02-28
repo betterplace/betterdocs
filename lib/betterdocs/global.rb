@@ -17,12 +17,14 @@ module Betterdocs
 
       dsl_accessor :api_host,            'localhost:3000'  # Actually host with port, but rails seems to be confused about the concept
 
+      dsl_accessor :api_default_format,  'json'
+
       def api_base_url
         "#{api_protocol}://#{api_host}/#{api_prefix}"
       end
 
       dsl_accessor :api_url_options do
-        { protocol: api_protocol, host: api_host, format: 'json' }
+        { protocol: api_protocol, host: api_host, format: api_default_format }
       end
 
       dsl_accessor :templates_directory                     # Template directory, where customised templates live if any exist
