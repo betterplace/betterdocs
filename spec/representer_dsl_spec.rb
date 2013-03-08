@@ -92,4 +92,6 @@ describe 'representer dsl' do
       representer.should have_link_set
     end
   end
+
+  it 'can return a string representation of all its links/properties'
 end
