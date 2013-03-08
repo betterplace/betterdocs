@@ -206,5 +206,46 @@ module Betterdocs
         "#{controller}##{action}(#{params.keys * ', '})"
       end
     end
+
+    class Property
+      extend DSLKit::DSLAccessor
+      include Common
+
+      dsl_accessor :representer
+
+      dsl_accessor :description, 'TODO'
+
+      dsl_accessor :example, 'TODO'
+
+      dsl_accessor :types do [] end
+
+      dsl_accessor :as
+
+      attr_reader :name
+
+      attr_reader :options
+
+      def initialize(name, options, &block)
+        @name    = name.to_sym
+        @options = options
+        instance_eval(&block)
+        representer and @options[:extend] = representer
+        as and @options[:as] = as
+      end
+
+      def define(binding)
+        n, o = @name, @options
+        eval('self', binding).instance_eval do
+          property n, o
+        end
+      end
+    end
+
+    class Link
+      extend DSLKit::DSLAccessor
+      include Common
+
+      attr_reader :name
+    end
   end
 end

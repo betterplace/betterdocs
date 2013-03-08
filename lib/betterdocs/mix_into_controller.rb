@@ -8,11 +8,11 @@ module Betterdocs
       end
 
       def doc(type, &block)
-        @docs.add_element(self, type, &block)
+        docs.add_element(self, type, &block)
       end
 
       def docs
-        @docs ||= Collector.new
+        @docs ||= ControllerCollector.new
       end
     end
   end

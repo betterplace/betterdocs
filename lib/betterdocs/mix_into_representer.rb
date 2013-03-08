@@ -3,23 +3,20 @@ module Betterdocs
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def doc(type, &block)
-        warn "doc #{type.inspect} wasn't implemented yet"
-        docs.configure_current_element(name)
+      def doc(type, name, options = {}, &block)
+        docs.add_element(self, :property, name, options, &block)
+      end
+
+      def api_property(name, options = {}, &block)
+        doc :property, name, options, &block
+        docs.property(name).define(binding)
+      end
+
+      def api_link(*)
       end
 
       def docs
-        @docs ||= Collector.new
-      end
-
-      def property(*)
-        p :property
-        super
-      end
-
-      def link(*)
-        p :link
-        super
+        @docs ||= RepresenterCollector.new
       end
     end
   end
