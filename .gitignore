@@ -1,8 +1,8 @@
 .*.sw[pon]
 .AppleDouble
+.DS_Store
 .rvmrc
 Gemfile.lock
 coverage
 pkg
 tags
-.DS_Store
