@@ -225,19 +225,19 @@ module Betterdocs
 
       attr_reader :options
 
-      def initialize(name, options, &block)
+      def initialize(representer, name, options, &block)
+        @representer = representer
         @name    = name.to_sym
         @options = options
         instance_eval(&block)
+        types types.map { |t| Module === t ? t : t.class }
         representer and @options[:extend] = representer
         as and @options[:as] = as
       end
 
-      def define(binding)
-        n, o = @name, @options
-        eval('self', binding).instance_eval do
-          property n, o
-        end
+      def define
+        representer.__send__ :property, name, options
+        self
       end
     end
 
@@ -246,6 +246,29 @@ module Betterdocs
       include Common
 
       attr_reader :name
+
+      dsl_accessor :representer
+
+      dsl_accessor :description, 'TODO'
+
+      dsl_accessor :url do raise ArgumentError, 'link requires an URL' end
+
+      attr_reader :name
+
+      attr_reader :options
+
+      def initialize(representer, name, options, &block)
+        @representer = representer
+        @name        = name.to_sym
+        @options     = options
+        instance_eval(&block)
+        url # check url to be present
+      end
+
+      def define
+        representer.__send__ :link, name, options do url end
+        self
+      end
     end
   end
 end

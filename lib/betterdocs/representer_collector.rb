@@ -19,15 +19,15 @@ module Betterdocs
       @links[link_name]
     end
 
-    def add_element(klass, type, name, options = {}, &block)
-      element = build_element(klass, type, name, options, &block)
+    def add_element(representer, type, name, options = {}, &block)
+      element = build_element(representer, type, name, options, &block)
       case type = type.to_sym
       when :property
         @properties[element.name] = element
       when :link
         @links[element.name] = element
       else
-        raise ArgumentError, "unkown documentation element type #{type.inspect}"
+        raise ArgumentError, "invalid documentation element type #{type.inspect}"
       end
       self
     end
@@ -38,9 +38,13 @@ module Betterdocs
 
     private
 
-    def build_element(klass, type, *args, &block)
-      klass = Dsl.const_get(type.to_s.camelcase)
-      klass.new(*args, &block)
+    def build_element(representer, type, *args, &block)
+      begin
+        element = Dsl.const_get(type.to_s.camelcase)
+      rescue NameError => e
+        raise ArgumentError, "unknown documentation element type #{type.inspect}"
+      end
+      element.new(representer, *args, &block)
     end
   end
 end

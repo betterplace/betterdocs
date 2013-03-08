@@ -1,4 +1,5 @@
 require 'tins/xt'
+require 'rails'
 
 module Betterdocs
   require 'betterdocs/version'
