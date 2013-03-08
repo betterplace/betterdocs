@@ -1,5 +1,5 @@
 module Betterdocs
-  class Collector
+  class ControllerCollector
     def initialize
       @actions    = {}
       @element    = nil
