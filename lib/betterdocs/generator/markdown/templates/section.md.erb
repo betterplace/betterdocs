@@ -1,9 +1,8 @@
-<%= section.name.to_s.capitalize %>
-===================================
+*todo:* output controller description here
+
 <%- for action in section -%>
 
-<%= action.title %>
--------------------
+# <%= action.title %>
 
 ```nginx
 <%= action.request %>
@@ -11,7 +10,7 @@
 
 <%= action.description %>
 
-### Input Parameter
+## Input Parameter
 
 <table>
   <tr>
@@ -30,7 +29,11 @@
 <%- end -%>
 </table>
 
-### Example response
+## Response Parameter
+
+*TODO*
+
+## Response Example
 
 ```json
 <%= action.response.to_json %>
