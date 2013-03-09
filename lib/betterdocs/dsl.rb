@@ -18,7 +18,7 @@ module Betterdocs
       private
 
       def method_missing(name, *a, &b)
-        if @__context__ && @__context__.respond_to?(name)
+        if @__context__
           @__context__.__send__(name, *a, &b)
         else
           super
@@ -32,6 +32,7 @@ module Betterdocs
 
       def initialize(controller, &block)
         @controller = controller
+        set_context @controller
         instance_eval(&block)
       end
 
@@ -165,7 +166,6 @@ module Betterdocs
         rescue FactoryGirl::DuplicateDefinitionError
           # OK, handling it this way might be a bit ugly
         end
-
       end
 
       def response(name = :default, &block)

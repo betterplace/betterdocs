@@ -22,7 +22,8 @@ TODO
 - Document HTTP result codes of responses
 - Document error result documents
 - Implement some kind of scheme for versioning or at least better commit messages.
-- Prefix all dsl commands with api_
+- Refactor configuration to avoid singleton antipattern
+- Prefix all dsl commands with api\_
 - Create method in generator that considers a given string as markdown
   formatted and compiles it to html (as a work around to put multiline
   descriptions inside of html tables in a markdown)
