@@ -234,7 +234,6 @@ module Betterdocs
         @options = options
         instance_eval(&block)
         types JsonTypeMapper.map_types(types)
-        representer and @options[:extend] = representer
         as and @options[:as] = as
       end
 

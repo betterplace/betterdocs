@@ -22,8 +22,10 @@ TODO
 - Document HTTP result codes of responses
 - Document error result documents
 - Implement some kind of scheme for versioning or at least better commit messages.
-- Maybe create a file where sections are defined and can be documented as well.
+- Prefix all dsl commands with api_
+- Create method in generator that considers a given string as markdown
+  formatted and compiles it to html (as a work around to put multiline
+  descriptions inside of html tables in a markdown)
 - Display enums as possible values
 - Document order parameters
-- Prefix all dsl commands with api_
-- match types on json types in representer
+- Maybe create a file where sections are defined and can be documented as well.
