@@ -152,7 +152,7 @@ module Betterdocs
         def to_json(*)
           JSON.pretty_generate(JSON.load(JSON.dump(data)), quirks_mode: true) # sigh, don't ask…
         rescue TypeError => e
-          warn "Caught #{e}: #{e.message} for #{data.inspect}"
+          STDERR.puts "Caught #{e}: #{e.message} for #{data.inspect}"
           nil
         end
 
