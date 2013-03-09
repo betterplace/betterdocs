@@ -12,7 +12,9 @@ module Betterdocs
         docs.api_property(name).define
       end
 
-      def api_link(*)
+      def api_link(name, options = {}, &block)
+        doc :api_link, name, options, &block
+        docs.api_link(name).define
       end
 
       def docs

@@ -66,29 +66,28 @@ describe 'representer dsl' do
 
   context 'link' do
     it "cannot add a new link without url" do
-      expect {
-        docs.add_element representer, :api_link, 'my_link', some_option: true do
-        end
-      }.to raise_error(ArgumentError)
+      docs.add_element representer, :api_link, 'my_link' do
+      end
+      link = docs.api_link(:my_link)
+      expect { link.url }.to raise_error(ArgumentError)
     end
 
     it "can add a new link" do
-      docs.add_element representer, :api_link, 'my_link', some_option: true do
+      docs.add_element representer, :api_link, 'my_link' do
         description 'my URL description'
-        url         'http://foo.bar'
+        url         { 'http://foo.bar' }
       end
       link = docs.api_link(:my_link)
       link.should be_present
       link.name.should eq :my_link
       link.representer.should eq representer
       link.description.should eq 'my URL description'
-      link.options.should include(some_option: true)
     end
 
     it "can define a link on representer" do
-      docs.add_element representer, :api_link, 'my_link', some_option: true do
+      docs.add_element representer, :api_link, 'my_link' do
         description 'my URL description'
-        url         'http://foo.bar'
+        url         { 'http://foo.bar' }
       end
       link = docs.api_link(:my_link)
       link.should be_present
@@ -107,26 +106,26 @@ describe 'representer dsl' do
       description 'my description2'
       types       [ true, false ]
     end
-    docs.add_element representer, :api_link, 'my_link', some_option: true do
+    docs.add_element representer, :api_link, 'my_link' do
       description 'my URL description'
-      url         'http://foo.bar'
+      url         { 'http://foo.bar' }
     end
-    docs.add_element representer, :api_link, 'my_link2', some_option: true do
+    docs.add_element representer, :api_link, 'my_link2' do
       description 'my URL description2'
-      url         'http://foo.baz'
+      url         { 'http://foo.baz' }
     end
     docs.to_s.should eq <<EOT
 Representer: MyRepresenter
 
 Properties:
-my_property (null|string): my description
+my_property: (null|string): my description
 
-my_property2 (boolean): my description2
+my_property2: (boolean): my description2
 
 Links:
-my_link (http://foo.bar) my URL description
+my_link: my URL description
 
-my_link2 (http://foo.baz) my URL description2
+my_link2: my URL description2
 EOT
   end
 end

@@ -20,11 +20,12 @@ module Betterdocs
     end
 
     def add_element(representer, type, name, options = {}, &block)
-      element = build_element(representer, type, name, options, &block)
       case type = type.to_sym
       when :api_property
+        element = build_element(representer, type, name, options, &block)
         @api_properties[element.name] = element
       when :api_link
+        element = build_element(representer, type, name, &block)
         @api_links[element.name] = element
       else
         raise ArgumentError, "invalid documentation element type #{type.inspect}"
@@ -43,13 +44,13 @@ module Betterdocs
       if properties = @api_properties.values.full?
         result << "\nProperties:"
         properties.each_with_object(result) do |property, r|
-          r << "\n#{property.name} (#{property.types * '|'}): #{property.description}\n"
+          r << "\n#{property.name}: (#{property.types * '|'}): #{property.description}\n"
         end
       end
       if links = @api_links.values.full?
         result << "\nLinks:"
         links.each_with_object(result) do |link, r|
-          r << "\n#{link.name} (#{link.url}) #{link.description}\n"
+          r << "\n#{link.name}: #{link.description}\n" # TODO resolve link.url in some useful way
         end
       end
       result

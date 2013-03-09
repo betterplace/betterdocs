@@ -19,7 +19,6 @@ module Betterdocs
 
       def method_missing(name, *a, &b)
         if @__context__ && @__context__.respond_to?(name)
-        then
           @__context__.__send__(name, *a, &b)
         else
           super
@@ -230,6 +229,7 @@ module Betterdocs
 
       def initialize(representer, name, options, &block)
         @representer = representer
+        set_context @representer
         @name    = name.to_sym
         @options = options
         instance_eval(&block)
@@ -253,22 +253,27 @@ module Betterdocs
 
       dsl_accessor :description, 'TODO'
 
-      dsl_accessor :url do raise ArgumentError, 'link requires an URL' end
-
       attr_reader :name
 
-      attr_reader :options
-
-      def initialize(representer, name, options, &block)
+      def initialize(representer, name, &block)
         @representer = representer
+        set_context @representer
         @name        = name.to_sym
-        @options     = options
         instance_eval(&block)
-        url # check url to be present
+      end
+
+      def url(&block)
+        if block
+          @url = block
+        elsif @url
+          @url
+        else
+          raise ArgumentError, 'link requires an URL'
+        end
       end
 
       def define
-        representer.__send__ :link, name, options do url end
+        representer.__send__ :link, name, &url
         self
       end
     end
