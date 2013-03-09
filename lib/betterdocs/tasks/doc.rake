@@ -16,7 +16,7 @@ namespace :doc do
         config.publish_git or fail "Configure a git repo as publish_git to publish to"
         cd config.output_directory do
           File.directory?('.git') or sh "git init"
-          sh "git remote rm publish_git"
+          sh "git remote rm publish_git || true"
           sh "git remote add publish_git #{config.publish_git}"
           sh "git add -A"
           sh 'git commit -m "Add some more changes to API documentation" || true'
