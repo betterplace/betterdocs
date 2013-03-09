@@ -6,6 +6,7 @@ module Betterdocs
   require 'betterdocs/dsl'
   require 'betterdocs/controller_collector'
   require 'betterdocs/representer_collector'
+  require 'betterdocs/json_type_mapper'
   require 'betterdocs/global'
   require 'betterdocs/section'
   require 'betterdocs/mix_into_controller'

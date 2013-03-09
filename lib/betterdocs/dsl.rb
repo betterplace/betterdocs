@@ -233,7 +233,7 @@ module Betterdocs
         @name    = name.to_sym
         @options = options
         instance_eval(&block)
-        types Array(types).map { |t| Module === t ? t : t.class }.map(&:to_s)
+        types JsonTypeMapper.map_types(types)
         representer and @options[:extend] = representer
         as and @options[:as] = as
       end

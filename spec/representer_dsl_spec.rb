@@ -49,7 +49,7 @@ describe 'representer dsl' do
       property.representer.should eq representer
       property.description.should eq 'my description'
       property.options.should include(some_option: true)
-      property.types.should eq %w[ String NilClass ]
+      property.types.should eq %w[ string null ]
       property.example.should eq 'TODO' # TODO
       property.options.should include(as: :foo_bar)
     end
@@ -122,7 +122,7 @@ Representer: Foo
 Properties:
 my_property (String|NilClass): my description
 
-my_property2 (TrueClass|FalseClass): my description2
+my_property2 (Boolean): my description2
 
 Links:
 my_link (http://foo.bar) my URL description
