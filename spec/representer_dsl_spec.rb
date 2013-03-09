@@ -22,6 +22,10 @@ describe 'representer dsl' do
       def self.has_link_set?
         @link_set
       end
+
+      def self.to_s
+        'MyRepresenter'
+      end
     end
   end
 
@@ -34,12 +38,12 @@ describe 'representer dsl' do
 
   context 'property' do
     it "can add a new property" do
-      docs.add_element representer, :property, 'my_property', some_option: true do
+      docs.add_element representer, :api_property, 'my_property', some_option: true do
         as          :foo_bar
         description 'my description'
         types       [ String, nil ]
       end
-      property = docs.property(:my_property)
+      property = docs.api_property(:my_property)
       property.should be_present
       property.name.should eq :my_property
       property.representer.should eq representer
@@ -51,29 +55,29 @@ describe 'representer dsl' do
     end
 
     it "can define a property on representer" do
-      docs.add_element representer, :property, 'my_property', some_option: true do
+      docs.add_element representer, :api_property, 'my_property', some_option: true do
       end
-      property = docs.property(:my_property)
+      property = docs.api_property(:my_property)
       property.should be_present
       property.define
       representer.should have_property_set
     end
   end
-  
+
   context 'link' do
     it "cannot add a new link without url" do
       expect {
-        docs.add_element representer, :link, 'my_link', some_option: true do
+        docs.add_element representer, :api_link, 'my_link', some_option: true do
         end
       }.to raise_error(ArgumentError)
     end
 
     it "can add a new link" do
-      docs.add_element representer, :link, 'my_link', some_option: true do
+      docs.add_element representer, :api_link, 'my_link', some_option: true do
         description 'my URL description'
         url         'http://foo.bar'
       end
-      link = docs.link(:my_link)
+      link = docs.api_link(:my_link)
       link.should be_present
       link.name.should eq :my_link
       link.representer.should eq representer
@@ -82,16 +86,48 @@ describe 'representer dsl' do
     end
 
     it "can define a link on representer" do
-      docs.add_element representer, :link, 'my_link', some_option: true do
+      docs.add_element representer, :api_link, 'my_link', some_option: true do
         description 'my URL description'
         url         'http://foo.bar'
       end
-      link = docs.link(:my_link)
+      link = docs.api_link(:my_link)
       link.should be_present
       link.define
       representer.should have_link_set
     end
   end
 
-  it 'can return a string representation of all its links/properties'
+  it 'can return a string representation of all its links/properties' do
+    pending
+    docs.add_element representer, :api_property, 'my_property', some_option: true do
+      as          :foo_bar
+      description 'my description'
+      types       [ String, nil ]
+    end
+    docs.add_element representer, :api_property, 'my_property2', some_option: true do
+      description 'my description2'
+      types       [ true, false ]
+    end
+    docs.add_element representer, :api_link, 'my_link', some_option: true do
+      description 'my URL description'
+      url         'http://foo.bar'
+    end
+    docs.add_element representer, :api_link, 'my_link2', some_option: true do
+      description 'my URL description2'
+      url         'http://foo.baz'
+    end
+    docs.to_s.should eq <<EOT
+Representer: Foo
+
+Properties:
+my_property (String|NilClass): my description
+
+my_property2 (TrueClass|FalseClass): my description2
+
+Links:
+my_link (http://foo.bar) my URL description
+
+my_link2 (http://foo.baz) my URL description2
+EOT
+  end
 end

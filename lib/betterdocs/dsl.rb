@@ -150,7 +150,7 @@ module Betterdocs
         end
 
         def to_json(*)
-          JSON.pretty_generate(JSON(JSON(data)), quirks_mode: true) # sigh, don't ask…
+          JSON.pretty_generate(JSON.load(JSON.dump(data)), quirks_mode: true) # sigh, don't ask…
         end
 
         private
@@ -207,7 +207,7 @@ module Betterdocs
       end
     end
 
-    class Property
+    class ApiProperty
       extend DSLKit::DSLAccessor
       include Common
 
@@ -230,7 +230,7 @@ module Betterdocs
         @name    = name.to_sym
         @options = options
         instance_eval(&block)
-        types types.map { |t| Module === t ? t : t.class }
+        types Array(types).map { |t| Module === t ? t : t.class }
         representer and @options[:extend] = representer
         as and @options[:as] = as
       end
@@ -241,7 +241,7 @@ module Betterdocs
       end
     end
 
-    class Link
+    class ApiLink
       extend DSLKit::DSLAccessor
       include Common
 

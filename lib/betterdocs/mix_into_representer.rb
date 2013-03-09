@@ -4,12 +4,12 @@ module Betterdocs
 
     module ClassMethods
       def doc(type, name, options = {}, &block)
-        docs.add_element(self, :property, name, options, &block)
+        docs.add_element(self, type, name, options, &block)
       end
 
       def api_property(name, options = {}, &block)
-        doc :property, name, options, &block
-        docs.property(name).define(binding)
+        doc :api_property, name, options, &block
+        docs.api_property(name).define
       end
 
       def api_link(*)

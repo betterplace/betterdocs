@@ -1,39 +1,53 @@
 module Betterdocs
   class RepresenterCollector
     def initialize
-      @properties = {}
-      @links      = {}
+      @api_properties = {}
+      @api_links      = {}
     end
 
-    attr_reader :properties
+    attr_reader :api_properties
 
-    attr_reader :links
+    attr_reader :api_links
 
-    def property(property_name)
+    def api_property(property_name)
       property_name = property_name.to_sym
-      @properties[property_name]
+      @api_properties[property_name]
     end
 
-    def link(link_name)
+    def api_link(link_name)
       link_name = link_name.to_sym
-      @links[link_name]
+      @api_links[link_name]
     end
 
     def add_element(representer, type, name, options = {}, &block)
       element = build_element(representer, type, name, options, &block)
       case type = type.to_sym
-      when :property
-        @properties[element.name] = element
-      when :link
-        @links[element.name] = element
+      when :api_property
+        @api_properties[element.name] = element
+      when :api_link
+        @api_links[element.name] = element
       else
         raise ArgumentError, "invalid documentation element type #{type.inspect}"
       end
       self
     end
 
+    def representer
+      (@api_properties.values + @api_links.values).find { |v|
+        v.representer and break v.representer
+      }
+    end
+
     def to_s
-      'TODO'
+      result = "Representer: #{representer}"
+      @api_properties.values.each_with_object(result) do |property, r|
+        r << "#{property.name} (#{property.types * '|'}): #{property.description}"
+      end
+      result << "\n"
+      @api_links.values.each_with_object(result) do |link, r|
+        r << "#{link.name} (#{link.url}) #{link.description}"
+      end
+      result
     end
 
     private

@@ -22,3 +22,5 @@ GemHadar do
   development_dependency 'rspec'
   development_dependency 'fuubar'
 end
+
+task :default => :spec
