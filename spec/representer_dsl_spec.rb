@@ -36,7 +36,7 @@ describe 'representer dsl' do
     }.to raise_error(ArgumentError)
   end
 
-  context 'property' do
+  context 'api_property' do
     it "can add a new property" do
       docs.add_element representer, :api_property, 'my_property', some_option: true do
         as          :foo_bar
@@ -64,7 +64,7 @@ describe 'representer dsl' do
     end
   end
 
-  context 'link' do
+  context 'api_link' do
     it "cannot add a new link without url" do
       docs.add_element representer, :api_link, 'my_link' do
       end

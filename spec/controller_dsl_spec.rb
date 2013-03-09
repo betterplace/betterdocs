@@ -1,44 +1,42 @@
 require 'spec_helper'
 
 describe 'controller dsl' do
-#  let :docs do
-#    Betterdocs::ControllerCollector.new
-#  end
-#
-#  let :representer do
-#    Module.new do
-#      #def self.property(*) end
-#    end
-#  end
-#
-#  it "cannot add unknown element types" do
-#    expect {
-#      docs.add_element representer, :foobar, 'my_foobar' do
-#      end
-#    }.to raise_error(ArgumentError)
-#  end
-#
-#  context 'property' do
-#    it "can add a new property" do
-#      docs.add_element representer, :property, 'my_property', some_option: true do
-#        as          :foo_bar
-#        description 'my description'
-#        types       [ String, nil ]
-#      end
-#      property = docs.property(:my_property)
-#      property.should be_present
-#      property.name.should eq :my_property
-#      property.representer.should eq representer
-#      property.description.should eq 'my description'
-#      property.options.should include(some_option: true)
-#      property.types.should eq [ String, NilClass ]
-#      property.example.should eq 'TODO' # TODO
-#      property.options.should include(as: :foo_bar)
-#    end
-#
-#    it "can define a property"
-#  end
-#  
+  let :docs do
+    Betterdocs::ControllerCollector.new
+  end
+
+  let :controller do
+    Module.new do
+      def self.to_s
+        'MyTestController'
+      end
+    end
+  end
+
+  it "cannot add unknown element types" do
+    expect {
+      docs.add_element controller, :foobar, 'my_foobar' do
+      end
+    }.to raise_error(ArgumentError)
+  end
+
+  context 'controller' do
+    it "can add a new controller" do
+      docs.add_element controller, :controller do
+        description 'my description'
+        section     :test_section
+      end
+      Betterdocs.stub(:rails).should_return
+      my_controller = docs.controller
+      my_controller.should be_present
+      my_controller.name.should eq :my_test
+      my_controller.section.should eq :test_section
+      my_controller.controller.should eq controller
+      my_controller.description.should eq 'my description'
+      my_controller.url.should eq ''
+    end
+  end
+
 #  context 'link' do
 #    it "cannot add a new link without url" do
 #      expect {

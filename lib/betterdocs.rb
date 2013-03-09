@@ -14,4 +14,8 @@ module Betterdocs
   require 'betterdocs/generator/config_shortcuts'
   require 'betterdocs/generator/markdown'
   require 'betterdocs/rake_tasks'
+
+  def rails
+    Rails
+  end
 end

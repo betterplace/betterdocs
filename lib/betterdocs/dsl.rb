@@ -38,16 +38,18 @@ module Betterdocs
 
       dsl_accessor :controller
 
-      alias name controller
+      def name
+        @name ||= controller.to_s.underscore.sub(/_controller\z/, '').to_sym
+      end
 
       dsl_accessor :section
 
       dsl_accessor :description, 'TODO'
 
       def url
-        Rails.application.routes.url_for(
+        Betterdocs.rails.application.routes.url_for(
           {
-            controller: controller.name.underscore.sub(/_controller\z/, ''),
+            controller: name,
             action: :index,
             format: 'api_json',
           } | Betterdocs::Global.config.api_url_options
