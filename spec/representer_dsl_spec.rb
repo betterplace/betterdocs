@@ -49,7 +49,7 @@ describe 'representer dsl' do
       property.representer.should eq representer
       property.description.should eq 'my description'
       property.options.should include(some_option: true)
-      property.types.should eq %w[ string null ]
+      property.types.should eq %w[ null string ]
       property.example.should eq 'TODO' # TODO
       property.options.should include(as: :foo_bar)
     end
@@ -98,7 +98,6 @@ describe 'representer dsl' do
   end
 
   it 'can return a string representation of all its links/properties' do
-    pending
     docs.add_element representer, :api_property, 'my_property', some_option: true do
       as          :foo_bar
       description 'my description'
@@ -117,12 +116,12 @@ describe 'representer dsl' do
       url         'http://foo.baz'
     end
     docs.to_s.should eq <<EOT
-Representer: Foo
+Representer: MyRepresenter
 
 Properties:
-my_property (String|NilClass): my description
+my_property (null|string): my description
 
-my_property2 (Boolean): my description2
+my_property2 (boolean): my description2
 
 Links:
 my_link (http://foo.bar) my URL description

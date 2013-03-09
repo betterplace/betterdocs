@@ -27,8 +27,7 @@ describe Betterdocs::JsonTypeMapper do
   it "should map arrays of ruby types correctly" do
     jtm.map_types([]).should eq %w[ array ]
     jtm.map_types([ [] ]).should eq %w[ array ]
-    jtm.map_types([ [], {}, nil ]).should eq %w[ array object null ]
+    jtm.map_types([ [], {}, Array, nil ]).should eq %w[ array null object ]
     jtm.map_types("foo").should eq %w[ string ]
   end
 end
-

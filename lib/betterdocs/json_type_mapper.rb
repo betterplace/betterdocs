@@ -23,7 +23,7 @@ module Betterdocs
       else
         types = Array(types)
       end
-      types.map { |t| derive_json_type_from(t) }
+      types.map { |t| derive_json_type_from(t) }.uniq.sort
     end
   end
 end

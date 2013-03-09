@@ -39,13 +39,18 @@ module Betterdocs
     end
 
     def to_s
-      result = "Representer: #{representer}"
-      @api_properties.values.each_with_object(result) do |property, r|
-        r << "#{property.name} (#{property.types * '|'}): #{property.description}"
+      result = "Representer: #{representer}\n"
+      if properties = @api_properties.values.full?
+        result << "\nProperties:"
+        properties.each_with_object(result) do |property, r|
+          r << "\n#{property.name} (#{property.types * '|'}): #{property.description}\n"
+        end
       end
-      result << "\n"
-      @api_links.values.each_with_object(result) do |link, r|
-        r << "#{link.name} (#{link.url}) #{link.description}"
+      if links = @api_links.values.full?
+        result << "\nLinks:"
+        links.each_with_object(result) do |link, r|
+          r << "\n#{link.name} (#{link.url}) #{link.description}\n"
+        end
       end
       result
     end
