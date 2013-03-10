@@ -33,6 +33,16 @@
 
 ## Response Example
 
+|Attribute|Types|Example|Description|
+|---------|-----|-------|-----------|
+<%-
+  properties = action.response.representer.full? { |r|
+      r.docs.api_properties.values
+    }  || []
+  for property in properties -%>
+|**<%= property.name %>**|<%= property.types * ' &#124; ' %>|<%= property.example %>|<%= property.description %>|
+<%- end -%>
+
 ```json
 <%= action.response.to_json %>
 ```

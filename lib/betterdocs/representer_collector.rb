@@ -44,7 +44,11 @@ module Betterdocs
       if properties = @api_properties.values.full?
         result << "\nProperties:"
         properties.each_with_object(result) do |property, r|
-          r << "\n#{property.name}: (#{property.types * '|'}): #{property.description}\n"
+          if sr = property.sub_representer?
+            r << "\n#{sr.docs}\n"
+          else
+            r << "\n#{property.name}: (#{property.types * '|'}): #{property.description}\n"
+          end
         end
       end
       if links = @api_links.values.full?

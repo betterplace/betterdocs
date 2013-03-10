@@ -151,6 +151,15 @@ module Betterdocs
           @data ||= instance_eval(&@data_block)
         end
 
+        def representer
+          if data
+            data.ask_and_send(:representer) ||
+              data.singleton_class.ancestors.find { |c|
+                Betterdocs::MixIntoRepresenter >= c
+              }
+          end
+        end
+
         def to_json(*)
           JSON.pretty_generate(JSON.load(JSON.dump(data)), quirks_mode: true) # sigh, don't ask…
         rescue TypeError => e
@@ -239,7 +248,15 @@ module Betterdocs
         instance_eval(&block)
         types JsonTypeMapper.map_types(types)
         as and @options[:as] = as
-        represent_with and @options[:extend] = represent_with
+        if sr = sub_representer?
+          sr < Betterdocs::MixIntoRepresenter or
+            raise TypeError, "#{sr.inspect} is not a Betterdocs::MixIntoRepresenter subclass"
+          @options[:extend] = sr
+        end
+      end
+
+      def sub_representer?
+        represent_with
       end
 
       def define
