@@ -39,16 +39,22 @@ module Betterdocs
       }
     end
 
+    def nested_api_properties(path = [])
+      api_properties.values.each_with_object([]) do |property, result|
+        if sr = property.sub_representer?
+          result.concat sr.docs.nested_api_properties(path + [ property.public_name ])
+        else
+          result << property.below_path(path)
+        end
+      end
+    end
+
     def to_s
-      result = "Representer: #{representer}\n"
+      result = "*** #{representer} ***\n"
       if properties = @api_properties.values.full?
         result << "\nProperties:"
-        properties.each_with_object(result) do |property, r|
-          if sr = property.sub_representer?
-            r << "\n#{sr.docs}\n"
-          else
-            r << "\n#{property.name}: (#{property.types * '|'}): #{property.description}\n"
-          end
+        nested_api_properties.each_with_object(result) do |property, r|
+          r << "\n#{property.name}: (#{property.types * '|'}): #{property.description}\n"
         end
       end
       if links = @api_links.values.full?

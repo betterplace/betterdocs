@@ -151,6 +151,10 @@ module Betterdocs
           @data ||= instance_eval(&@data_block)
         end
 
+        def properties
+          representer.full? { |r| r.docs.nested_api_properties }  || []
+        end
+
         def representer
           if data
             data.ask_and_send(:representer) ||
@@ -234,7 +238,6 @@ module Betterdocs
 
       dsl_accessor :types do [] end
 
-      dsl_accessor :as
 
       attr_reader :name
 
@@ -243,16 +246,29 @@ module Betterdocs
       def initialize(representer, name, options, &block)
         @representer = representer
         set_context @representer
+        @path = []
         @name    = name.to_sym
         @options = options
         instance_eval(&block)
         types JsonTypeMapper.map_types(types)
-        as and @options[:as] = as
         if sr = sub_representer?
           sr < Betterdocs::MixIntoRepresenter or
             raise TypeError, "#{sr.inspect} is not a Betterdocs::MixIntoRepresenter subclass"
           @options[:extend] = sr
         end
+      end
+
+      def below_path(path)
+        @path = path
+        self
+      end
+
+      def public_name
+        @options[:as] || name
+      end
+
+      def full_name
+        (@path + [ public_name ]) * '.'
       end
 
       def sub_representer?
