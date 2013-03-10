@@ -21,6 +21,9 @@ GemHadar do
   development_dependency 'simplecov'
   development_dependency 'rspec'
   development_dependency 'fuubar'
+  development_dependency 'autotest'
+  development_dependency 'autotest-fsevent'
+  development_dependency 'rspec-nc'
 end
 
 task :default => :spec

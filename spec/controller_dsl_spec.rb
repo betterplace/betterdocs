@@ -5,6 +5,10 @@ describe 'controller dsl' do
     Betterdocs::ControllerCollector.new
   end
 
+  let :rails do
+    double(application: double(routes: double(url_for: 'http://foo/bar')))
+  end
+
   let :controller do
     Module.new do
       def self.to_s
@@ -26,14 +30,14 @@ describe 'controller dsl' do
         description 'my description'
         section     :test_section
       end
-      Betterdocs.stub(:rails).should_return
+      Betterdocs.stub(:rails).and_return rails
       my_controller = docs.controller
       my_controller.should be_present
       my_controller.name.should eq :my_test
       my_controller.section.should eq :test_section
       my_controller.controller.should eq controller
       my_controller.description.should eq 'my description'
-      my_controller.url.should eq ''
+      my_controller.url.should eq 'http://foo/bar'
     end
   end
 

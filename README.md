@@ -32,3 +32,4 @@ TODO
 - Automatically document error result documents
 - Document order parameters
 - Maybe create a file where sections are defined and can be documented as well.
+- Check if api\_property with { as: :foobar } options work

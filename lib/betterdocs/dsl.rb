@@ -217,6 +217,8 @@ module Betterdocs
 
       dsl_accessor :representer
 
+      dsl_accessor :represent_with
+
       dsl_accessor :description, 'TODO'
 
       dsl_accessor :example, 'TODO'
@@ -237,6 +239,7 @@ module Betterdocs
         instance_eval(&block)
         types JsonTypeMapper.map_types(types)
         as and @options[:as] = as
+        represent_with and @options[:extend] = represent_with
       end
 
       def define
