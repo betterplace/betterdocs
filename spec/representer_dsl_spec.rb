@@ -128,4 +128,68 @@ my_link: my URL description
 my_link2: my URL description2
 EOT
   end
+
+  context 'nesting representers' do
+    require 'roar/representer/json'
+    require 'roar/representer/feature/hypermedia'
+
+    module Location
+      include Roar::Representer::JSON
+      include Roar::Representer::Feature::Hypermedia
+      include Betterdocs::MixIntoRepresenter
+
+      api_property :latitude
+
+      api_property :longitude
+
+      api_link :dot do
+        url { 'http://foo.bar/dot' }
+      end
+    end
+
+    module Address
+      include Roar::Representer::JSON
+      include Roar::Representer::Feature::Hypermedia
+      include Betterdocs::MixIntoRepresenter
+
+      api_property :city
+
+      api_property :location do
+        represent_with Location
+      end
+
+      api_link :map do
+        url { 'http://foo.bar/map' }
+      end
+    end
+
+
+    module Person
+      include Roar::Representer::JSON
+      include Roar::Representer::Feature::Hypermedia
+      include Betterdocs::MixIntoRepresenter
+
+      api_property :name
+
+      api_property :address do
+        represent_with Address
+      end
+
+      api_link :self do
+        url { 'http://foo.bar' }
+      end
+    end
+
+    it 'can return an array of its nested properties' do
+      Person.docs.nested_api_properties.should have(4).entries
+      Person.docs.nested_api_properties.map(&:full_name).should eq [ "name",
+        "address.city", "address.location.latitude", "address.location.longitude" ]
+    end
+
+    it 'can return an array of its nested links' do
+      Person.docs.nested_api_links.should have(3).entries
+      Person.docs.nested_api_links.map(&:full_name).should eq [
+        "self", "address.map", "address.location.dot" ]
+    end
+  end
 end

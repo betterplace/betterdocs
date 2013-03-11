@@ -247,9 +247,9 @@ module Betterdocs
         @representer = representer
         set_context @representer
         @path = []
-        @name    = name.to_sym
+        @name = name.to_sym
         @options = options
-        instance_eval(&block)
+        block and instance_eval(&block)
         types JsonTypeMapper.map_types(types)
         if sr = sub_representer?
           sr < Betterdocs::MixIntoRepresenter or
@@ -296,8 +296,18 @@ module Betterdocs
       def initialize(representer, name, &block)
         @representer = representer
         set_context @representer
-        @name        = name.to_sym
-        instance_eval(&block)
+        @path = []
+        @name = name.to_sym
+        block and instance_eval(&block)
+      end
+
+      def below_path(path)
+        @path = path
+        self
+      end
+
+      def full_name
+        (@path + [ name ]) * '.'
       end
 
       def url(&block)
