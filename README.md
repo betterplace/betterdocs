@@ -21,9 +21,9 @@ AUTHORS
 TODO
 ----
 
-- Implement some kind of scheme for versioning or at least better commit messages.
+- Implement some kind of scheme for versioning or at least better commit messages;
+  we also may want to keep other peoples commits if possible (how?).
 - Refactor configuration to avoid singleton antipattern
-- Prefix all dsl commands with api\_
 - Create method in generator that considers a given string to be markdown
   formatted and compiles it to html (as a work around to put multiline
   descriptions inside of html tables in a markdown)
@@ -33,3 +33,9 @@ TODO
 - Document order parameters
 - Maybe create a file where sections are defined and can be documented as well.
 - Check if api\_property with { as: :foobar } options work
+- Differentiate between value and example in action parameters. Values shall be
+  used for url generation, example as documentation example.
+
+WON'T DO
+--------
+- Prefix all dsl commands with api\_
