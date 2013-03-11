@@ -155,6 +155,10 @@ module Betterdocs
           representer.full? { |r| r.docs.nested_api_properties }  || []
         end
 
+        def links
+          representer.full? { |r| r.docs.nested_api_links }  || []
+        end
+
         def representer
           if data
             data.ask_and_send(:representer) ||
@@ -321,6 +325,7 @@ module Betterdocs
       end
 
       def define
+        url or raise ArgumentError, "url has to be defined for #{representer}##{name}"
         representer.__send__ :link, name, &url
         self
       end
