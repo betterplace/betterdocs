@@ -46,6 +46,8 @@ module Betterdocs
           output.write ERB.new(template, nil, '-').result(binding)
         end
         self
+      rescue => e
+        STDERR.puts template, " *** ERROR #{e.class}: #{e}\n#{e.backtrace * "\n"}"
       end
 
       def default_templates_directory
