@@ -86,6 +86,8 @@ module Betterdocs
           :DELETE
         when :create
           :POST
+        else
+          raise ArgumentError, "Cannot automatically derive http_method for #{self}, specify manually"
         end
       end
 
@@ -211,7 +213,7 @@ module Betterdocs
       end
 
       def request
-        "#{http_method} #{url}"
+        "#{http_method.to_s.upcase} #{url}"
       end
 
       def to_s
