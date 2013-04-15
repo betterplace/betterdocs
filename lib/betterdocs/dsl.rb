@@ -47,13 +47,12 @@ module Betterdocs
       dsl_accessor :description, 'TODO'
 
       def url
-        Betterdocs.rails.application.routes.url_for(
-          {
-            controller: name,
-            action: :index,
-            format: 'api_json',
-          } | Betterdocs::Global.config.api_url_options
-        )
+        Betterdocs::Global.url_for(
+          controller: name, action: :index, format: 'json')
+      end
+
+      def url_helpers
+        Betterdocs::Global.url_helpers
       end
 
       def to_s

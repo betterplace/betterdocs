@@ -17,6 +17,8 @@ module Betterdocs
 
       dsl_accessor :api_host,            'localhost:3000'  # Actually host with port, but rails seems to be confused about the concept
 
+      dsl_accessor :asset_host do api_host end
+
       dsl_accessor :api_default_format,  'json'
 
       def api_base_url
@@ -37,6 +39,7 @@ module Betterdocs
 
       def configure(&block)
         instance_eval(&block)
+        self
       end
 
       def config
@@ -84,6 +87,15 @@ module Betterdocs
 
       def section(name)
         sections[name] if sections.key?(name)
+      end
+
+      def url_helpers
+        Betterdocs.rails.application.routes.url_helpers
+      end
+
+      def url_for(options = {})
+        Betterdocs.rails.application.routes.url_for(
+          options | Betterdocs::Global.config.api_url_options)
       end
     end
   end

@@ -14,11 +14,22 @@ module Betterdocs
       end
 
       def generate_to(dirname)
+        configure_for_creation
         prepare_dir dirname
         create_sections(dirname)
         create_readme dirname
         self
       end
+
+      def configure_for_creation
+        Betterdocs.rails.configuration.action_controller.asset_host = Betterdocs::Global.asset_host
+        Betterdocs.rails.application.routes.default_url_options = {
+          host:     Betterdocs::Global.api_host,
+          protocol: Betterdocs::Global.api_protocol
+        }
+        self
+      end
+
 
       def create_sections(dirname)
         cd dirname do

@@ -17,6 +17,10 @@ module Betterdocs
         docs.api_link(name).define
       end
 
+      def api_url_for(options = {})
+        Betterdocs::Global.url_for(options)
+      end
+
       def docs
         @docs ||= RepresenterCollector.new
       end
