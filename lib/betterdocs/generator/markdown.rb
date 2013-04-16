@@ -30,7 +30,6 @@ module Betterdocs
         self
       end
 
-
       def create_sections(dirname)
         cd dirname do
           for section in sections.values

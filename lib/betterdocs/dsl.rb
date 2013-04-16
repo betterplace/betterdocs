@@ -26,6 +26,30 @@ module Betterdocs
       end
     end
 
+    module Naming
+      def initialize(*)
+        @options ||= {}
+        @below_path = []
+      end
+
+      def path
+        @below_path + [ public_name ]
+      end
+
+      def below_path(path)
+        @below_path = path
+        self
+      end
+
+      def public_name
+        @options[:as] || name
+      end
+
+      def full_name
+        path * '.'
+      end
+    end
+
     class Controller
       extend DSLKit::DSLAccessor
       include Common
@@ -232,6 +256,7 @@ module Betterdocs
     class ApiProperty
       extend DSLKit::DSLAccessor
       include Common
+      include Naming
 
       dsl_accessor :representer
 
@@ -243,7 +268,6 @@ module Betterdocs
 
       dsl_accessor :types do [] end
 
-
       attr_reader :name
 
       attr_reader :options
@@ -251,8 +275,8 @@ module Betterdocs
       def initialize(representer, name, options, &block)
         @representer = representer
         set_context @representer
-        @path = []
         @name = name.to_sym
+        p options
         @options = options
         block and instance_eval(&block)
         types JsonTypeMapper.map_types(types)
@@ -261,19 +285,7 @@ module Betterdocs
             raise TypeError, "#{sr.inspect} is not a Betterdocs::MixIntoRepresenter subclass"
           @options[:extend] = sr
         end
-      end
-
-      def below_path(path)
-        @path = path
-        self
-      end
-
-      def public_name
-        @options[:as] || name
-      end
-
-      def full_name
-        (@path + [ public_name ]) * '.'
+        super
       end
 
       def sub_representer?
@@ -289,6 +301,7 @@ module Betterdocs
     class ApiLink
       extend DSLKit::DSLAccessor
       include Common
+      include Naming
 
       attr_reader :name
 
@@ -296,23 +309,12 @@ module Betterdocs
 
       dsl_accessor :description, 'TODO'
 
-      attr_reader :name
-
       def initialize(representer, name, &block)
         @representer = representer
         set_context @representer
-        @path = []
         @name = name.to_sym
         block and instance_eval(&block)
-      end
-
-      def below_path(path)
-        @path = path
-        self
-      end
-
-      def full_name
-        (@path + [ name ]) * '.'
+        super
       end
 
       def url(&block)

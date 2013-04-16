@@ -42,7 +42,7 @@ module Betterdocs
     def nested_api_properties(path = [])
       api_properties.values.each_with_object([]) do |property, result|
         if sr = property.sub_representer?
-          result.concat sr.docs.nested_api_properties(path + [ property.public_name ])
+          result.concat sr.docs.nested_api_properties(path + property.path)
         else
           result << property.below_path(path)
         end
@@ -54,7 +54,7 @@ module Betterdocs
       result += api_links.values.map { |l| l.below_path(path) }
       api_properties.values.each_with_object(result) do |property, result|
         if sr = property.sub_representer?
-          result.concat sr.docs.nested_api_links(path + [ property.public_name ])
+          result.concat sr.docs.nested_api_links(path + property.path)
         end
       end
       result
@@ -65,13 +65,13 @@ module Betterdocs
       if properties = @api_properties.values.full?
         result << "\nProperties:"
         nested_api_properties.each_with_object(result) do |property, r|
-          r << "\n#{property.name}: (#{property.types * '|'}): #{property.description}\n"
+          r << "\n#{property.full_name}: (#{property.types * '|'}): #{property.description}\n"
         end
       end
       if links = @api_links.values.full?
         result << "\nLinks:"
         links.each_with_object(result) do |link, r|
-          r << "\n#{link.name}: #{link.description}\n" # TODO resolve link.url in some useful way
+          r << "\n#{link.full_name}: #{link.description}\n" # TODO resolve link.url in some useful way
         end
       end
       result
