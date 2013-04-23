@@ -14,10 +14,11 @@ GemHadar do
   readme      'README.md'
   title       "#{name.camelize} -- "
 
-  dependency 'dslkit', '~>0.2'
-  dependency 'tins',   '~>0.7.1'
-  dependency 'rails',  '~>3.0'
-  dependency 'roar',   '~> 0.11.0'
+  dependency 'dslkit',         '~>0.2'
+  dependency 'tins',           '~>0.7.1'
+  dependency 'rails',          '~>3.0'
+  dependency 'roar',           '~>0.11.0'
+  dependency 'term-ansicolor', '~>1.1.5'
   development_dependency 'utils'
   development_dependency 'simplecov'
   development_dependency 'rspec'

@@ -4,6 +4,8 @@ module Betterdocs
       include ::Betterdocs::Generator::ConfigShortcuts
       require 'fileutils'
       include FileUtils::Verbose
+      require 'term/ansicolor'
+      include Term::ANSIColor
 
       def generate
         if dir = config.output_directory.full?
@@ -57,7 +59,13 @@ module Betterdocs
         end
         self
       rescue => e
-        STDERR.puts template, " *** ERROR #{e.class}: #{e}\n#{e.backtrace * "\n"}"
+        message = blink(color(231, on_color(124,
+          " *** ERROR #{e.class}: #{e} in template ***\n")))
+        STDERR.puts \
+          message, color(88, on_color(136, template)), message,
+          color(136, (%w[Backtrace:] + e.backtrace) * "\n"),
+          message
+        exit 1
       end
 
       def default_templates_directory

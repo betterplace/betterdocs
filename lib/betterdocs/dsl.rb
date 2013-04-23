@@ -276,7 +276,6 @@ module Betterdocs
         @representer = representer
         set_context @representer
         @name = name.to_sym
-        p options
         @options = options
         block and instance_eval(&block)
         types JsonTypeMapper.map_types(types)
