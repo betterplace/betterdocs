@@ -24,18 +24,21 @@ module Betterdocs
       end
 
       def configure_for_creation
+        STDERR.puts "Setting asset_host to #{Betterdocs::Global.asset_host.inspect}."
         Betterdocs.rails.configuration.action_controller.asset_host = Betterdocs::Global.asset_host
-        Betterdocs.rails.application.routes.default_url_options = {
+        options = {
           host:     Betterdocs::Global.api_host,
           protocol: Betterdocs::Global.api_protocol
         }
+        STDERR.puts "Setting default_url_options to #{options.inspect}."
+        Betterdocs.rails.application.routes.default_url_options = options
         self
       end
 
       def create_sections(dirname)
         cd dirname do
           for section in sections.values
-            warn "Creating section #{section.name.inspect}."
+            STDERR.puts "Creating section #{section.name.inspect}."
             render_to "sections/#{section.name}.md", section_template, section.instance_eval('binding')
           end
         end
@@ -45,7 +48,7 @@ module Betterdocs
       def create_readme(dirname)
         name = 'README.md'
         cd dirname do
-          warn "Creating readme."
+          STDERR.puts "Creating readme."
           render_to name, readme_template, binding
         end
         self
@@ -73,7 +76,7 @@ module Betterdocs
       end
 
       def read_template(filename)
-        warn "Now reading #{filename.inspect}."
+        STDERR.puts "Now reading #{filename.inspect}."
         File.read(filename)
       end
 
@@ -85,7 +88,7 @@ module Betterdocs
         path = File.expand_path(template_subpath, default_templates_directory)
         File.file?(path) and return read_template(path)
           message = "#{template_subpath.inspect} missing"
-        warn " *** #{message}"
+        STDERR.puts " *** #{message}"
         "[#{message}]"
       end
 

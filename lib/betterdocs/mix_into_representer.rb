@@ -7,6 +7,8 @@ module Betterdocs
         docs.add_element(self, type, name, options, &block)
       end
 
+      def object_name(*) end
+
       def api_property(name, options = {}, &block)
         doc :api_property, name, options, &block
         docs.api_property(name).define
