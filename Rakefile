@@ -10,15 +10,15 @@ GemHadar do
   summary     'Betterplace API documentation library'
   description "This library provides tools to generate API documention for a web site's REST-ful JSON API."
   test_dir    'spec'
-  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc', '.AppleDouble', 'tags', '.DS_Store'
+  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc', '.AppleDouble', 'tags', '.DS_Store', '.utilsrc'
   readme      'README.md'
   title       "#{name.camelize} -- "
 
   dependency 'dslkit',         '~>0.2'
-  dependency 'tins',           '~>0.7.1'
+  dependency 'tins',           '~>0.7'
   dependency 'rails',          '~>3.0'
   dependency 'roar',           '~>0.11.0'
-  dependency 'term-ansicolor', '~>1.1.5'
+  dependency 'term-ansicolor', '~>1.2'
   development_dependency 'utils'
   development_dependency 'simplecov'
   development_dependency 'rspec'
