@@ -16,7 +16,7 @@ GemHadar do
 
   dependency 'dslkit',         '~>0.2'
   dependency 'tins',           '~>0.7'
-  dependency 'rails',          '~>3.0'
+  dependency 'rails',          '>=3', '<=4'
   dependency 'roar',           '~>0.11.0'
   dependency 'term-ansicolor', '~>1.2'
   development_dependency 'utils'
