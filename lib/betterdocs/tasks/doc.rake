@@ -27,5 +27,16 @@ namespace :doc do
 
     desc "Publish the newly created API documentation"
     task :publish => [ :push ]
+
+    desc "Publish and view the newly created API documentation"
+    task :view => :publish do
+      Betterdocs::Global.config do |config|
+        url = config.publish_git
+        if url !~ /\Ahttps?:/
+          url.sub!(/.*?([^@]*):/, 'http://\1/')
+        end
+        sh "open #{url.inspect}"
+      end
+    end
   end
 end
