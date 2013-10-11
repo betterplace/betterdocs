@@ -172,6 +172,10 @@ module Betterdocs
 
         dsl_accessor :name
 
+        def params
+          -> name { param(name).full?(:value) }
+        end
+
         def data
           @data ||= instance_eval(&@data_block)
         end
