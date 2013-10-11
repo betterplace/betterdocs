@@ -38,7 +38,7 @@ module Betterdocs
       def create_sections(dirname)
         cd dirname do
           for section in sections.values
-            STDERR.puts "Creating section #{section.name.inspect}."
+            STDERR.puts "Creating section #{section.name.inspect}.".on_color(33)
             render_to "sections/#{section.name}.md", section_template, section.instance_eval('binding')
           end
         end
@@ -48,7 +48,7 @@ module Betterdocs
       def create_readme(dirname)
         name = 'README.md'
         cd dirname do
-          STDERR.puts "Creating readme."
+          STDERR.puts "Creating readme.".on_color(33)
           render_to name, readme_template, binding
         end
         self
