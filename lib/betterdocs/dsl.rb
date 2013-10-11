@@ -111,7 +111,7 @@ module Betterdocs
         when :create
           :POST
         else
-          raise ArgumentError, "Cannot automatically derive http_method for #{self}, specify manually"
+          raise ArgumentError, "Cannot automatically derive http_method for #{name.inspect}, specify manually"
         end
       end
 
