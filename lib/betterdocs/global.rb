@@ -13,11 +13,17 @@ module Betterdocs
         Dir[Rails.root.join("app/controllers/#{api_prefix}/**/*_controller.rb")]
       end
 
-      dsl_accessor :api_protocol,        'https'           # Protocol the API understands
+      dsl_accessor :platform_protocol,   'http'               # Not used atm
 
-      dsl_accessor :api_host,            'localhost:3000'  # Actually host with port, but rails seems to be confused about the concept
+      dsl_accessor :platform_host,       'localhost:3000'     # Actually host with port, but rails seems to be confused about the concept
 
-      dsl_accessor :asset_host do api_host end
+      dsl_accessor :api_protocol do platform_protocol end     # Protocol the API understands
+
+      dsl_accessor :api_host   do platform_host end           # Hostname of the API (eventuallly with port number)
+
+      dsl_accessor :asset_protocol do platform_protocol end   # Reserved
+
+      dsl_accessor :asset_host do platform_host end           # Rails asset host
 
       dsl_accessor :api_default_format,  'json'
 
