@@ -1,6 +1,7 @@
 .*.sw[pon]
 .AppleDouble
 .DS_Store
+.ruby-version
 .rvmrc
 .utilsrc
 Gemfile.lock
