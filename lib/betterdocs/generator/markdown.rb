@@ -20,6 +20,7 @@ module Betterdocs
         prepare_dir dirname
         create_sections(dirname)
         create_readme dirname
+        create_assets
         self
       end
 
@@ -52,6 +53,14 @@ module Betterdocs
           render_to name, readme_template, binding
         end
         self
+      end
+
+      def create_assets
+        config.each_asset do |src, dst|
+          STDERR.puts on_color(33, "Creating asset #{dst.inspect} from #{src.inspect}.")
+          mkdir_p File.dirname(dst)
+          cp src, dst
+        end
       end
 
       private

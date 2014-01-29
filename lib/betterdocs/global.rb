@@ -43,6 +43,40 @@ module Betterdocs
 
       dsl_accessor :ignore do [] end                        # All lines of the .gitignore file as an array
 
+      def assets
+        @assets ||= {}
+      end
+      private :assets
+
+      # Defines an asset for the file at +path+. If +to+ was given it will be
+      # copied to this path (it includes the basename) below
+      # +templates_directory+ in the output, otherwise it will be copied
+      # directly to +templates_directory+.
+      def asset(path, to: :root)
+        if destination = to.ask_and_send(:to_str)
+          assets[path.to_s] = destination
+        elsif to == :root
+          assets[path.to_s] = to
+        else
+          raise ArgumentError, "keyword argument to needs to be a string or :root"
+        end
+      end
+
+      # Maps the assets original source path to its destination path in the
+      # output by yielding to every asset's source/destination pair.
+      def each_asset
+        for path in assets.keys
+          path = path.to_s
+          if destination = assets[path]
+            if destination == :root && output_directory
+              yield path, File.join(output_directory.to_s, File.basename(path))
+            else
+              yield path, File.join(output_directory.to_s, destination.to_str)
+            end
+          end
+        end
+      end
+
       def configure(&block)
         instance_eval(&block)
         self
