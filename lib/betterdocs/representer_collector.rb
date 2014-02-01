@@ -41,20 +41,20 @@ module Betterdocs
 
     def nested_api_properties(path = [])
       api_properties.values.each_with_object([]) do |property, result|
+        result << property.below_path(path)
         if sr = property.sub_representer?
           result.concat sr.docs.nested_api_properties(path + property.path)
-        else
-          result << property.below_path(path)
         end
       end
     end
 
     def nested_api_links(path = [])
-      result = []
-      result += api_links.values.map { |l| l.below_path(path) }
+      result = api_links.values.map { |l| l.below_path(path) }
       api_properties.values.each_with_object(result) do |property, result|
         if sr = property.sub_representer?
-          result.concat sr.docs.nested_api_links(path + property.path)
+          nested_property = property.below_path(path)
+          links = sr.docs.nested_api_links(nested_property.path)
+          result.concat links
         end
       end
       result

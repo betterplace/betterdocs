@@ -19,7 +19,7 @@
   </tr>
 <%- for param in action.params.values -%>
   <tr>
-    <th><%= param.name %></th>
+    <th align="left"><%= param.name %></th>
     <td><code><%= param.value %></code></td>
     <td><%= param.required ? 'required' : 'optional' %></td>
     <td><%= param.description %></td>
@@ -29,41 +29,59 @@
 
 ## Response Attributes
 
-<table>
-  <tr>
-    <th>Attribute</th>
-    <th>Types</th>
-    <th>Example</th>
-    <th>Description</th>
-  </tr>
 <%- if properties = action.response.full?(:properties) -%>
-<%- for property in properties -%>
-  <tr>
-    <th><%= property.full_name %></th>
-    <td><%= property.types * ' &#124; ' %></td>
-    <td><%= property.example %></td>
-    <td><%= property.description %></td>
-  </tr>
-<%- end -%>
+  <%- for (representer, properties) in properties.group_by(&:below_path) -%>
+    <%- if properties.first.nesting_name.blank? -%>
+### Root Attributes
+    <%- else -%>
+### <a name="<%= nn = properties.first.nesting_name %>" href="#<%= "#{nn}-ref" %>">↑Nested Attributes: <%= nn %></a>
+    <%- end -%>
+
+  <table>
+    <tr>
+      <th>Attribute</th>
+      <th>Types</th>
+      <th>Example</th>
+      <th>Description</th>
+    </tr>
+    <%- for property in properties -%>
+    <tr>
+      <%- if r = property.sub_representer? and r.docs.api_properties.full? -%>
+        <th align="left" style="white-space: nowrap">
+          <a name="<%= fn = property.full_name; "#{fn}-ref" %>" href="#<%= fn %>">
+            ↓<%= property.full_name %>
+          </a>
+        </th>
+      <%- else -%>
+      <th align="left"><%= property.full_name %></th>
+      <%- end -%>
+      <td><%= property.types * ' &#124; ' %></td>
+      <td><%= property.example %></td>
+      <td><%= property.description %></td>
+    </tr>
+    <%- end -%>
+  </table>
+  <%- end -%>
 <%- else -%>
   <th colspan="4">No response example defined</th>
 <%- end -%>
 </table>
 
 ## Response Links
-#
+
 <table>
   <tr>
     <th>Linkname</th>
     <th>Description</th>
   </tr>
+
 <%- if links = action.response.full?(:links) -%>
-<%- for link in links -%>
-  <tr>
-    <th><%= link.full_name %></th>
-    <td><%= link.description %></td>
-  </tr>
-<%- end -%>
+  <%- for link in links.group_by(&:below_path).values.reduce(&:concat) -%>
+    <tr>
+      <th align="left"><%= link.full_name %></th>
+      <td><%= link.description %></td>
+    </tr>
+  <%- end -%>
 <%- else -%>
   <th colspan="2">No response example defined</th>
 <%- end -%>

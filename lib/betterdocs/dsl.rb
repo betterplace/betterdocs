@@ -36,9 +36,15 @@ module Betterdocs
         @below_path + [ public_name ]
       end
 
-      def below_path(path)
-        @below_path = path
-        self
+      def below_path(path = nil)
+        if path
+          dup.instance_eval do
+            @below_path = path
+            self
+          end
+        else
+          @below_path
+        end
       end
 
       def public_name
@@ -47,6 +53,10 @@ module Betterdocs
 
       def full_name
         path * '.'
+      end
+
+      def nesting_name
+        below_path * '.'
       end
     end
 

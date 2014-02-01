@@ -181,9 +181,10 @@ EOT
     end
 
     it 'can return an array of its nested properties' do
-      Person.docs.nested_api_properties.should have(4).entries
+      Person.docs.nested_api_properties.should have(6).entries
       Person.docs.nested_api_properties.map(&:full_name).should eq [ "name",
-        "address.city", "address.location.latitude", "address.location.longitude" ]
+        "address", "address.city", "address.location",
+        "address.location.latitude", "address.location.longitude" ]
     end
 
     it 'can return an array of its nested links' do
