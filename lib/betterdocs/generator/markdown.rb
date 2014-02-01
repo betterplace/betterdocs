@@ -65,19 +65,23 @@ module Betterdocs
 
       private
 
+      def fail_while_rendering(template, exception)
+        message = blink(color(231, on_color(124,
+          " *** ERROR #{exception.class}: #{exception} in template ***\n")))
+        STDERR.puts message, color(88, on_color(136, template)), message,
+          color(136, (%w[Backtrace:] + exception.backtrace) * "\n"),
+          message
+        exit 1
+      end
+
       def render_to(filename, template, binding)
         File.open(filename, 'w') do |output|
-          output.write ERB.new(template, nil, '-').result(binding)
+          rendered = ERB.new(template, nil, '-').result(binding)
+          output.write rendered
         end
         self
       rescue => e
-        message = blink(color(231, on_color(124,
-          " *** ERROR #{e.class}: #{e} in template ***\n")))
-        STDERR.puts \
-          message, color(88, on_color(136, template)), message,
-          color(136, (%w[Backtrace:] + e.backtrace) * "\n"),
-          message
-        exit 1
+        fail_while_rendering(template, e)
       end
 
       def default_templates_directory
