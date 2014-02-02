@@ -4,5 +4,7 @@ if ENV['START_SIMPLECOV'].to_i == 1
     add_filter "#{File.basename(File.dirname(__FILE__))}/"
   end
 end
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 require 'rspec'
 require 'betterdocs'
