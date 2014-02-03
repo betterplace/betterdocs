@@ -1,6 +1,8 @@
 Betterdocs API Documentation
 ============================
 
+[![Code Climate](https://codeclimate.com/repos/51128561f3ea0022cc027f31/badges/2a9719de54628d821871/gpa.png)](https://codeclimate.com/repos/51128561f3ea0022cc027f31/feed)
+
 DESCRIPTION
 -----------
 
