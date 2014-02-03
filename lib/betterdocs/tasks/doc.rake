@@ -20,7 +20,7 @@ namespace :doc do
           sh "git remote add publish_git #{config.publish_git}"
           sh "git add -A"
           sh 'git commit -m "Add some more changes to API documentation" || true'
-          sh 'git push publish_git -f'
+          sh 'git push -f publish_git master'
         end
       end
     end
