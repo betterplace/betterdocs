@@ -29,12 +29,13 @@
 
 ## Response Attributes
 
-<%- if properties = action.response.full?(:properties) -%>
+<%- if properties = action.response.properties.to_a -%>
   <%- for (representer, properties) in properties.group_by(&:below_path) -%>
-    <%- if properties.first.nesting_name.blank? -%>
-### Root Attributes
+    <%- first_property = properties.first -%>
+    <%- if nesting_name = first_property.nesting_name.full? -%>
+### <a name="<%= nesting_name %>" href="#<%= "#{nesting_name}-ref" %>">↑Nested Attributes: <%= nesting_name %></a>
     <%- else -%>
-### <a name="<%= nn = properties.first.nesting_name %>" href="#<%= "#{nn}-ref" %>">↑Nested Attributes: <%= nn %></a>
+### Root Attributes
     <%- end -%>
 
   <table>
@@ -61,31 +62,27 @@
     </tr>
     <%- end -%>
   </table>
-  <%- end -%>
-<%- else -%>
-  <th colspan="4">No response example defined</th>
-<%- end -%>
-</table>
-
-## Response Links
-
-<table>
-  <tr>
-    <th>Linkname</th>
-    <th>Description</th>
-  </tr>
-
-<%- if links = action.response.full?(:links) -%>
-  <%- for link in links.group_by(&:below_path).values.reduce(&:concat) -%>
+  <%- if links = (nesting_name ? r.full? { (r.docs.full?(:api_links) || []).map { |l| l.below_path(first_property.below_path) } } : action.response.full?(:api_links)).full? -%>
+#### Links
+  <table>
+    <tr>
+      <th>Linkname</th>
+      <th>Description</th>
+    </tr>
+  <%- for link in links -%>
     <tr>
       <th align="left"><%= link.full_name %></th>
       <td><%= link.description %></td>
     </tr>
   <%- end -%>
-<%- else -%>
-  <th colspan="2">No response example defined</th>
+  </table>
 <%- end -%>
+  <%- end -%>
+<%- else -%>
+<table>
+  <th>No response example defined</th>
 </table>
+<%- end -%>
 
 ## Response Example
 

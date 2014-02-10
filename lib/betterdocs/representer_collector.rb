@@ -5,10 +5,6 @@ module Betterdocs
       @api_links      = {}
     end
 
-    attr_reader :api_properties
-
-    attr_reader :api_links
-
     def api_property(property_name)
       property_name = property_name.to_sym
       @api_properties[property_name]
@@ -34,13 +30,13 @@ module Betterdocs
     end
 
     def representer
-      (@api_properties.values + @api_links.values).find { |v|
+      (api_properties + api_links).find do |v|
         v.representer and break v.representer
-      }
+      end
     end
 
     def nested_api_properties(path = [])
-      api_properties.values.each_with_object([]) do |property, result|
+      api_properties.each_with_object([]) do |property, result|
         result << property.below_path(path)
         if sr = property.sub_representer?
           result.concat sr.docs.nested_api_properties(path + property.path)
@@ -49,8 +45,8 @@ module Betterdocs
     end
 
     def nested_api_links(path = [])
-      result = api_links.values.map { |l| l.below_path(path) }
-      api_properties.values.each_with_object(result) do |property, result|
+      result = api_links.map { |l| l.below_path(path) }
+      api_properties.each_with_object(result) do |property, result|
         if sr = property.sub_representer?
           nested_property = property.below_path(path)
           links = sr.docs.nested_api_links(nested_property.path)
@@ -62,19 +58,27 @@ module Betterdocs
 
     def to_s
       result = "*** #{representer} ***\n"
-      if properties = @api_properties.values.full?
+      if properties = nested_api_properties.full?
         result << "\nProperties:"
-        nested_api_properties.each_with_object(result) do |property, r|
+        properties.each_with_object(result) do |property, r|
           r << "\n#{property.full_name}: (#{property.types * '|'}): #{property.description}\n"
         end
       end
-      if links = @api_links.values.full?
+      if links = nested_api_links.full?
         result << "\nLinks:"
         links.each_with_object(result) do |link, r|
           r << "\n#{link.full_name}: #{link.description}\n" # TODO resolve link.url in some useful way
         end
       end
       result
+    end
+
+    def api_links
+      @api_links.values
+    end
+
+    def api_properties
+      @api_properties.values
     end
 
     private

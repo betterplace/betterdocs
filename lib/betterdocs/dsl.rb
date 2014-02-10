@@ -170,7 +170,7 @@ module Betterdocs
         end
       end
 
-      dsl_accessor :responses do {} end
+      dsl_accessor :responses do Hash.new(Tins::NULL) end
 
       class Response
         include Common
@@ -192,13 +192,15 @@ module Betterdocs
           @data ||= instance_eval(&@data_block)
         end
 
-        def properties
+        def api_properties
           representer.full? { |r| r.docs.nested_api_properties }  || []
         end
+        alias properties api_properties
 
-        def links
-          representer.full? { |r| r.docs.nested_api_links }  || []
+        def api_links
+          representer.full? { |r| r.docs.api_links } || []
         end
+        alias links api_links
 
         def representer
           if data
