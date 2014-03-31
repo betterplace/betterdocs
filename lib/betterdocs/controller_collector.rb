@@ -9,7 +9,7 @@ module Betterdocs
     attr_reader :controller
 
     def actions
-      @actions.values
+      @actions.values.reject(&:private)
     end
 
     def action(action_name)
@@ -44,7 +44,7 @@ module Betterdocs
     end
 
     def to_s
-      ([ @controller, '=' * 79, @actions.values * ("-" * 79 + "\n"), '' ]) * "\n"
+      ([ @controller, '=' * 79, @actions * ("-" * 79 + "\n"), '' ]) * "\n"
     end
 
     private

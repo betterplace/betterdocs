@@ -105,7 +105,7 @@ module Betterdocs
       dsl_accessor :title do "All about: #{action}" end
 
       dsl_accessor :section do
-        controller.docs.controller.section || :misc
+        controller.docs.controller.full?(:section) || :misc
       end
 
       dsl_accessor :action_method
@@ -126,6 +126,8 @@ module Betterdocs
       end
 
       dsl_accessor :params do {} end
+
+      dsl_accessor :private, false
 
       class Param
         extend DSLKit::DSLAccessor
