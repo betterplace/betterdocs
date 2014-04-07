@@ -15,4 +15,5 @@ if ENV['CODECLIMATE_REPO_TOKEN']
   CodeClimate::TestReporter.start
 end
 require 'rspec'
+require 'byebug'
 require 'betterdocs'

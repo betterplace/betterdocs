@@ -298,7 +298,7 @@ module Betterdocs
         if sr = sub_representer?
           sr < Betterdocs::Representer or
             raise TypeError, "#{sr.inspect} is not a Betterdocs::Representer subclass"
-          @options[:extend] = sr
+          @options[:represent_with] = sr
         end
         super
       end
