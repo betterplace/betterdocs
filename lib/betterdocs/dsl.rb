@@ -204,7 +204,7 @@ module Betterdocs
           if data
             data.ask_and_send(:representer) ||
               data.singleton_class.ancestors.find { |c|
-                Betterdocs::MixIntoRepresenter >= c
+                Betterdocs::Representer >= c
               }
           end
         end
@@ -296,8 +296,8 @@ module Betterdocs
         block and instance_eval(&block)
         types JsonTypeMapper.map_types(types)
         if sr = sub_representer?
-          sr < Betterdocs::MixIntoRepresenter or
-            raise TypeError, "#{sr.inspect} is not a Betterdocs::MixIntoRepresenter subclass"
+          sr < Betterdocs::Representer or
+            raise TypeError, "#{sr.inspect} is not a Betterdocs::Representer subclass"
           @options[:extend] = sr
         end
         super

@@ -130,13 +130,8 @@ EOT
   end
 
   context 'nesting representers' do
-    require 'roar/representer/json'
-    require 'roar/representer/feature/hypermedia'
-
     module Location
-      include Roar::Representer::JSON
-      include Roar::Representer::Feature::Hypermedia
-      include Betterdocs::MixIntoRepresenter
+      include Betterdocs::Representer
 
       api_property :latitude
 
@@ -148,9 +143,7 @@ EOT
     end
 
     module Address
-      include Roar::Representer::JSON
-      include Roar::Representer::Feature::Hypermedia
-      include Betterdocs::MixIntoRepresenter
+      include Betterdocs::Representer
 
       api_property :city
 
@@ -165,9 +158,7 @@ EOT
 
 
     module Person
-      include Roar::Representer::JSON
-      include Roar::Representer::Feature::Hypermedia
-      include Betterdocs::MixIntoRepresenter
+      include Betterdocs::Representer
 
       api_property :name
 

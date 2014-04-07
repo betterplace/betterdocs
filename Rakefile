@@ -16,7 +16,6 @@ GemHadar do
 
   dependency 'tins',           '~>1.0'
   dependency 'rails',          '>=3', '<5'
-  dependency 'roar',           '~>0.11.0'
   dependency 'term-ansicolor', '~>1.3'
   development_dependency 'utils'
   development_dependency 'simplecov'
