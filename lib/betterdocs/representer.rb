@@ -104,3 +104,13 @@ module Betterdocs::Representer
     end
   end
 end
+module Betterdocs
+  def self.const_missing(id)
+    if id == :MixIntoRepresenter
+      warn "constant Betterdocs::MixIntoRepresenter is deprecated!"
+      const_set(:MixIntoRepresenter, Representer)
+    else
+      super
+    end
+  end
+end
