@@ -10,7 +10,8 @@ GemHadar do
   summary     'Betterplace API documentation library'
   description "This library provides tools to generate API documention for a web site's REST-ful JSON API."
   test_dir    'spec'
-  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc', '.ruby-version', '.AppleDouble', 'tags', '.DS_Store', '.utilsrc'
+  ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
+    '.ruby-version', '.AppleDouble', 'tags', '.DS_Store', '.utilsrc', '.bundle'
   readme      'README.md'
   title       "#{name.camelize} -- "
 

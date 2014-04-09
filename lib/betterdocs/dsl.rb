@@ -306,11 +306,6 @@ module Betterdocs
       def sub_representer?
         represent_with
       end
-
-      def define
-        representer.__send__ :property, name, options
-        self
-      end
     end
 
     class ApiLink
@@ -340,12 +335,6 @@ module Betterdocs
         else
           raise ArgumentError, 'link requires an URL'
         end
-      end
-
-      def define
-        url or raise ArgumentError, "url has to be defined for #{representer}##{name}"
-        representer.__send__ :link, name, &url
-        self
       end
     end
   end

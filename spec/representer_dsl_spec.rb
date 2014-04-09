@@ -59,8 +59,6 @@ describe 'representer dsl' do
       end
       property = docs.api_property(:my_property)
       property.should be_present
-      property.define
-      representer.should have_property_set
     end
   end
 
@@ -91,8 +89,6 @@ describe 'representer dsl' do
       end
       link = docs.api_link(:my_link)
       link.should be_present
-      link.define
-      representer.should have_link_set
     end
   end
 
@@ -133,11 +129,11 @@ EOT
     module Location
       include Betterdocs::Representer
 
-      api_property :latitude
+      property :latitude
 
-      api_property :longitude
+      property :longitude
 
-      api_link :dot do
+      link :dot do
         url { 'http://foo.bar/dot' }
       end
     end
@@ -145,13 +141,13 @@ EOT
     module Address
       include Betterdocs::Representer
 
-      api_property :city
+      property :city
 
-      api_property :location do
+      property :location do
         represent_with Location
       end
 
-      api_link :map do
+      link :map do
         url { 'http://foo.bar/map' }
       end
     end
@@ -160,13 +156,13 @@ EOT
     module Person
       include Betterdocs::Representer
 
-      api_property :name
+      property :name
 
-      api_property :address do
+      property :address do
         represent_with Address
       end
 
-      api_link :self do
+      link :self do
         url { 'http://foo.bar' }
       end
     end

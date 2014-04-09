@@ -3,40 +3,56 @@ require 'set'
 module Betterdocs::Representer
   extend ActiveSupport::Concern
 
+  module UnfuckRails
+    begin
+      old, $VERBOSE = $VERBOSE, nil
+      generator_methods = JSON.generator::GeneratorMethods
+      for const in generator_methods.constants
+        refine Object.const_get(const) do
+          define_method(:to_json) do |*a|
+            generator_methods.const_get(const).instance_method(:to_json).bind(self).(*a)
+          end
+        end
+      end
+    ensure
+      $VERBOSE = old
+    end
+  end
+
+  def as_json(*)
+    singleton_class.ancestors.find do |c|
+      c != singleton_class && c < Betterdocs::Representer
+    end.hashify(self)
+  end
+  alias to_hash as_json
+
+  def to_json(*a)
+    JSON::generate(as_json, *a)
+  end
+
   module ClassMethods
-    def jsonify(object, options = {})
-      JSON.generate(hashify(object), options)
+    def apply(object)
+      object.extend self
     end
 
     def hashify(object)
+      apply(object)
       result = {}
       assign_properties result, object
-      assign_links result, object
+      assign_links      result, object
       result
     end
 
     def assign_links(result, object)
       for link in links
-        result[link.name] = object.instance_eval(&link.url)
+        link.assign(result, object)
       end
     end
     private :assign_links
 
     def assign_properties(result, object)
       for property in properties
-        name  = (property.options[:as] || property.name).to_s
-        value =
-          if method_defined?(property.name)
-            instance_method(property.name).bind(object).call
-          else
-            object.__send__(property.name)
-          end
-        result[name] =
-          if subrepresenter = property.options[:represent_with]
-            subrepresenter.hashify(value)
-          else
-            value
-          end
+        property.assign(result, object)
       end
     end
     private :assign_properties
@@ -53,11 +69,55 @@ module Betterdocs::Representer
       attr_reader :name
 
       attr_reader :options
+
+      def actual_property_name
+        (options[:as] || name).to_s
+      end
+
+      def represent_with
+        options[:represent_with] || options[:extend] # TODO :extend is deprecated?
+      end
+
+      def value(object)
+        value = object.__send__(name)
+        if !value.nil? && represent_with
+          represent_with.hashify(value)
+        else
+          value
+        end
+      end
+
+      def assign(result, object)
+        result[actual_property_name] = value(object)
+      end
     end
 
-    def property(name, options = {}) # TODO
+    def property(name, options = {}, &block) # TODO
+      doc :api_property, name, options, &block
       properties << Property.new(name, options)
       self
+    end
+
+    class CollectionProperty < Property
+      def initialize(name, options)
+        super
+        @options[:represent_with] or @options[:extend] or
+          raise ArgumentError, 'option :represent_with is required'
+      end
+
+      def represent_with
+        super || options[:extend] # TODO :extend is deprecated?
+      end
+
+      def value(object)
+        object.__send__(name).to_a.compact.map do |v|
+          represent_with.hashify(v)
+        end
+      end
+    end
+
+    def collection(name, options)
+      properties << CollectionProperty.new(name, options)
     end
 
     def links
@@ -72,10 +132,19 @@ module Betterdocs::Representer
       attr_reader :name
 
       attr_reader :url
+
+      def assign(result, object)
+        links = result['links'] ||= []
+        links.push(
+          'rel'  => name.to_s,
+          'href' => object.instance_eval(&url).to_s,
+        )
+      end
     end
 
-    def link(name, &url) # TODO
-      links << Link.new(name, &url)
+    def link(name, options ={}, &block) # TODO
+      doc :api_link, name, options, &block
+      links << Link.new(name, &docs.api_link(name).url)
       self
     end
 
@@ -84,16 +153,6 @@ module Betterdocs::Representer
     end
 
     def object_name(*) end
-
-    def api_property(name, options = {}, &block)
-      doc :api_property, name, options, &block
-      docs.api_property(name).define
-    end
-
-    def api_link(name, options = {}, &block)
-      doc :api_link, name, options, &block
-      docs.api_link(name).define
-    end
 
     def api_url_for(options = {})
       Betterdocs::Global.url_for(options)
@@ -104,6 +163,7 @@ module Betterdocs::Representer
     end
   end
 end
+
 module Betterdocs
   def self.const_missing(id)
     if id == :MixIntoRepresenter
@@ -114,3 +174,5 @@ module Betterdocs
     end
   end
 end
+
+using Betterdocs::Representer::UnfuckRails

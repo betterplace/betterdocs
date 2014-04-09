@@ -1,6 +1,7 @@
 .*.sw[pon]
 .AppleDouble
 .DS_Store
+.bundle
 .ruby-version
 .rvmrc
 .utilsrc
