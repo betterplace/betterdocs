@@ -44,6 +44,7 @@ module Betterdocs::Representer
     end
 
     def assign_links(result, object)
+      result['links'] = []
       for link in links
         link.assign(result, object)
       end
@@ -134,8 +135,7 @@ module Betterdocs::Representer
       attr_reader :url
 
       def assign(result, object)
-        links = result['links'] ||= []
-        links.push(
+        result['links'].push(
           'rel'  => name.to_s,
           'href' => object.instance_eval(&url).to_s,
         )

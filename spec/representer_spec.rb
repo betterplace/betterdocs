@@ -133,6 +133,6 @@ describe Betterdocs::Representer do
   it "doesn't have to have links" do
     representer = Module.new { include Betterdocs::Representer }
     represented_object = JSON(representer.apply(object).to_json)
-    represented_object['links'].should be_nil
+    represented_object['links'].should eq []
   end
 end
