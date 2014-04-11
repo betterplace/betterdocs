@@ -76,7 +76,7 @@ module Betterdocs::Representer
       end
 
       def represent_with
-        options[:represent_with] || options[:extend] # TODO :extend is deprecated?
+        options[:represent_with]
       end
 
       def value(object)
@@ -102,12 +102,8 @@ module Betterdocs::Representer
     class CollectionProperty < Property
       def initialize(name, options)
         super
-        @options[:represent_with] or @options[:extend] or
+        @options[:represent_with] or
           raise ArgumentError, 'option :represent_with is required'
-      end
-
-      def represent_with
-        super || options[:extend] # TODO :extend is deprecated?
       end
 
       def value(object)
