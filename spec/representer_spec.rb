@@ -18,17 +18,25 @@ describe Betterdocs::Representer do
 
     property :derived
 
-    property :complex, represent_with: MySubRepresenter
+    property :complex do
+      represent_with MySubRepresenter
+    end
 
     property :simple_old_name, as: :simple_new_name
 
     property :derived_old_name, as: :derived_new_name
 
-    property :complex_old_name, as: :complex_new_name, represent_with: MySubRepresenter
+    property :complex_old_name, as: :complex_new_name do
+      represent_with MySubRepresenter
+    end
 
-    collection :thingies, represent_with: MySubRepresenter
+    collection :thingies do
+      represent_with MySubRepresenter
+    end
 
-    collection :other_thingies, as: :thingies_new_name, represent_with: MySubRepresenter
+    collection :other_thingies, as: :thingies_new_name do
+      represent_with MySubRepresenter
+    end
 
     link 'url1' do
       url { 'an_url' }

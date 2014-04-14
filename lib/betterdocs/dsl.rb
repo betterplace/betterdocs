@@ -7,6 +7,5 @@ module Betterdocs
     require 'betterdocs/dsl/naming'
     require 'betterdocs/dsl/controller'
     require 'betterdocs/dsl/representer'
-
   end
 end

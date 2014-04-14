@@ -8,8 +8,6 @@ DESCRIPTION
 
 This library can be used to document a rails based API.
 
-*TODO*
-
 LICENSE
 -------
 
@@ -18,11 +16,10 @@ Apache License Version 2.0, see also the COPYING file.
 
 AUTHORS
 -------
-
+Florian Frank <flori@ping.de>
 
 TODO
 ----
-
 - Implement some kind of scheme for versioning or at least better commit messages;
   we also may want to keep other peoples commits if possible (how?).
 - Refactor configuration to avoid singleton antipattern
@@ -32,12 +29,4 @@ TODO
 - Display enums as possible values
 - Automatically document HTTP result codes of responses
 - Automatically document error result documents
-- Document order parameters
-- Maybe create a file where sections are defined and can be documented as well.
-- Check if api\_property with { as: :foobar } options work
-- Differentiate between value and example in action parameters. Values shall be
-  used for url generation, example as documentation example.
-
-WON'T DO
---------
-- Prefix all dsl commands with api\_
+- Display links of subrepresenters below subrepresenter properties.

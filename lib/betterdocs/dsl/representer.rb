@@ -20,8 +20,8 @@ module Betterdocs
       attr_reader :options
 
       def initialize(representer, name, options, &block)
-        @representer = representer
-        set_context @representer
+        @as = options[:as]
+        set_context @representer = representer
         @name = name.to_sym
         @options = options
         block and instance_eval(&block)
@@ -37,6 +37,31 @@ module Betterdocs
       def sub_representer?
         represent_with
       end
+
+      def actual_property_name
+        (@as || name).to_s
+      end
+
+      def assign(result, object)
+        result[actual_property_name] = value(object)
+      end
+
+      def value(object)
+        value = object.__send__(name)
+        if !value.nil? && represent_with
+          represent_with.hashify(value)
+        else
+          value
+        end
+      end
+    end
+
+    class ApiCollectionProperty < ApiProperty
+      def value(object)
+        object.__send__(name).to_a.compact.map do |v|
+          represent_with.hashify(v)
+        end
+      end
     end
 
     class ApiLink
@@ -51,8 +76,7 @@ module Betterdocs
       dsl_accessor :description, 'TODO'
 
       def initialize(representer, name, &block)
-        @representer = representer
-        set_context @representer
+        set_context @representer = representer
         @name = name.to_sym
         block and instance_eval(&block)
         super
@@ -66,6 +90,13 @@ module Betterdocs
         else
           raise ArgumentError, 'link requires an URL'
         end
+      end
+
+      def assign(result, object)
+        result['links'].push(
+          'rel'  => name.to_s,
+          'href' => object.instance_eval(&url).to_s,
+        )
       end
     end
   end

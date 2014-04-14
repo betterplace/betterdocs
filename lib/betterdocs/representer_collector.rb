@@ -21,7 +21,7 @@ module Betterdocs
 
     def add_element(representer, type, name, options = {}, &block)
       case type = type.to_sym
-      when :api_property
+      when :api_property, :api_collection_property
         element = build_element(representer, type, name, options, &block)
         @api_properties[element.name] = element
       when :api_link
@@ -30,7 +30,6 @@ module Betterdocs
       else
         raise ArgumentError, "invalid documentation element type #{type.inspect}"
       end
-      self
     end
 
     def representer

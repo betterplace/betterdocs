@@ -62,85 +62,22 @@ module Betterdocs::Representer
       @properties ||= Set.new
     end
 
-    class Property
-      def initialize(name, options)
-        @name, @options = name, options.symbolize_keys
-      end
-
-      attr_reader :name
-
-      attr_reader :options
-
-      def actual_property_name
-        (options[:as] || name).to_s
-      end
-
-      def represent_with
-        options[:represent_with]
-      end
-
-      def value(object)
-        value = object.__send__(name)
-        if !value.nil? && represent_with
-          represent_with.hashify(value)
-        else
-          value
-        end
-      end
-
-      def assign(result, object)
-        result[actual_property_name] = value(object)
-      end
-    end
-
-    def property(name, options = {}, &block) # TODO
-      doc :api_property, name, options, &block
-      properties << Property.new(name, options)
+    def property(name, as: nil, &block)
+      properties << doc(:api_property, name, as: as, &block)
       self
     end
 
-    class CollectionProperty < Property
-      def initialize(name, options)
-        super
-        @options[:represent_with] or
-          raise ArgumentError, 'option :represent_with is required'
-      end
-
-      def value(object)
-        object.__send__(name).to_a.compact.map do |v|
-          represent_with.hashify(v)
-        end
-      end
-    end
-
-    def collection(name, options)
-      properties << CollectionProperty.new(name, options)
+    def collection(name, as: nil, &block)
+      properties << doc(:api_collection_property, name, as: as, &block)
+      self
     end
 
     def links
       @links ||= Set.new
     end
 
-    class Link
-      def initialize(name, &url)
-        @name, @url = name, url
-      end
-
-      attr_reader :name
-
-      attr_reader :url
-
-      def assign(result, object)
-        result['links'].push(
-          'rel'  => name.to_s,
-          'href' => object.instance_eval(&url).to_s,
-        )
-      end
-    end
-
-    def link(name, options ={}, &block) # TODO
-      doc :api_link, name, options, &block
-      links << Link.new(name, &docs.api_link(name).url)
+    def link(name, &block)
+      links << doc(:api_link, name, &block)
       self
     end
 

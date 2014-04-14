@@ -31,7 +31,6 @@ module Betterdocs
       else
         raise ArgumentError, "unkown documentation element type #{type.inspect}"
       end
-      self
     end
 
     def configure_current_element(action_name)
