@@ -40,7 +40,11 @@ describe Betterdocs::Representer do
 
     property :if_no, if: -> { no }
 
-    property :if_yes, unless: -> { yes }
+    property :unless_yes, unless: -> { yes }
+
+    property :if_predicate, if: -> { simple != 'simple property' }
+
+    property :unless_predicate, unless: -> { simple == 'simple property' }
 
     link 'url1' do
       url { 'an_url' }
@@ -75,7 +79,9 @@ describe Betterdocs::Representer do
         OpenStruct.new.tap { |t| t.some_property = 'first other' },
       ]
       o.if_no = :no
-      o.if_yes = :yes
+      o.unless_yes = :yes
+      o.if_predicate = true
+      o.unless_predicate = true
     end
   end
 
@@ -152,6 +158,8 @@ describe Betterdocs::Representer do
 
   it 'supports conditional properties' do
     represented_object['if_no'].should be_nil
-    represented_object['if_yes'].should be_nil
+    represented_object['unless_yes'].should be_nil
+    represented_object['if_predicate'].should be_nil
+    represented_object['unless_predicate'].should be_nil
   end
 end

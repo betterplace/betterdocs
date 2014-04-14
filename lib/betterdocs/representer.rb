@@ -2,6 +2,7 @@ require 'set'
 
 module Betterdocs::Representer
   extend ActiveSupport::Concern
+  include Betterdocs::Dsl::Common
 
   module UnfuckRails
     begin
@@ -31,8 +32,6 @@ module Betterdocs::Representer
   end
 
   module ClassMethods
-    include Betterdocs::Dsl::Common
-
     def apply(object)
       object.extend self
     end
@@ -80,19 +79,13 @@ module Betterdocs::Representer
       @links ||= Set.new
     end
 
-    def link(name, &block)
-      d = doc(:link, name, &block) and links << d
+    def link(name, **options, &block)
+      d = doc(:link, name, **options, &block) and links << d
       self
     end
 
     def doc(type, name, **options, &block)
-      options |= {
-        if:     -> { yes },
-        unless: -> { no },
-      }
-      if options[:if].() && !options[:unless].()
-        docs.add_element(self, type, name, options, &block)
-      end
+      docs.add_element(self, type, name, options, &block)
     end
 
     def object_name(*) end

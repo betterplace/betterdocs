@@ -19,13 +19,13 @@ module Betterdocs
       @links[link_name]
     end
 
-    def add_element(representer, type, name, options = {}, &block)
+    def add_element(representer, type, name, **options, &block)
       case type = type.to_sym
       when :property, :collection_property
         element = build_element(representer, type, name, options, &block)
         @properties[element.name] = element
       when :link
-        element = build_element(representer, type, name, &block)
+        element = build_element(representer, type, name, options, &block)
         @links[element.name] = element
       else
         raise ArgumentError, "invalid documentation element type #{type.inspect}"

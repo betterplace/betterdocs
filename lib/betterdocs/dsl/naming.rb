@@ -2,9 +2,12 @@ module Betterdocs
   module Dsl
     module Naming
       def initialize(*)
+        super
         @options ||= {}
         @below_path = []
       end
+
+      attr_reader :options
 
       def path
         @below_path + [ public_name ]

@@ -1,11 +1,34 @@
 module Betterdocs
   module Dsl
-    class Property
+    class Base
+      def initialize(representer, name, options, &block)
+        set_context @representer = representer
+        @name = name.to_sym
+        @options = options | {
+          if:      -> { true },
+          unless:  -> { false },
+        }
+        block and instance_eval(&block)
+      end
+
+      attr_reader :name
+
+      attr_reader :representer
+
+      def assign?(object)
+        object.instance_exec(&(@options[:if])) &&
+          !object.instance_exec(&(@options[:unless]))
+      end
+
+      def assign(result, object)
+        raise NotImplementedError, 'assign needs to be implemented in subclass'
+      end
+    end
+
+    class Property < Base
       extend DSLKit::DSLAccessor
       include Common
       include Naming
-
-      dsl_accessor :representer
 
       dsl_accessor :represent_with
 
@@ -15,19 +38,13 @@ module Betterdocs
 
       dsl_accessor :types do [] end
 
-      attr_reader :name
-
       def initialize(representer, name, options, &block)
-        @name = name.to_sym
-        @as = options[:as]
-        set_context @representer = representer
-        block and instance_eval(&block)
+        super
         types JsonTypeMapper.map_types(types)
         if sr = sub_representer?
           sr < Betterdocs::Representer or
             raise TypeError, "#{sr.inspect} is not a Betterdocs::Representer subclass"
         end
-        super
       end
 
       def sub_representer?
@@ -35,11 +52,11 @@ module Betterdocs
       end
 
       def actual_property_name
-        (@as || name).to_s
+        (options[:as] || name).to_s
       end
 
       def assign(result, object)
-        result[actual_property_name] = value(object)
+        assign?(object) and result[actual_property_name] = value(object)
       end
 
       def value(object)
@@ -60,23 +77,12 @@ module Betterdocs
       end
     end
 
-    class Link
+    class Link < Base
       extend DSLKit::DSLAccessor
       include Common
       include Naming
 
-      attr_reader :name
-
-      dsl_accessor :representer
-
       dsl_accessor :description, 'TODO'
-
-      def initialize(representer, name, &block)
-        set_context @representer = representer
-        @name = name.to_sym
-        block and instance_eval(&block)
-        super
-      end
 
       def url(&block)
         if block
@@ -89,7 +95,7 @@ module Betterdocs
       end
 
       def assign(result, object)
-        result['links'].push(
+        assign?(object) and result['links'].push(
           'rel'  => name.to_s,
           'href' => object.instance_eval(&url).to_s,
         )
