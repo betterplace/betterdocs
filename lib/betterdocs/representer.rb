@@ -63,12 +63,12 @@ module Betterdocs::Representer
     end
 
     def property(name, as: nil, &block)
-      properties << doc(:api_property, name, as: as, &block)
+      properties << doc(:property, name, as: as, &block)
       self
     end
 
     def collection(name, as: nil, &block)
-      properties << doc(:api_collection_property, name, as: as, &block)
+      properties << doc(:collection_property, name, as: as, &block)
       self
     end
 
@@ -77,7 +77,7 @@ module Betterdocs::Representer
     end
 
     def link(name, &block)
-      links << doc(:api_link, name, &block)
+      links << doc(:link, name, &block)
       self
     end
 

@@ -1,58 +1,58 @@
 module Betterdocs
   class RepresenterCollector
     def initialize
-      @api_properties = {}
-      @api_links      = {}
+      @properties = {}
+      @links      = {}
     end
 
-    attr_reader :api_properties
+    attr_reader :properties
 
-    attr_reader :api_links
+    attr_reader :links
 
-    def api_property(property_name)
+    def property(property_name)
       property_name = property_name.to_sym
-      @api_properties[property_name]
+      @properties[property_name]
     end
 
-    def api_link(link_name)
+    def link(link_name)
       link_name = link_name.to_sym
-      @api_links[link_name]
+      @links[link_name]
     end
 
     def add_element(representer, type, name, options = {}, &block)
       case type = type.to_sym
-      when :api_property, :api_collection_property
+      when :property, :collection_property
         element = build_element(representer, type, name, options, &block)
-        @api_properties[element.name] = element
-      when :api_link
+        @properties[element.name] = element
+      when :link
         element = build_element(representer, type, name, &block)
-        @api_links[element.name] = element
+        @links[element.name] = element
       else
         raise ArgumentError, "invalid documentation element type #{type.inspect}"
       end
     end
 
     def representer
-      (@api_properties.values + @api_links.values).find { |v|
+      (@properties.values + @links.values).find { |v|
         v.representer and break v.representer
       }
     end
 
-    def nested_api_properties(path = [])
-      api_properties.values.each_with_object([]) do |property, result|
+    def nested_properties(path = [])
+      properties.values.each_with_object([]) do |property, result|
         result << property.below_path(path)
         if sr = property.sub_representer?
-          result.concat sr.docs.nested_api_properties(path + property.path)
+          result.concat sr.docs.nested_properties(path + property.path)
         end
       end
     end
 
-    def nested_api_links(path = [])
-      result = api_links.values.map { |l| l.below_path(path) }
-      api_properties.values.each_with_object(result) do |property, result|
+    def nested_links(path = [])
+      result = links.values.map { |l| l.below_path(path) }
+      properties.values.each_with_object(result) do |property, result|
         if sr = property.sub_representer?
           nested_property = property.below_path(path)
-          links = sr.docs.nested_api_links(nested_property.path)
+          links = sr.docs.nested_links(nested_property.path)
           result.concat links
         end
       end
@@ -61,13 +61,13 @@ module Betterdocs
 
     def to_s
       result = "*** #{representer} ***\n"
-      if properties = @api_properties.values.full?
+      if properties = @properties.values.full?
         result << "\nProperties:"
-        nested_api_properties.each_with_object(result) do |property, r|
+        nested_properties.each_with_object(result) do |property, r|
           r << "\n#{property.full_name}: (#{property.types * '|'}): #{property.description}\n"
         end
       end
-      if links = @api_links.values.full?
+      if links = @links.values.full?
         result << "\nLinks:"
         links.each_with_object(result) do |link, r|
           r << "\n#{link.full_name}: #{link.description}\n" # TODO resolve link.url in some useful way

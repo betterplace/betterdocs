@@ -46,7 +46,7 @@
     </tr>
     <%- for property in properties -%>
     <tr>
-      <%- if r = property.sub_representer? and r.docs.api_properties.full? -%>
+      <%- if r = property.sub_representer? and r.docs.properties.full? -%>
         <th align="left" style="white-space: nowrap">
           <a name="<%= fn = property.full_name; "#{fn}-ref" %>" href="#<%= fn %>">
             ↓<%= property.full_name %>

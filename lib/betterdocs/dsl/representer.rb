@@ -1,6 +1,6 @@
 module Betterdocs
   module Dsl
-    class ApiProperty
+    class Property
       extend DSLKit::DSLAccessor
       include Common
       include Naming
@@ -56,7 +56,7 @@ module Betterdocs
       end
     end
 
-    class ApiCollectionProperty < ApiProperty
+    class CollectionProperty < Property
       def value(object)
         object.__send__(name).to_a.compact.map do |v|
           represent_with.hashify(v)
@@ -64,7 +64,7 @@ module Betterdocs
       end
     end
 
-    class ApiLink
+    class Link
       extend DSLKit::DSLAccessor
       include Common
       include Naming

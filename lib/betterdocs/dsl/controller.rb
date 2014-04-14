@@ -133,11 +133,11 @@ module Betterdocs
         end
 
         def properties
-          representer.full? { |r| r.docs.nested_api_properties }  || []
+          representer.full? { |r| r.docs.nested_properties }  || []
         end
 
         def links
-          representer.full? { |r| r.docs.nested_api_links }  || []
+          representer.full? { |r| r.docs.nested_links }  || []
         end
 
         def representer

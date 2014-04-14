@@ -22,7 +22,6 @@ module Betterdocs
 
       def api_base_url
         config
-
       end
     end
   end
