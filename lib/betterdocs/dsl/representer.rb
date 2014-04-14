@@ -17,19 +17,15 @@ module Betterdocs
 
       attr_reader :name
 
-      attr_reader :options
-
       def initialize(representer, name, options, &block)
+        @name = name.to_sym
         @as = options[:as]
         set_context @representer = representer
-        @name = name.to_sym
-        @options = options
         block and instance_eval(&block)
         types JsonTypeMapper.map_types(types)
         if sr = sub_representer?
           sr < Betterdocs::Representer or
             raise TypeError, "#{sr.inspect} is not a Betterdocs::Representer subclass"
-          @options[:represent_with] = sr
         end
         super
       end

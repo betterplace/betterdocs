@@ -3,8 +3,8 @@ require 'rails'
 
 module Betterdocs
   require 'betterdocs/version'
-  require 'betterdocs/representer'
   require 'betterdocs/dsl'
+  require 'betterdocs/representer'
   require 'betterdocs/controller_collector'
   require 'betterdocs/representer_collector'
   require 'betterdocs/json_type_mapper'

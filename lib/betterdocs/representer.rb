@@ -31,6 +31,8 @@ module Betterdocs::Representer
   end
 
   module ClassMethods
+    include Betterdocs::Dsl::Common
+
     def apply(object)
       object.extend self
     end
@@ -62,13 +64,15 @@ module Betterdocs::Representer
       @properties ||= Set.new
     end
 
-    def property(name, as: nil, &block)
-      properties << doc(:property, name, as: as, &block)
+    def property(name, **options, &block)
+      d = doc(:property, name, **options, &block) and
+        properties << d
       self
     end
 
-    def collection(name, as: nil, &block)
-      properties << doc(:collection_property, name, as: as, &block)
+    def collection(name, **options, &block)
+      d = doc(:collection_property, name, **options, &block) and
+        properties << d
       self
     end
 
@@ -77,12 +81,18 @@ module Betterdocs::Representer
     end
 
     def link(name, &block)
-      links << doc(:link, name, &block)
+      d = doc(:link, name, &block) and links << d
       self
     end
 
-    def doc(type, name, options = {}, &block)
-      docs.add_element(self, type, name, options, &block)
+    def doc(type, name, **options, &block)
+      options |= {
+        if:     -> { yes },
+        unless: -> { no },
+      }
+      if options[:if].() && !options[:unless].()
+        docs.add_element(self, type, name, options, &block)
+      end
     end
 
     def object_name(*) end

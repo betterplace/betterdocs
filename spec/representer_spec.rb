@@ -38,6 +38,10 @@ describe Betterdocs::Representer do
       represent_with MySubRepresenter
     end
 
+    property :if_no, if: -> { no }
+
+    property :if_yes, unless: -> { yes }
+
     link 'url1' do
       url { 'an_url' }
     end
@@ -70,6 +74,8 @@ describe Betterdocs::Representer do
       o.other_thingies = [
         OpenStruct.new.tap { |t| t.some_property = 'first other' },
       ]
+      o.if_no = :no
+      o.if_yes = :yes
     end
   end
 
@@ -142,5 +148,10 @@ describe Betterdocs::Representer do
     representer = Module.new { include Betterdocs::Representer }
     represented_object = JSON(representer.apply(object).to_json)
     represented_object['links'].should eq []
+  end
+
+  it 'supports conditional properties' do
+    represented_object['if_no'].should be_nil
+    represented_object['if_yes'].should be_nil
   end
 end

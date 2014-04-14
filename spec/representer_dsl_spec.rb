@@ -38,7 +38,7 @@ describe 'representer dsl' do
 
   context 'property' do
     it "can add a new property" do
-      docs.add_element representer, :property, 'my_property', some_option: true do
+      docs.add_element representer, :property, 'my_property' do
         # XXX as          :foo_bar
         description 'my description'
         types       [ String, nil ]
@@ -48,14 +48,12 @@ describe 'representer dsl' do
       property.name.should eq :my_property
       property.representer.should eq representer
       property.description.should eq 'my description'
-      property.options.should include(some_option: true)
       property.types.should eq %w[ null string ]
       property.example.should eq 'TODO' # TODO
-      # XXX property.options.should include(as: :foo_bar)
     end
 
     it "can define a property on representer" do
-      docs.add_element representer, :property, 'my_property', some_option: true do
+      docs.add_element representer, :property, 'my_property' do
       end
       property = docs.property(:my_property)
       property.should be_present
@@ -93,12 +91,12 @@ describe 'representer dsl' do
   end
 
   it 'can return a string representation of all its links/properties' do
-    docs.add_element representer, :property, 'my_property', some_option: true do
+    docs.add_element representer, :property, 'my_property' do
       # XXX as          :foo_bar
       description 'my description'
       types       [ String, nil ]
     end
-    docs.add_element representer, :property, 'my_property2', some_option: true do
+    docs.add_element representer, :property, 'my_property2' do
       description 'my description2'
       types       [ true, false ]
     end
