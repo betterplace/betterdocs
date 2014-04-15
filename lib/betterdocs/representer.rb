@@ -25,7 +25,6 @@ module Betterdocs::Representer
       c != singleton_class && c < Betterdocs::Representer
     end.hashify(self)
   end
-  alias to_hash as_json
 
   def to_json(*a)
     JSON::generate(as_json, *a)

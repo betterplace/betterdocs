@@ -30,3 +30,4 @@ TODO
 - Automatically document HTTP result codes of responses
 - Automatically document error result documents
 - Display links of subrepresenters below subrepresenter properties.
+- Make apply consider type of object, i. e. don't extend nil and the like.
