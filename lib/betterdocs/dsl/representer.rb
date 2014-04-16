@@ -16,8 +16,7 @@ module Betterdocs
       attr_reader :representer
 
       def assign?(object)
-        !object.nil? &&
-          object.instance_exec(&(@options[:if])) &&
+        object.instance_exec(&(@options[:if])) &&
           !object.instance_exec(&(@options[:unless]))
       end
 
@@ -57,7 +56,10 @@ module Betterdocs
       end
 
       def assign(result, object)
-        assign?(object) and result[actual_property_name] = value(object)
+        assign?(object) or return
+        v = value(object)
+        v.nil? and return # XXX HOTFIX for betterplace API XXX
+        result[actual_property_name] = v
       end
 
       def value(object)
