@@ -16,7 +16,8 @@ module Betterdocs
       attr_reader :representer
 
       def assign?(object)
-        object.instance_exec(&(@options[:if])) &&
+        !object.nil? &&
+          object.instance_exec(&(@options[:if])) &&
           !object.instance_exec(&(@options[:unless]))
       end
 
