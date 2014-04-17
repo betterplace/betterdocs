@@ -66,11 +66,20 @@ module Betterdocs
       private
 
       def fail_while_rendering(template, exception)
-        message = blink(color(231, on_color(124,
-          " *** ERROR #{exception.class}: #{exception} in template ***\n")))
-        STDERR.puts message, color(88, on_color(136, template)), message,
-          color(136, (%w[Backtrace:] + exception.backtrace) * "\n"),
-          message
+        message = blink(color(231, on_color(
+          124, " *** ERROR #{exception.class}: #{exception.message.inspect} in template ***")))
+        STDERR.puts message
+        Timeout.timeout(5, Timeout::Error) do
+          STDERR.print "Output long error message? (yes/NO) "
+          if STDIN.gets =~ /\Ay/i
+            STDERR.puts color(88, on_color(136, template)), message,
+              color(136, (%w[Backtrace:] + exception.backtrace) * "\n"),
+              message
+          end
+        end
+      rescue Timeout::Error
+        STDERR.puts "Nope…"
+      ensure
         exit 1
       end
 
