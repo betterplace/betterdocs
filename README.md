@@ -31,3 +31,5 @@ TODO
 - Automatically document error result documents
 - Display links of subrepresenters below subrepresenter properties.
 - Make apply consider type of object, i. e. don't extend nil and the like.
+- Use private flag action/controller to skip docu creation by default. Make it configurable 
+  to create private API as well.

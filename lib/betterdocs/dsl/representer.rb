@@ -1,6 +1,6 @@
 module Betterdocs
   module Dsl
-    class Base
+    class RepresenterBase
       def initialize(representer, name, options, &block)
         set_context @representer = representer
         @name = name.to_sym
@@ -29,7 +29,7 @@ module Betterdocs
       end
     end
 
-    class Property < Base
+    class Property < RepresenterBase
       extend DSLKit::DSLAccessor
       include Common
       include Naming
@@ -85,7 +85,7 @@ module Betterdocs
       end
     end
 
-    class Link < Base
+    class Link < RepresenterBase
       extend DSLKit::DSLAccessor
       include Common
       include Naming

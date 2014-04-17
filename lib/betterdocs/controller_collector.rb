@@ -6,7 +6,9 @@ module Betterdocs
       @controller = nil
     end
 
-    attr_reader :controller
+    attr_accessor :controller
+
+    attr_writer :element
 
     def actions
       @actions.values.reject(&:private)
@@ -23,14 +25,7 @@ module Betterdocs
 
     def add_element(klass, type, &block)
       element = build_element(klass, type, &block)
-      case type = type.to_sym
-      when :controller
-        @controller = element
-      when :action
-        @element = element
-      else
-        raise ArgumentError, "unkown documentation element type #{type.inspect}"
-      end
+      element.add_to_collector(self)
     end
 
     def configure_current_element(action_name)

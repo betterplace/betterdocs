@@ -14,6 +14,9 @@ describe 'controller dsl' do
       def self.to_s
         'MyTestController'
       end
+
+      def foo
+      end
     end
   end
 
@@ -38,6 +41,30 @@ describe 'controller dsl' do
       my_controller.controller.should eq controller
       my_controller.description.should eq 'my description'
       my_controller.url.should eq 'http://foo/bar'
+    end
+  end
+
+  context 'action' do
+    it "can add a new action" do
+      docs.add_element controller, :action do
+        description 'my description'
+        section     :test_section
+        http_method :GET
+
+        param :bar do
+        end
+      end
+      Betterdocs.stub(:rails).and_return rails
+      docs.actions.should be_empty
+      docs.configure_current_element(:foo)
+      docs.actions.should have(1).entry
+      action = docs.actions.first
+      action.controller.should eq controller
+      action.name.should eq :foo
+      action.section.should eq :test_section
+      action.action_method.should eq controller.instance_method(:foo)
+      action.http_method.should eq :GET
+      action.params.should have_key :bar
     end
   end
 end

@@ -30,7 +30,7 @@
 ## Response Attributes
 
 <%- if properties = action.response.full?(:properties) -%>
-  <%- for (representer, properties) in properties.group_by(&:below_path) -%>
+  <%- for (representer, properties) in properties.group_by(&:nesting_name) -%>
     <%- if properties.first.nesting_name.blank? -%>
 ### Root Attributes
     <%- else -%>
@@ -76,7 +76,7 @@
   </tr>
 
 <%- if links = action.response.full?(:links) -%>
-  <%- for link in links.group_by(&:below_path).values.reduce(&:concat) -%>
+  <%- for link in links.group_by(&:nesting_name).values.reduce(&:concat) -%>
     <tr>
       <th align="left"><%= link.full_name %></th>
       <td><%= link.description %></td>

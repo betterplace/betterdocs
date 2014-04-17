@@ -1,17 +1,26 @@
 module Betterdocs
   module Dsl
-    class Controller
-      extend DSLKit::DSLAccessor
+    class ControllerBase
       include Common
 
+      def self.inherited(klass)
+        klass.class_eval { extend DSLKit::DSLAccessor }
+      end
+
       def initialize(controller, &block)
-        @controller = controller
-        set_context @controller
+        controller(controller)
+        set_context controller
         instance_eval(&block)
       end
 
       dsl_accessor :controller
 
+      def add_to_collector(collector)
+        raise NotImplementedError, 'add_to_collector needs to be implemented in subclass'
+      end
+    end
+
+    class Controller < ControllerBase
       def name
         @name ||= controller.to_s.underscore.sub(/_controller\z/, '').to_sym
       end
@@ -32,12 +41,13 @@ module Betterdocs
       def to_s
         [ controller, '', "url: #{url}", '', description, '' ] * "\n"
       end
+
+      def add_to_collector(collector)
+        collector.controller = self
+      end
     end
 
-    class Action < Controller
-      extend DSLKit::DSLAccessor
-      include Common
-
+    class Action < ControllerBase
       dsl_accessor :action
 
       alias name action
@@ -206,6 +216,10 @@ module Betterdocs
 
       def inspect
         "#{controller}##{action}(#{params.keys * ', '})"
+      end
+
+      def add_to_collector(collector)
+        collector.element = self
       end
     end
   end
