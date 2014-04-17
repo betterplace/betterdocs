@@ -1,6 +1,6 @@
 namespace :doc do
   desc "Create the API documentation"
-  task :api => :environment do
+  task :api => :'doc:api:sandbox' do
     Betterdocs::Global.config do |config|
       Betterdocs::Generator::Markdown.new.generate
       cd config.output_directory do
@@ -10,6 +10,16 @@ namespace :doc do
   end
 
   namespace :api do
+    desc 'Let database transactions run in a sandboxed environment'
+    task :sandbox => :environment do
+      ActiveRecord::Base.connection.increment_open_transactions
+      ActiveRecord::Base.connection.begin_db_transaction
+      at_exit do
+         ActiveRecord::Base.connection.rollback_db_transaction
+         ActiveRecord::Base.connection.decrement_open_transactions
+      end
+    end
+
     desc "Push the newly created API documentation to the remote git repo"
     task :push => :api do
       Betterdocs::Global.config do |config|
