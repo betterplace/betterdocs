@@ -23,6 +23,10 @@ module Betterdocs
       def assign(result, object)
         raise NotImplementedError, 'assign needs to be implemented in subclass'
       end
+
+      def add_to_collector(collector)
+        raise NotImplementedError, 'add_to_collector needs to be implemented in subclass'
+      end
     end
 
     class Property < Base
@@ -67,6 +71,10 @@ module Betterdocs
           value
         end
       end
+
+      def add_to_collector(collector)
+        collector.properties[name] = self
+      end
     end
 
     class CollectionProperty < Property
@@ -99,6 +107,10 @@ module Betterdocs
           'rel'  => name.to_s,
           'href' => object.instance_eval(&url).to_s,
         )
+      end
+
+      def add_to_collector(collector)
+        collector.links[name] = self
       end
     end
   end

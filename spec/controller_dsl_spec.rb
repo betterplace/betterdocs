@@ -40,28 +40,4 @@ describe 'controller dsl' do
       my_controller.url.should eq 'http://foo/bar'
     end
   end
-
-#  context 'link' do
-#    it "cannot add a new link without url" do
-#      expect {
-#        docs.add_element representer, :link, 'my_link', some_option: true do
-#        end
-#      }.to raise_error(ArgumentError)
-#    end
-#
-#    it "can add a new link" do
-#      docs.add_element representer, :link, 'my_link', some_option: true do
-#        description 'my URL description'
-#        url         'http://foo.bar'
-#      end
-#      link = docs.link(:my_link)
-#      link.should be_present
-#      link.name.should eq :my_link
-#      link.representer.should eq representer
-#      link.description.should eq 'my URL description'
-#      link.options.should include(some_option: true)
-#    end
-#
-#    it "can define a link"
-#  end
 end
