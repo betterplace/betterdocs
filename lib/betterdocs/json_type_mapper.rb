@@ -7,7 +7,7 @@ module Betterdocs
       result = {
         TrueClass  => 'boolean',
         FalseClass => 'boolean',
-        NilClass   => 'null',    # actually this type is undefined in Javascript
+        NilClass   => 'null',
         Numeric    => 'number',
         Array      => 'array',
         Hash       => 'object',
