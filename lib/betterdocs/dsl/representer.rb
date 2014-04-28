@@ -60,7 +60,8 @@ module Betterdocs
       end
 
       def assign(result, object)
-        assign?(object) and result[actual_property_name] = value(object)
+        assign?(object) or return
+        result[actual_property_name] = value(object)
       end
 
       def value(object)
@@ -92,6 +93,8 @@ module Betterdocs
 
       dsl_accessor :description, 'TODO'
 
+      dsl_accessor :templated, false
+
       def url(&block)
         if block
           @url = block
@@ -103,10 +106,13 @@ module Betterdocs
       end
 
       def assign(result, object)
-        assign?(object) and result['links'].push(
+        assign?(object) or return
+        link = {
           'rel'  => name.to_s,
           'href' => object.instance_eval(&url).to_s,
-        )
+        }
+        templated and link['templated'] = true
+        result['links'].push(link)
       end
 
       def add_to_collector(collector)

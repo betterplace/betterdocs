@@ -54,6 +54,11 @@ describe Betterdocs::Representer do
       url { 'another_url' }
     end
 
+    link 'template' do
+      url { 'an_url_with{placeholder}' }
+      templated true
+    end
+
     def derived
       'derived property'
     end
@@ -143,11 +148,17 @@ describe Betterdocs::Representer do
 
   it 'supports links' do
     links = represented_object['links']
-    links.should have(2).entries
+    links.should have(3).entries
     links[0]['rel'].should eq 'url1'
     links[0]['href'].should eq 'an_url'
+    links[0].should_not have_key 'templated'
     links[1]['rel'].should eq 'url2'
     links[1]['href'].should eq 'another_url'
+    links[1].should_not have_key 'templated'
+    links[2]['rel'].should eq 'template'
+    links[2]['href'].should eq 'an_url_with{placeholder}'
+    links[2].should have_key 'templated'
+    links[2]['templated'].should eq true
   end
 
   it "doesn't have to have links" do

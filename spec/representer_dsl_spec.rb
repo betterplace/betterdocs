@@ -80,13 +80,15 @@ describe 'representer dsl' do
       link.description.should eq 'my URL description'
     end
 
-    it "can define a link on representer" do
+    it "can define a templated link" do
       docs.add_element representer, :link, 'my_link' do
         description 'my URL description'
         url         { 'http://foo.bar' }
+        templated yes
       end
       link = docs.link(:my_link)
       link.should be_present
+      link.templated.should eq true
     end
   end
 

@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["betterplace Developers"]
-  s.date = "2014-04-22"
+  s.date = "2014-04-28"
   s.description = "This library provides tools to generate API documention for a web site's REST-ful JSON API."
   s.email = "developers@betterplace.org"
   s.extra_rdoc_files = ["README.md", "lib/betterdocs.rb", "lib/betterdocs/controller_collector.rb", "lib/betterdocs/dsl.rb", "lib/betterdocs/dsl/common.rb", "lib/betterdocs/dsl/controller.rb", "lib/betterdocs/dsl/naming.rb", "lib/betterdocs/dsl/representer.rb", "lib/betterdocs/generator/config_shortcuts.rb", "lib/betterdocs/generator/markdown.rb", "lib/betterdocs/global.rb", "lib/betterdocs/json_type_mapper.rb", "lib/betterdocs/mix_into_controller.rb", "lib/betterdocs/rake_tasks.rb", "lib/betterdocs/representer.rb", "lib/betterdocs/representer_collector.rb", "lib/betterdocs/section.rb", "lib/betterdocs/version.rb"]
