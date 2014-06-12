@@ -9,9 +9,14 @@ namespace :doc do
     end
   end
 
+  task :set_betterdocs_env do
+    ENV['BETTERDOCS'] = '1'
+  end
+
   namespace :api do
     desc 'Let database transactions run in a sandboxed environment'
-    task :sandbox => :environment do
+    task :sandbox => [:'doc:set_betterdocs_env', :environment] do
+
       ActiveRecord::Base.connection.increment_open_transactions
       ActiveRecord::Base.connection.begin_db_transaction
       at_exit do
