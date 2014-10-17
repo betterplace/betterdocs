@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'representer dsl' do
+RSpec.describe 'representer dsl' do
   let :docs do
     Betterdocs::RepresenterCollector.new
   end
@@ -44,19 +44,19 @@ describe 'representer dsl' do
         types       [ String, nil ]
       end
       property = docs.property(:my_property)
-      property.should be_present
-      property.name.should eq :my_property
-      property.representer.should eq representer
-      property.description.should eq 'my description'
-      property.types.should eq %w[ null string ]
-      property.example.should eq 'TODO' # TODO
+      expect(property).to be_present
+      expect(property.name).to eq :my_property
+      expect(property.representer).to eq representer
+      expect(property.description).to eq 'my description'
+      expect(property.types).to eq %w[ null string ]
+      expect(property.example).to eq 'TODO' # TODO
     end
 
     it "can define a property on representer" do
       docs.add_element representer, :property, 'my_property' do
       end
       property = docs.property(:my_property)
-      property.should be_present
+      expect(property).to be_present
     end
   end
 
@@ -74,10 +74,10 @@ describe 'representer dsl' do
         url         { 'http://foo.bar' }
       end
       link = docs.link(:my_link)
-      link.should be_present
-      link.name.should eq :my_link
-      link.representer.should eq representer
-      link.description.should eq 'my URL description'
+      expect(link).to be_present
+      expect(link.name).to eq :my_link
+      expect(link.representer).to eq representer
+      expect(link.description).to eq 'my URL description'
     end
 
     it "can define a templated link" do
@@ -87,8 +87,8 @@ describe 'representer dsl' do
         templated yes
       end
       link = docs.link(:my_link)
-      link.should be_present
-      link.templated.should eq true
+      expect(link).to be_present
+      expect(link.templated).to eq true
     end
   end
 
@@ -110,7 +110,7 @@ describe 'representer dsl' do
       description 'my URL description2'
       url         { 'http://foo.baz' }
     end
-    docs.to_s.should eq <<EOT
+    expect(docs.to_s).to eq <<EOT
 *** MyRepresenter ***
 
 Properties:
@@ -168,15 +168,15 @@ EOT
     end
 
     it 'can return an array of its nested properties' do
-      Person.docs.nested_properties.should have(6).entries
-      Person.docs.nested_properties.map(&:full_name).should eq [ "name",
+      expect(Person.docs.nested_properties.size).to eq 6
+      expect(Person.docs.nested_properties.map(&:full_name)).to eq [ "name",
         "address", "address.city", "address.location",
         "address.location.latitude", "address.location.longitude" ]
     end
 
     it 'can return an array of its nested links' do
-      Person.docs.nested_links.should have(3).entries
-      Person.docs.nested_links.map(&:full_name).should eq [
+      expect(Person.docs.nested_links.size).to eq 3
+      expect(Person.docs.nested_links.map(&:full_name)).to eq [
         "self", "address.map", "address.location.dot" ]
     end
   end

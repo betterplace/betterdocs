@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Betterdocs::Representer do
+RSpec.describe Betterdocs::Representer do
   module MySubRepresenter
     include Betterdocs::Representer
 
@@ -99,78 +99,78 @@ describe Betterdocs::Representer do
   end
 
   it 'can output pretty json' do
-    JSON.pretty_generate(MyRepresenter.apply(object)).should include "\n"
+    expect(JSON.pretty_generate(MyRepresenter.apply(object))).to include "\n"
   end
 
   it 'can output ugly json' do
-    JSON.generate(MyRepresenter.apply(object)).should_not include "\n"
+    expect(JSON.generate(MyRepresenter.apply(object))).to_not include "\n"
   end
 
   it 'supports simple properties' do
-    represented_object['simple'].should eq 'simple property'
+    expect(represented_object['simple']).to eq 'simple property'
   end
 
   it 'supports derived properties' do
-    represented_object['derived'].should eq 'derived property'
+    expect(represented_object['derived']).to eq 'derived property'
   end
 
   it 'supports complex properties' do
-    represented_object['complex']['some_property'].should eq 'some property'
+    expect(represented_object['complex']['some_property']).to eq 'some property'
   end
 
   it 'supports renaming simple properties' do
-    represented_object['simple_new_name'].should eq 'simple old property'
+    expect(represented_object['simple_new_name']).to eq 'simple old property'
   end
 
   it 'supports renaming derived properties' do
-    represented_object['derived_new_name'].should eq 'derived old property'
+    expect(represented_object['derived_new_name']).to eq 'derived old property'
   end
 
   it 'supports renaming complex properties' do
-    represented_object['complex_new_name']['some_property'].should eq 'some old property'
+    expect(represented_object['complex_new_name']['some_property']).to eq 'some old property'
   end
 
   it 'supports collections' do
-    represented_object['thingies'].should have(2).entries
-    represented_object['thingies'][0]['some_property'].should eq 'first'
-    represented_object['thingies'][1]['some_property'].should eq 'second'
+    expect(represented_object['thingies'].size).to eq 2
+    expect(represented_object['thingies'][0]['some_property']).to eq 'first'
+    expect(represented_object['thingies'][1]['some_property']).to eq 'second'
   end
 
   it 'supports renaming collections' do
-    represented_object['thingies_new_name'].should have(1).entry
-    represented_object['thingies_new_name'][0]['some_property'].should eq 'first other'
+    expect(represented_object['thingies_new_name'].size).to eq 1
+    expect(represented_object['thingies_new_name'][0]['some_property']).to eq 'first other'
   end
 
   it "doesn't crash missing collections" do
     object.thingies = nil
-    represented_object['thingies'].should eq []
+    expect(represented_object['thingies']).to eq []
   end
 
   it 'supports links' do
     links = represented_object['links']
-    links.should have(3).entries
-    links[0]['rel'].should eq 'url1'
-    links[0]['href'].should eq 'an_url'
-    links[0].should_not have_key 'templated'
-    links[1]['rel'].should eq 'url2'
-    links[1]['href'].should eq 'another_url'
-    links[1].should_not have_key 'templated'
-    links[2]['rel'].should eq 'template'
-    links[2]['href'].should eq 'an_url_with{placeholder}'
-    links[2].should have_key 'templated'
-    links[2]['templated'].should eq true
+    expect(links.size).to eq 3
+    expect(links[0]['rel']).to eq 'url1'
+    expect(links[0]['href']).to eq 'an_url'
+    expect(links[0]).to_not have_key 'templated'
+    expect(links[1]['rel']).to eq 'url2'
+    expect(links[1]['href']).to eq 'another_url'
+    expect(links[1]).to_not have_key 'templated'
+    expect(links[2]['rel']).to eq 'template'
+    expect(links[2]['href']).to eq 'an_url_with{placeholder}'
+    expect(links[2]).to have_key 'templated'
+    expect(links[2]['templated']).to eq true
   end
 
   it "doesn't have to have links" do
     representer = Module.new { include Betterdocs::Representer }
     represented_object = JSON(representer.apply(object).to_json)
-    represented_object['links'].should eq []
+    expect(represented_object['links']).to eq []
   end
 
   it 'supports conditional properties' do
-    represented_object['if_no'].should be_nil
-    represented_object['unless_yes'].should be_nil
-    represented_object['if_predicate'].should be_nil
-    represented_object['unless_predicate'].should be_nil
+    expect(represented_object['if_no']).to be_nil
+    expect(represented_object['unless_yes']).to be_nil
+    expect(represented_object['if_predicate']).to be_nil
+    expect(represented_object['unless_predicate']).to be_nil
   end
 end

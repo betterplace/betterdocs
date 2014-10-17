@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'controller dsl' do
+RSpec.describe 'controller dsl' do
   let :docs do
     Betterdocs::ControllerCollector.new
   end
@@ -33,14 +33,14 @@ describe 'controller dsl' do
         description 'my description'
         section     :test_section
       end
-      Betterdocs.stub(:rails).and_return rails
+      allow(Betterdocs).to receive(:rails).and_return rails
       my_controller = docs.controller
-      my_controller.should be_present
-      my_controller.name.should eq :my_test
-      my_controller.section.should eq :test_section
-      my_controller.controller.should eq controller
-      my_controller.description.should eq 'my description'
-      my_controller.url.should eq 'http://foo/bar'
+      expect(my_controller).to be_present
+      expect(my_controller.name).to eq :my_test
+      expect(my_controller.section).to eq :test_section
+      expect(my_controller.controller).to eq controller
+      expect(my_controller.description).to eq 'my description'
+      expect(my_controller.url).to eq 'http://foo/bar'
     end
   end
 
@@ -54,17 +54,17 @@ describe 'controller dsl' do
         param :bar do
         end
       end
-      Betterdocs.stub(:rails).and_return rails
-      docs.actions.should be_empty
+      allow(Betterdocs).to receive(:rails).and_return rails
+      expect(docs.actions).to be_empty
       docs.configure_current_element(:foo)
-      docs.actions.should have(1).entry
+      expect(docs.actions.size).to eq 1
       action = docs.actions.first
-      action.controller.should eq controller
-      action.name.should eq :foo
-      action.section.should eq :test_section
-      action.action_method.should eq controller.instance_method(:foo)
-      action.http_method.should eq :GET
-      action.params.should have_key :bar
+      expect(action.controller).to eq controller
+      expect(action.name).to eq :foo
+      expect(action.section).to eq :test_section
+      expect(action.action_method).to eq controller.instance_method(:foo)
+      expect(action.http_method).to eq :GET
+      expect(action.params).to have_key :bar
     end
   end
 end

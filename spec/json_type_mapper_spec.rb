@@ -1,33 +1,33 @@
 require 'spec_helper'
 
-describe Betterdocs::JsonTypeMapper do
+RSpec.describe Betterdocs::JsonTypeMapper do
   let :jtm do Betterdocs::JsonTypeMapper end
 
-  it "should derive json types" do
-    jtm.derive_json_type_from(true).should eq 'boolean'
-    jtm.derive_json_type_from(TrueClass).should eq 'boolean'
-    jtm.derive_json_type_from(false).should eq 'boolean'
-    jtm.derive_json_type_from(FalseClass).should eq 'boolean'
-    jtm.derive_json_type_from(nil).should eq 'null'
-    jtm.derive_json_type_from(NilClass).should eq 'null'
-    jtm.derive_json_type_from(42).should eq 'number'
-    jtm.derive_json_type_from(Fixnum).should eq 'number'
-    jtm.derive_json_type_from(42).should eq 'number'
-    jtm.derive_json_type_from(Fixnum).should eq 'number'
-    jtm.derive_json_type_from(Math::PI).should eq 'number'
-    jtm.derive_json_type_from(Float).should eq 'number'
-    jtm.derive_json_type_from([]).should eq 'array'
-    jtm.derive_json_type_from(Array).should eq 'array'
-    jtm.derive_json_type_from({}).should eq 'object'
-    jtm.derive_json_type_from(Hash).should eq 'object'
-    jtm.derive_json_type_from('foo').should eq 'string'
-    jtm.derive_json_type_from(String).should eq 'string'
+  it "derives json types" do
+    expect(jtm.derive_json_type_from(true)).to eq 'boolean'
+    expect(jtm.derive_json_type_from(TrueClass)).to eq 'boolean'
+    expect(jtm.derive_json_type_from(false)).to eq 'boolean'
+    expect(jtm.derive_json_type_from(FalseClass)).to eq 'boolean'
+    expect(jtm.derive_json_type_from(nil)).to eq 'null'
+    expect(jtm.derive_json_type_from(NilClass)).to eq 'null'
+    expect(jtm.derive_json_type_from(42)).to eq 'number'
+    expect(jtm.derive_json_type_from(Fixnum)).to eq 'number'
+    expect(jtm.derive_json_type_from(42)).to eq 'number'
+    expect(jtm.derive_json_type_from(Fixnum)).to eq 'number'
+    expect(jtm.derive_json_type_from(Math::PI)).to eq 'number'
+    expect(jtm.derive_json_type_from(Float)).to eq 'number'
+    expect(jtm.derive_json_type_from([])).to eq 'array'
+    expect(jtm.derive_json_type_from(Array)).to eq 'array'
+    expect(jtm.derive_json_type_from({})).to eq 'object'
+    expect(jtm.derive_json_type_from(Hash)).to eq 'object'
+    expect(jtm.derive_json_type_from('foo')).to eq 'string'
+    expect(jtm.derive_json_type_from(String)).to eq 'string'
   end
 
-  it "should map arrays of ruby types correctly" do
-    jtm.map_types([]).should eq %w[ array ]
-    jtm.map_types([ [] ]).should eq %w[ array ]
-    jtm.map_types([ [], {}, Array, nil, Hash ]).should eq %w[ array null object ]
-    jtm.map_types("foo").should eq %w[ string ]
+  it "maps arrays of ruby types correctly" do
+    expect(jtm.map_types([])).to eq %w[ array ]
+    expect(jtm.map_types([ [] ])).to eq %w[ array ]
+    expect(jtm.map_types([ [], {}, Array, nil, Hash ])).to eq %w[ array null object ]
+    expect(jtm.map_types("foo")).to eq %w[ string ]
   end
 end
