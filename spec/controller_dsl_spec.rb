@@ -42,6 +42,12 @@ RSpec.describe 'controller dsl' do
       expect(my_controller.description).to eq 'my description'
       expect(my_controller.url).to eq 'http://foo/bar'
     end
+
+    it 'can be represented as a string if empty' do
+      expect(docs.to_s).to eq(
+        "\n===============================================================================\n\n"
+      )
+    end
   end
 
   context 'action' do

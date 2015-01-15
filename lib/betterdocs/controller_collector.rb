@@ -38,7 +38,7 @@ module Betterdocs
     end
 
     def to_s
-      ([ @controller, '=' * 79, @actions * ("-" * 79 + "\n"), '' ]) * "\n"
+      ([ @controller, '=' * 79, actions * ("-" * 79 + "\n"), '' ]) * "\n"
     end
 
     private
