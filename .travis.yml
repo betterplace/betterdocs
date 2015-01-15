@@ -3,7 +3,8 @@ bundler_args: --binstubs
 
 # Specify which ruby versions you wish to run your tests on, each version will be used
 rvm:
-  - 2.0.0
-  - 2.1.0
+  - 2.0
+  - 2.1
+  - 2.2
 script: "bundle exec rake"
 
