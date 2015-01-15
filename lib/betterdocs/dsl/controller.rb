@@ -154,7 +154,13 @@ module Betterdocs
           if data
             data.ask_and_send(:representer) ||
               data.singleton_class.ancestors.find { |c|
-                Betterdocs::Representer >= c
+                Betterdocs::Representer >= c && c.respond_to?(:docs)
+                # Actually it's more like
+                #   Betterdocs::Representer >= c && !c.singleton_class?
+                # in newer rubies.
+                # But singleton_class? is broken and private in ruby 2.1.x not
+                # existant in <= ruby 2.0.x and finally works in ruby 2.2.x.
+                # What a mess!
               }
           end
         end
