@@ -200,7 +200,7 @@ module Betterdocs
       end
 
       def url
-        Betterplace::Application.routes.url_for(
+        Betterdocs.rails.application.routes.url_for(
           {
             controller: controller.name.underscore.sub(/_controller\z/, ''),
             action:     action,

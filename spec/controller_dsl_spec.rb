@@ -11,9 +11,14 @@ RSpec.describe 'controller dsl' do
 
   let :controller do
     Module.new do
-      def self.to_s
-        'MyTestController'
+      class << self
+        def name
+          'MyTestController'
+        end
+
+        alias to_s name
       end
+
 
       def foo
       end
@@ -41,6 +46,16 @@ RSpec.describe 'controller dsl' do
       expect(my_controller.controller).to eq controller
       expect(my_controller.description).to eq 'my description'
       expect(my_controller.url).to eq 'http://foo/bar'
+      expect(docs.to_s).to eq(<<EOT)
+MyTestController
+
+url: http://foo/bar
+
+my description
+
+===============================================================================
+
+EOT
     end
 
     it 'can be represented as a string if empty' do
@@ -52,6 +67,10 @@ RSpec.describe 'controller dsl' do
 
   context 'action' do
     it "can add a new action" do
+      docs.add_element controller, :controller do
+        description 'my controller description'
+        section     :test_section
+      end
       docs.add_element controller, :action do
         description 'my description'
         section     :test_section
@@ -71,6 +90,25 @@ RSpec.describe 'controller dsl' do
       expect(action.action_method).to eq controller.instance_method(:foo)
       expect(action.http_method).to eq :GET
       expect(action.params).to have_key :bar
+      expect(docs.to_s).to eq(<<EOT)
+MyTestController
+
+url: http://foo/bar
+
+my controller description
+
+===============================================================================
+GET http://foo/bar
+
+MyTestController#foo(bar)
+
+bar(=1): TODO
+
+my description
+
+/Users/ffr/scm/betterdocs/spec/controller_dsl_spec.rb:23
+
+EOT
     end
   end
 end
