@@ -73,7 +73,7 @@ EOT
       end
       docs.add_element controller, :action do
         description 'my description'
-        section     :test_section
+        section     :test_section2
         http_method :GET
 
         param :bar do
@@ -83,10 +83,11 @@ EOT
       expect(docs.actions).to be_empty
       docs.configure_current_element(:foo)
       expect(docs.actions.size).to eq 1
-      action = docs.actions.first
+      expect(action = docs.action(:foo)).to be_present
       expect(action.controller).to eq controller
       expect(action.name).to eq :foo
-      expect(action.section).to eq :test_section
+      expect(action.section).to eq :test_section2
+      expect(docs.section).to eq :test_section
       expect(action.action_method).to eq controller.instance_method(:foo)
       expect(action.http_method).to eq :GET
       expect(action.params).to have_key :bar
