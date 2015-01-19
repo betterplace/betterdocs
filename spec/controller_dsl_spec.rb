@@ -91,7 +91,7 @@ EOT
       expect(action.action_method).to eq controller.instance_method(:foo)
       expect(action.http_method).to eq :GET
       expect(action.params).to have_key :bar
-      expect(docs.to_s).to eq(<<EOT)
+      expect(docs.to_s.sub(%r(.*(betterdocs/.*)), '\1')).to eq(<<EOT)
 MyTestController
 
 url: http://foo/bar
@@ -107,7 +107,7 @@ bar(=1): TODO
 
 my description
 
-/Users/ffr/scm/betterdocs/spec/controller_dsl_spec.rb:23
+betterdocs/spec/controller_dsl_spec.rb:23
 
 EOT
     end
