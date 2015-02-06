@@ -1,6 +1,3 @@
-require 'tins/dslkit'
-require 'tins/xt/to'
-
 module Betterdocs
   module Dsl
   end

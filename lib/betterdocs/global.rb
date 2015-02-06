@@ -1,5 +1,3 @@
-require 'tins/dslkit'
-
 module Betterdocs
   module Global
     class << self
