@@ -1,9 +1,9 @@
-require 'dslkit/polite'
+require 'tins/dslkit'
 
 module Betterdocs
   module Global
     class << self
-      extend DSLKit::DSLAccessor
+      extend Tins::DSLAccessor
 
       dsl_accessor :project_name,        'Project'         # Name of the project
 

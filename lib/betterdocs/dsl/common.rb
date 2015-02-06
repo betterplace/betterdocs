@@ -1,7 +1,7 @@
 module Betterdocs
   module Dsl
     module Common
-      extend DSLKit::Constant
+      extend Tins::Constant
 
       constant :yes, true
 

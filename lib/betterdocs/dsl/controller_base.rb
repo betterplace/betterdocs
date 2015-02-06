@@ -4,7 +4,7 @@ class Betterdocs::Dsl::ControllerBase
   include Betterdocs::Dsl::Common
 
   def self.inherited(klass)
-    klass.class_eval { extend DSLKit::DSLAccessor }
+    klass.class_eval { extend Tins::DSLAccessor }
   end
 
   def initialize(controller, &block)

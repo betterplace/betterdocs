@@ -1,4 +1,4 @@
-require 'dslkit/polite'
+require 'tins/dslkit'
 require 'tins/xt/to'
 
 module Betterdocs

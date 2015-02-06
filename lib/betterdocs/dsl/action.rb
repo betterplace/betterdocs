@@ -34,7 +34,7 @@ class Betterdocs::Dsl::Action < Betterdocs::Dsl::ControllerBase
   dsl_accessor :private, false
 
   class Param
-    extend DSLKit::DSLAccessor
+    extend Tins::DSLAccessor
     include ::Betterdocs::Dsl::Common
 
     def initialize(param_name, &block)
@@ -78,7 +78,7 @@ class Betterdocs::Dsl::Action < Betterdocs::Dsl::ControllerBase
 
   class Response
     include Betterdocs::Dsl::Common
-    extend DSLKit::DSLAccessor
+    extend Tins::DSLAccessor
 
     def initialize(name = :default, &block)
       @name = name.to_sym

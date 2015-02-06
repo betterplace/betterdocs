@@ -3,7 +3,7 @@ require 'betterdocs/dsl/common'
 require 'betterdocs/dsl/naming'
 
 class Betterdocs::Dsl::Representer::Link < Betterdocs::Dsl::Representer::RepresenterBase
-  extend DSLKit::DSLAccessor
+  extend Tins::DSLAccessor
   include Betterdocs::Dsl::Common
   include Betterdocs::Dsl::Naming
 
