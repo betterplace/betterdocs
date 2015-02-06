@@ -72,7 +72,7 @@ module Betterdocs
 
     def build_element(representer, type, *args, &block)
       begin
-        element = Dsl.const_get(type.to_s.camelcase)
+        element = Dsl::Representer.const_get(type.to_s.camelcase)
       rescue NameError => e
         raise ArgumentError, "unknown documentation element type #{type.inspect}"
       end
