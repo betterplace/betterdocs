@@ -34,7 +34,7 @@
     <%- if properties.first.nesting_name.blank? -%>
 ### Root Attributes
     <%- else -%>
-### <a name="<%= nn = properties.first.nesting_name %>" href="#<%= "#{nn}-ref" %>">↑Nested Attributes: <%= nn %></a>
+### <a id="<%= nn = properties.first.nesting_name %>" href="#<%= "#{nn}-ref" %>">↑Nested Attributes: <%= nn %></a>
     <%- end -%>
 
   <table>
@@ -48,7 +48,7 @@
     <tr>
       <%- if r = property.sub_representer? and r.docs.properties.full? -%>
         <th align="left" style="white-space: nowrap">
-          <a name="<%= fn = property.full_name; "#{fn}-ref" %>" href="#<%= fn %>">
+          <a id="<%= fn = property.full_name; "#{fn}-ref" %>" href="#<%= fn %>">
             ↓<%= property.full_name %>
           </a>
         </th>

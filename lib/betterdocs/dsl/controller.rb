@@ -11,7 +11,10 @@ class Betterdocs::Dsl::Controller < Betterdocs::Dsl::ControllerBase
 
   def url
     Betterdocs::Global.url_for(
-      controller: name, action: :index, format: 'json')
+      controller: name,
+      action: :index,
+      format: 'json'
+    )
   end
 
   def url_helpers
