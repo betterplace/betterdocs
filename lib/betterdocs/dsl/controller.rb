@@ -1,31 +1,9 @@
-require 'betterdocs/dsl/controller_base'
-
-class Betterdocs::Dsl::Controller < Betterdocs::Dsl::ControllerBase
-  def name
-    @name ||= controller.to_s.underscore.sub(/_controller\z/, '').to_sym
-  end
-
-  dsl_accessor :section
-
-  dsl_accessor :description, 'TODO'
-
-  def url
-    Betterdocs::Global.url_for(
-      controller: name,
-      action: :index,
-      format: 'json'
-    )
-  end
-
-  def url_helpers
-    Betterdocs::Global.url_helpers
-  end
-
-  def to_s
-    [ controller, '', "url: #{url}", '', description, '' ] * "\n"
-  end
-
-  def add_to_collector(collector)
-    collector.controller = self
+module Betterdocs
+  module Dsl
+    module Controller
+    end
   end
 end
+
+require 'betterdocs/dsl/controller/action'
+require 'betterdocs/dsl/controller/controller'

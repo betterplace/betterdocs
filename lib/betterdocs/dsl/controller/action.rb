@@ -1,7 +1,7 @@
-require 'betterdocs/dsl/controller_base'
+require 'betterdocs/dsl/controller/controller_base'
 require 'betterdocs/dsl/common.rb'
 
-class Betterdocs::Dsl::Action < Betterdocs::Dsl::ControllerBase
+class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::ControllerBase
   dsl_accessor :action
 
   alias name action

@@ -1,6 +1,6 @@
 require 'betterdocs/dsl/common'
 
-class Betterdocs::Dsl::ControllerBase
+class Betterdocs::Dsl::Controller::ControllerBase
   include Betterdocs::Dsl::Common
 
   def self.inherited(klass)

@@ -44,7 +44,7 @@ module Betterdocs
     private
 
     def build_element(klass, type, &block)
-      Dsl.const_get(type.to_s.camelcase).new(klass, &block)
+      Dsl::Controller.const_get(type.to_s.camelcase).new(klass, &block)
     end
   end
 end
