@@ -1,8 +1,8 @@
-require 'betterdocs/dsl/representer/representer_base'
+require 'betterdocs/dsl/representer'
 require 'betterdocs/dsl/common'
 require 'betterdocs/dsl/naming'
 
-class Betterdocs::Dsl::Representer::Link < Betterdocs::Dsl::Representer::RepresenterBase
+class Betterdocs::Dsl::Result::Link < Betterdocs::Dsl::Representer
   extend Tins::DSLAccessor
   include Betterdocs::Dsl::Common
   include Betterdocs::Dsl::Naming

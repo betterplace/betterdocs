@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe 'representer dsl' do
   let :docs do
-    Betterdocs::RepresenterCollector.new
+    Betterdocs::ResultRepresenterCollector.new
   end
 
   let :representer do
@@ -127,7 +127,7 @@ EOT
 
   context 'nesting representers' do
     module Location
-      include Betterdocs::Representer
+      include Betterdocs::ResultRepresenter
 
       property :latitude
 
@@ -139,7 +139,7 @@ EOT
     end
 
     module Address
-      include Betterdocs::Representer
+      include Betterdocs::ResultRepresenter
 
       property :city
 
@@ -154,7 +154,7 @@ EOT
 
 
     module Person
-      include Betterdocs::Representer
+      include Betterdocs::ResultRepresenter
 
       property :name
 

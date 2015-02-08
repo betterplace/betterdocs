@@ -65,6 +65,16 @@ EOT
     end
   end
 
+  module MyActionJsonParams
+    include Betterdocs::JsonParamsRepresenter
+
+    param :baz do
+      description 'Some string'
+      types       String
+      value       'baz'
+    end
+  end
+
   context 'action' do
     it "can add a new action" do
       docs.add_element controller, :controller do
@@ -78,6 +88,8 @@ EOT
 
         param :bar do
         end
+
+        json_params_like MyActionJsonParams
       end
       allow(Betterdocs).to receive(:rails).and_return rails
       expect(docs.actions).to be_empty
@@ -91,6 +103,7 @@ EOT
       expect(action.action_method).to eq controller.instance_method(:foo)
       expect(action.http_method).to eq :GET
       expect(action.params).to have_key :bar
+      expect(action.json_params).to have_key :baz
       expect(docs.to_s.sub(%r(.*(betterdocs/.*)), '\1')).to eq(<<EOT)
 MyTestController
 

@@ -8,24 +8,53 @@
 
 <%= action.description %>
 
-## Input Parameter
+## URL Parameter
 
 <table>
   <tr>
     <th>Parameter</th>
     <th>Example</th>
-    <th>Required/Optional</th>
+    <th>Required</th>
     <th>Description</th>
   </tr>
 <%- for param in action.params.values -%>
   <tr>
     <th align="left"><%= param.name %></th>
     <td><code><%= param.value %></code></td>
-    <td><%= param.required ? 'required' : 'optional' %></td>
+    <td><%= param.required ? 'yes' : 'no' %></td>
     <td><%= param.description %></td>
   </tr>
 <%- end -%>
 </table>
+
+<%- if json_params = action.json_params.full? -%>
+## JSON Parameters Example
+
+```json
+<%= action.json_params_example_json %>
+```
+
+## JSON Parameters
+
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Example</th>
+    <th>Types</th>
+    <th>Required</th>
+    <th>Description</th>
+  </tr>
+  <%- for param in action.json_params.values -%>
+  <tr>
+    <th align="left"><%= param.name %></th>
+    <td><code><%= param.value %></code></td>
+    <td><%= param.types * ?| -%></td>
+    <td><%= param.required ? 'yes' : 'no' %></td>
+    <td><%= param.description %></td>
+  </tr>
+  <%- end -%>
+</table>
+<%- end -%>
 
 ## Response Attributes
 

@@ -2,6 +2,9 @@ require 'betterdocs/dsl/controller/controller_base'
 require 'betterdocs/dsl/common.rb'
 
 class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::ControllerBase
+  require 'betterdocs/dsl/controller/action/param'
+  require 'betterdocs/dsl/controller/action/response'
+
   dsl_accessor :action
 
   alias name action
@@ -25,48 +28,40 @@ class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::Control
     when :create
       :POST
     else
-      raise ArgumentError, "Cannot automatically derive http_method for #{name.inspect}, specify manually"
+      raise ArgumentError, "Cannot automatically derive http_method for"\
+        " #{name.inspect}, specify manually"
     end
   end
 
   dsl_accessor :params do {} end
 
-  dsl_accessor :private, false
+  dsl_accessor :json_params_representer
 
-  class Param
-    extend Tins::DSLAccessor
-    include ::Betterdocs::Dsl::Common
+  def json_params_like(klass)
+    json_params_representer klass.docs
+    self
+  end
 
-    def initialize(param_name, &block)
-      name param_name
-      block and instance_eval(&block)
-    end
+  def json_params
+    json_params_representer.full?(:params)
+  end
 
-    dsl_accessor :name
-
-    dsl_accessor :value
-
-    dsl_accessor :optional, false
-
-    def required(value = nil)
-      if value.nil?
-        !optional
-      else
-        optional !value
+  def json_params_example_json
+    if params = json_params_representer.full?(:params)
+      data = {}
+      params.each_with_object(data) do |(name, param), d|
+        d[name] = param.value
       end
-    end
-
-    dsl_accessor :description, 'TODO'
-
-    def to_s
-      value
+      JSON.pretty_generate(JSON.load(JSON.dump(data)), quirks_mode: true) # sigh, don't ask…
     end
   end
+
+  dsl_accessor :private, false
 
   def param(name, &block)
     name = name.to_sym
     if block
-      param = Param.new(name, &block)
+      param = Betterdocs::Dsl::Controller::Action::Param.new(name, &block)
       param.value or param.value params.size + 1
       params[name] = param
     else
@@ -76,71 +71,11 @@ class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::Control
 
   dsl_accessor :responses do {} end
 
-  class Response
-    include Betterdocs::Dsl::Common
-    extend Tins::DSLAccessor
-
-    def initialize(name = :default, &block)
-      @name = name.to_sym
-      #provide_factories
-      @data_block = block || proc {}
-    end
-
-    dsl_accessor :name
-
-    def params
-      -> name { param(name).full?(:value) }
-    end
-
-    def data
-      @data ||= instance_eval(&@data_block)
-    end
-
-    def properties
-      representer.full? { |r| r.docs.nested_properties }  || []
-    end
-
-    def links
-      representer.full? { |r| r.docs.nested_links }  || []
-    end
-
-    def representer
-      if data
-        data.ask_and_send(:representer) ||
-          data.singleton_class.ancestors.find { |c|
-            Betterdocs::Representer >= c && c.respond_to?(:docs)
-            # Actually it's more like
-            #   Betterdocs::Representer >= c && !c.singleton_class?
-            # in newer rubies.
-            # But singleton_class? is broken and private in ruby 2.1.x not
-            # existant in <= ruby 2.0.x and finally works in ruby 2.2.x.
-            # What a mess!
-          }
-      end
-    end
-
-    def to_json(*)
-      JSON.pretty_generate(JSON.load(JSON.dump(data)), quirks_mode: true) # sigh, don't ask…
-    rescue TypeError => e
-      STDERR.puts "Caught #{e}: #{e.message} for #{data.inspect}"
-      nil
-    end
-
-    private
-
-    def provide_factories
-      require_maybe 'factory_girl' do return end
-      Dir.chdir(Rails.root.to_s) do
-        FactoryGirl.find_definitions
-      end
-    rescue FactoryGirl::DuplicateDefinitionError
-      # OK, handling it this way might be a bit ugly
-    end
-  end
-
   def response(name = :default, &block)
     if block
-      responses[name] = Response.new(name, &block).set_context(self)
+      responses[name] = Betterdocs::Dsl::Controller::Action::Response.new(
+        name, &block
+      ).set_context(self)
     else
       responses[name]
     end
@@ -170,8 +105,10 @@ class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::Control
     (
       [ request, '' ] +
       [ inspect, '' ] +
-      params.map { |name, param| "#{name}(=#{param.value}): #{param.description}" } +
-      [ '', description, '', action_method.source_location * ':', '' ]) * "\n"
+      params.map { |name, param|
+        "#{name}(=#{param.value}): #{param.description}"
+      } + [ '', description, '', action_method.source_location * ':', '' ]
+    ) * "\n"
   end
 
   def inspect

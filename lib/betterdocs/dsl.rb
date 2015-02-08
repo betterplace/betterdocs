@@ -5,4 +5,5 @@ end
 
 require 'betterdocs/dsl/naming'
 require 'betterdocs/dsl/controller'
-require 'betterdocs/dsl/representer'
+require 'betterdocs/dsl/result'
+require 'betterdocs/dsl/json_params'

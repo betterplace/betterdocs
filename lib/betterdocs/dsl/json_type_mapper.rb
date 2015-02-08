@@ -1,4 +1,4 @@
-module Betterdocs::Dsl::Representer::JsonTypeMapper
+module Betterdocs::Dsl::JsonTypeMapper
   module_function
 
   def derive_json_type_from(klass)

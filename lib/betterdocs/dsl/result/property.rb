@@ -1,9 +1,9 @@
-require 'betterdocs/dsl/representer/representer_base'
-require 'betterdocs/dsl/representer/json_type_mapper'
+require 'betterdocs/dsl/representer'
 require 'betterdocs/dsl/common'
 require 'betterdocs/dsl/naming'
+require 'betterdocs/dsl/json_type_mapper'
 
-class Betterdocs::Dsl::Representer::Property < Betterdocs::Dsl::Representer::RepresenterBase
+class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
   extend Tins::DSLAccessor
   include Betterdocs::Dsl::Common
   include Betterdocs::Dsl::Naming
@@ -18,10 +18,10 @@ class Betterdocs::Dsl::Representer::Property < Betterdocs::Dsl::Representer::Rep
 
   def initialize(representer, name, options, &block)
     super
-    types Betterdocs::Dsl::Representer::JsonTypeMapper.map_types(types)
+    types Betterdocs::Dsl::JsonTypeMapper.map_types(types)
     if sr = sub_representer?
-      sr < Betterdocs::Representer or
-        raise TypeError, "#{sr.inspect} is not a Betterdocs::Representer subclass"
+      sr < Betterdocs::ResultRepresenter or
+        raise TypeError, "#{sr.inspect} is not a Betterdocs::Result subclass"
     end
   end
 
@@ -35,10 +35,10 @@ class Betterdocs::Dsl::Representer::Property < Betterdocs::Dsl::Representer::Rep
 
   def assign(result, object)
     assign?(object) or return
-    result[actual_property_name] = value(object)
+    result[actual_property_name] = compute_value(object)
   end
 
-  def value(object)
+  def compute_value(object)
     value = object.__send__(name)
     if !value.nil? && represent_with
       represent_with.hashify(value)

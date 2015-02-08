@@ -9,9 +9,11 @@ end
 
 require 'betterdocs/version'
 require 'betterdocs/dsl'
-require 'betterdocs/representer'
+require 'betterdocs/result_representer'
+require 'betterdocs/result_representer_collector'
 require 'betterdocs/controller_collector'
-require 'betterdocs/representer_collector'
+require 'betterdocs/json_params_representer_collector'
+require 'betterdocs/json_params_representer'
 require 'betterdocs/global'
 require 'betterdocs/section'
 require 'betterdocs/mix_into_controller'

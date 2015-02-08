@@ -1,5 +1,5 @@
 module Betterdocs
-  class RepresenterCollector
+  class ResultRepresenterCollector
     def initialize
       @properties = {}
       @links      = {}
@@ -72,7 +72,7 @@ module Betterdocs
 
     def build_element(representer, type, *args, &block)
       begin
-        element = Dsl::Representer.const_get(type.to_s.camelcase)
+        element = Dsl::Result.const_get(type.to_s.camelcase)
       rescue NameError => e
         raise ArgumentError, "unknown documentation element type #{type.inspect}"
       end

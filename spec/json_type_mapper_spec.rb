@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe Betterdocs::Dsl::Representer::JsonTypeMapper do
-  let :jtm do Betterdocs::Dsl::Representer::JsonTypeMapper end
+RSpec.describe Betterdocs::Dsl::JsonTypeMapper do
+  let :jtm do Betterdocs::Dsl::JsonTypeMapper end
 
   it "derives json types" do
     expect(jtm.derive_json_type_from(true)).to eq 'boolean'
