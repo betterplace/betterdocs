@@ -4,22 +4,6 @@ module Betterdocs::Representer
   extend ActiveSupport::Concern
   include Betterdocs::Dsl::Common
 
-  module UnfuckRails
-    begin
-      old, $VERBOSE = $VERBOSE, nil
-      generator_methods = JSON.generator::GeneratorMethods
-      for const in generator_methods.constants
-        refine Object.const_get(const) do
-          define_method(:to_json) do |*a|
-            generator_methods.const_get(const).instance_method(:to_json).bind(self).(*a)
-          end
-        end
-      end
-    ensure
-      $VERBOSE = old
-    end
-  end
-
   def as_json(*)
     singleton_class.ancestors.find do |c|
       c != singleton_class && c < Betterdocs::Representer
@@ -109,5 +93,3 @@ module Betterdocs
     end
   end
 end
-
-using Betterdocs::Representer::UnfuckRails
