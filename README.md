@@ -13,6 +13,99 @@ LICENSE
 
 Apache License Version 2.0, see also the COPYING file.
 
+USAGE EXAMPLES
+--------------
+
+These are some examples. Note that they are neither complete, nor work out of the box.
+
+This api generator requires that you follow the [representer pattern](http://nicksda.apotomo.de/2011/12/ruby-on-rest-introducing-the-representer-pattern/) to decorate the objects you want to render. Betterdocs comes with it's own representer support baked in.
+
+## Controller
+
+    class ThingsController < ApplicationController
+      # :nocov: Documentation
+      doc :action do
+        section     :things_list
+        title       'A List of things ⇄ [Details](things_details.md)'
+        description to <<-end
+          This action shows a list of things. **Markdown** can be used.
+        end
+
+        param :order do
+          description to <<-end
+            Optional parameter to order the list.
+          end
+          optional    yes
+          value       'created_at:ASC'
+        end
+
+        response do
+          generate_fake_result_with_representer 
+        end
+      end
+      # :nocov:
+      def index
+        render json: real_result_with_representer 
+      end
+
+      # :nocov: Documentation
+      doc :action do
+        section     :things_details
+        title       'Things Details ⇄ [List](things_list.md)'
+        description to <<-end
+          The details of a thing. You must give an id for the thing
+        end
+
+        param :thing_id do
+          description 'The id of the thing you want to see. Required.'
+          required    yes
+          value       38
+        end
+
+        response do
+          generate_fake_details_response_with_representer
+        end
+      end
+      # :nocov:
+      def show
+        render json: real_result_with_representer 
+      end
+    end
+
+## Representer
+
+Betterdocs comes with its own representer class. It is not documented
+yet but works kind of like [ROAR](https://github.com/apotonick/roar).
+
+    module ThingsRepresenter
+
+      extend ActiveSupport::Concern
+      include Betterdocs::Representer
+
+      property :microfleem_count, if: -> { has_microfleems? }, as: :number_of_fleems do
+        description 'If we have microfleems, return the count'
+        types       Integer
+        example     '5000'
+      end
+
+      property :title, as: :name do
+        description to <<-end
+          Represent the internal field "title" as the name of the thing
+        end
+        types       String
+        example     'my_name'
+      end
+
+      link :self do
+        description to <<-end
+          Link to this resource itself
+          (<a href="opinion_details.md">things details</a>)
+        end
+        url { thing_url(id) }
+      end
+    end
+
+
 
 AUTHORS
 -------
@@ -31,3 +124,4 @@ TODO
 - Automatically document error result documents
 - Use private flag action/controller to skip docu creation by default. Make it
   configurable to create private API as well.
+
