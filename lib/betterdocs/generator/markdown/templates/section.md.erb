@@ -8,7 +8,7 @@
 
 <%= action.description %>
 
-## URL Parameter
+## URL Parameters
 
 <table>
   <tr>
@@ -28,13 +28,19 @@
 </table>
 
 <%- if json_params = action.json_params.full? -%>
-## JSON Parameters Example
+## JSON Parameters
+
+JSON parameters have to be provided in the body of the request. The parameters
+are part of a flat JSON document without any nesting. Some parameters are
+required, others are optional.
+
+### Example
 
 ```json
 <%= action.json_params_example_json %>
 ```
 
-## JSON Parameters
+### Supported Parameters
 
 <table>
   <tr>
