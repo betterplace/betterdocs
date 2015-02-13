@@ -30,9 +30,10 @@
 <%- if json_params = action.json_params.full? -%>
 ## JSON Parameters
 
-JSON parameters have to be provided in the body of the request. The parameters
-are part of a flat JSON document without any nesting. Some parameters are
-required, others are optional.
+JSON parameters have to be provided in the body of the request with the
+Content-Type header set to "application/json". The parameters are part of a
+flat JSON document without any nesting. Some parameters are required, others
+are optional.
 
 ### Example
 
