@@ -7,6 +7,10 @@ module Betterdocs
       require 'term/ansicolor'
       include Term::ANSIColor
 
+      def initialize(only: nil)
+        only and @only = Regexp.new(only)
+      end
+
       def generate
         if dir = config.output_directory.full?
           generate_to dir
@@ -39,6 +43,7 @@ module Betterdocs
       def create_sections(dirname)
         cd dirname do
           for section in sections.values
+            @only and @only =~ section.name or next
             STDERR.puts on_color(33, "Creating section #{section.name.inspect}.")
             render_to "sections/#{section.name}.md", section_template, section.instance_eval('binding')
           end

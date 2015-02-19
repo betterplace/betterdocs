@@ -2,7 +2,7 @@ namespace :doc do
   desc "Create the API documentation"
   task :api => :'doc:api:sandbox' do
     Betterdocs::Global.config do |config|
-      Betterdocs::Generator::Markdown.new.generate
+      Betterdocs::Generator::Markdown.new(only: ENV['ONLY']).generate
       cd config.output_directory do
         File.open('.gitignore', 'w') { |ignore| ignore.puts config.ignore }
       end
