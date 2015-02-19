@@ -4,7 +4,6 @@ class Betterdocs::Dsl::Controller::Action::Response
 
   def initialize(name = :default, &block)
     @name = name.to_sym
-    #provide_factories
     @data_block = block || proc {}
   end
 
@@ -46,16 +45,5 @@ class Betterdocs::Dsl::Controller::Action::Response
   rescue TypeError => e
     STDERR.puts "Caught #{e}: #{e.message} for #{data.inspect}"
     nil
-  end
-
-  private
-
-  def provide_factories
-    require_maybe 'factory_girl' do return end
-    Dir.chdir(Rails.root.to_s) do
-      FactoryGirl.find_definitions
-    end
-  rescue FactoryGirl::DuplicateDefinitionError
-    # OK, handling it this way might be a bit ugly
   end
 end
