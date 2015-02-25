@@ -89,11 +89,12 @@ class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::Control
   end
 
   def url
+    url_params = params.select { |_, param| param.use_in_url? }
     Betterdocs.rails.application.routes.url_for(
       {
         controller: controller.name.underscore.sub(/_controller\z/, ''),
         action:     action,
-      } | params | Betterdocs::Global.config.api_url_options
+      } | url_params | Betterdocs::Global.config.api_url_options
     )
   end
 

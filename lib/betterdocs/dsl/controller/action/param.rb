@@ -15,6 +15,10 @@ class Betterdocs::Dsl::Controller::Action::Param
 
   dsl_accessor :description, 'TODO'
 
+  dsl_accessor :use_in_url, true
+
+  alias use_in_url? use_in_url
+
   def to_s
     value
   end

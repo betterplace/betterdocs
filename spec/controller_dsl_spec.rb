@@ -89,6 +89,10 @@ EOT
         param :bar do
         end
 
+        param :baz do
+          use_in_url no
+        end
+
         json_params_like MyActionJsonParams
       end
       allow(Betterdocs).to receive(:rails).and_return rails
@@ -104,6 +108,7 @@ EOT
       expect(action.http_method).to eq :GET
       expect(action.params).to have_key :bar
       expect(action.json_params).to have_key :baz
+      expect(action.url).to eq 'http://foo/bar'
       expect(docs.to_s.sub(%r(.*(betterdocs/.*)), '\1')).to eq(<<EOT)
 MyTestController
 
@@ -114,9 +119,10 @@ my controller description
 ===============================================================================
 GET http://foo/bar
 
-MyTestController#foo(bar)
+MyTestController#foo(bar, baz)
 
 bar(=1): TODO
+baz(=2): TODO
 
 my description
 
