@@ -43,7 +43,9 @@ module Betterdocs
       def create_sections(dirname)
         cd dirname do
           for section in sections.values
-            @only and @only =~ section.name or next
+            if @only
+              @only =~ section.name or next
+            end
             STDERR.puts on_color(33, "Creating section #{section.name.inspect}.")
             render_to "sections/#{section.name}.md", section_template, section.instance_eval('binding')
           end
