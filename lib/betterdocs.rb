@@ -2,8 +2,13 @@ require 'tins/xt'
 require 'rails'
 
 module Betterdocs
-  def self.rails
-    ::Rails
+  class << self
+    def rails
+      ::Rails
+    end
+
+    alias trait proc
+    public :trait
   end
 end
 

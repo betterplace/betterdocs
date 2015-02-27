@@ -75,6 +75,11 @@ EOT
     end
   end
 
+  SomeParamsTrait = Betterdocs.trait do
+    param :quux do
+    end
+  end
+
   context 'action' do
     it "can add a new action" do
       docs.add_element controller, :controller do
@@ -93,6 +98,8 @@ EOT
           use_in_url no
         end
 
+        include_params SomeParamsTrait
+
         json_params_like MyActionJsonParams
       end
       allow(Betterdocs).to receive(:rails).and_return rails
@@ -107,6 +114,7 @@ EOT
       expect(action.action_method).to eq controller.instance_method(:foo)
       expect(action.http_method).to eq :GET
       expect(action.params).to have_key :bar
+      expect(action.params).to have_key :quux
       expect(action.json_params).to have_key :baz
       expect(action.url).to eq 'http://foo/bar'
       expect(docs.to_s.sub(%r(.*(betterdocs/.*)), '\1')).to eq(<<EOT)
@@ -119,10 +127,11 @@ my controller description
 ===============================================================================
 GET http://foo/bar
 
-MyTestController#foo(bar, baz)
+MyTestController#foo(bar, baz, quux)
 
 bar(=1): TODO
 baz(=2): TODO
+quux(=3): TODO
 
 my description
 

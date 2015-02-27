@@ -88,6 +88,10 @@ class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::Control
     action_method controller.instance_method(action_name)
   end
 
+  def include_params(callee)
+    instance_eval(&callee)
+  end
+
   def url
     url_params = params.select { |_, param| param.use_in_url? }
     Betterdocs.rails.application.routes.url_for(

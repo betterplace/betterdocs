@@ -35,7 +35,7 @@ This api generator requires that you follow the [representer pattern](http://nic
           description to <<-end
             Optional parameter to order the list.
           end
-          optional    yes
+          required    no
           value       'created_at:ASC'
         end
 
@@ -58,7 +58,7 @@ This api generator requires that you follow the [representer pattern](http://nic
 
         param :thing_id do
           description 'The id of the thing you want to see. Required.'
-          required    yes
+          required    yes # this is the default
           value       38
         end
 
@@ -105,8 +105,6 @@ yet but works kind of like [ROAR](https://github.com/apotonick/roar).
       end
     end
 
-
-
 AUTHORS
 -------
 Florian Frank <flori@ping.de>
@@ -120,7 +118,6 @@ TODO
   formatted and compiles it to html (as a work around to put multiline
   descriptions inside of html tables in a markdown)
 - Display enums as possible values in representers
-- Automatically document HTTP result codes of responses
 - Automatically document error result documents
 - Use private flag action/controller to skip docu creation by default. Make it
   configurable to create private API as well.
