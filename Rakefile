@@ -15,7 +15,7 @@ GemHadar do
   readme      'README.md'
   title       "#{name.camelize} -- "
 
-  dependency 'tins',           '~>1.0'
+  dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<5'
   dependency 'term-ansicolor', '~>1.3'
   development_dependency 'utils'

@@ -1,6 +1,7 @@
 module Betterdocs
   module Dsl
     module Common
+      include Tins::To
       extend Tins::Constant
 
       constant :yes, true

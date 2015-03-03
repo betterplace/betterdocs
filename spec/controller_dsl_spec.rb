@@ -35,7 +35,9 @@ RSpec.describe 'controller dsl' do
   context 'controller' do
     it "can add a new controller" do
       docs.add_element controller, :controller do
-        description 'my description'
+        description to <<-end.chomp
+        my description
+        end
         section     :test_section
       end
       allow(Betterdocs).to receive(:rails).and_return rails
