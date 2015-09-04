@@ -126,7 +126,7 @@ are optional.
 ## Response Example
 
 ```json
-<%= action.response.to_json %>
+<%= JSON.pretty_generate(action.response) %>
 ```
 
 <%- end -%>

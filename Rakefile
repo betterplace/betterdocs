@@ -18,13 +18,8 @@ GemHadar do
   dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<5'
   dependency 'term-ansicolor', '~>1.3'
-  development_dependency 'utils'
   development_dependency 'simplecov'
   development_dependency 'rspec'
-  development_dependency 'fuubar'
-  development_dependency 'autotest'
-  development_dependency 'autotest-fsevent'
-  development_dependency 'rspec-nc'
 end
 
 task :default => :spec

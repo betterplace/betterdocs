@@ -40,10 +40,8 @@ class Betterdocs::Dsl::Controller::Action::Response
     end
   end
 
-  def to_json(*)
-    JSON.pretty_generate(JSON.load(JSON.dump(data)), quirks_mode: true) # sigh, don't ask…
-  rescue TypeError => e
-    STDERR.puts "Caught #{e}: #{e.message} for #{data.inspect}"
-    nil
+  def to_json(*a)
+    my_data = data.ask_and_send(:to_hash) || data
+    my_data.to_json(*a)
   end
 end
