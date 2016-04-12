@@ -23,14 +23,14 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<gem_hadar>, ["~> 1.7.0"])
+      s.add_development_dependency(%q<gem_hadar>, ["~> 1.7.1"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_runtime_dependency(%q<tins>, [">= 1.3.5", "~> 1.3"])
       s.add_runtime_dependency(%q<rails>, ["< 5", ">= 3"])
       s.add_runtime_dependency(%q<term-ansicolor>, ["~> 1.3"])
     else
-      s.add_dependency(%q<gem_hadar>, ["~> 1.7.0"])
+      s.add_dependency(%q<gem_hadar>, ["~> 1.7.1"])
       s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<tins>, [">= 1.3.5", "~> 1.3"])
@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<term-ansicolor>, ["~> 1.3"])
     end
   else
-    s.add_dependency(%q<gem_hadar>, ["~> 1.7.0"])
+    s.add_dependency(%q<gem_hadar>, ["~> 1.7.1"])
     s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<tins>, [">= 1.3.5", "~> 1.3"])
