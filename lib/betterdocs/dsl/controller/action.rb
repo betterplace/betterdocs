@@ -94,12 +94,13 @@ class Betterdocs::Dsl::Controller::Action < Betterdocs::Dsl::Controller::Control
 
   def url
     url_params = params.select { |_, param| param.use_in_url? }
-    Betterdocs.rails.application.routes.url_for(
-      {
-        controller: controller.name.underscore.sub(/_controller\z/, ''),
-        action:     action,
-      } | url_params | Betterdocs::Global.config.api_url_options
-    )
+    url_params = {
+      controller: controller.name.underscore.sub(/_controller\z/, ''),
+      action:     action,
+    } | url_params | Betterdocs::Global.config.api_url_options
+    Betterdocs.rails.application.routes.url_for(url_params)
+  rescue ActionController::UrlGenerationError => e
+    raise e, "Could not generate URL for parameters #{url_params}. Check your param definitions!"
   end
 
   def request

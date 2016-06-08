@@ -2,10 +2,12 @@
 .AppleDouble
 .DS_Store
 .bundle
+.byebug_history
 .ruby-version
 .rvmrc
 .utilsrc
 Gemfile.lock
 coverage
+errors.lst
 pkg
 tags
