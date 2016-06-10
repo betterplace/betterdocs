@@ -1,3 +1,5 @@
+require 'complex_config/rude'
+
 module Betterdocs
   module Global
     class << self
@@ -41,8 +43,14 @@ module Betterdocs
 
       dsl_accessor :ignore do [] end                        # All lines of the .gitignore file as an array
 
-      def assets
+      def assets=(hash)
+        @assets = hash
+      end
+
+      def assets(hash = nil)
         @assets ||= {}
+        hash and @assets.update(hash)
+        @assets
       end
       private :assets
 
@@ -63,20 +71,31 @@ module Betterdocs
       # Maps the assets original source path to its destination path in the
       # output by yielding to every asset's source/destination pair.
       def each_asset
-        for path in assets.keys
+        for (path, destination) in assets
           path = path.to_s
-          if destination = assets[path]
-            if destination == :root && output_directory
-              yield path, File.join(output_directory.to_s, File.basename(path))
-            else
-              yield path, File.join(output_directory.to_s, destination.to_str)
-            end
+          if destination == :root
+            yield path, File.join(output_directory.to_s, File.basename(path))
+          else
+            yield path, File.join(output_directory.to_s, destination.to_str)
           end
         end
       end
 
-      def configure(&block)
-        instance_eval(&block)
+      def configuration_file
+        complex_config.betterdocs
+      rescue ComplexConfig::ConfigurationFileMissing
+      end
+
+      def configure_via_yaml(config)
+        config.each do |name, value|
+          __send__(name, value.dup)
+        end
+      end
+
+      def configure(config = configuration_file, &block)
+        Betterdocs.rails.env.development? or return
+        config and configure_via_yaml(config)
+        block  and instance_eval(&block)
         self
       end
 
