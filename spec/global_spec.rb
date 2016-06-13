@@ -24,9 +24,9 @@ RSpec.describe Betterdocs::Global do
   end
 
   it 'returns all api controllers via wild matching' do
-    expect(Betterdocs::Global.api_controllers).to eq %w[
-      /Users/flori/scm/betterdocs/spec/assets/app/controllers/api/foos_controller.rb
-    ]
+    expect(Betterdocs::Global.api_controllers.size).to eq 1
+    expect(Betterdocs::Global.api_controllers.last).to end_with\
+      'spec/assets/app/controllers/api/foos_controller.rb'
   end
 
   context 'platform url' do
