@@ -22,7 +22,11 @@ class Betterdocs::Dsl::JsonParams::Param < Betterdocs::Dsl::Representer
   end
 
   def compute_value(object)
-    object.__send__(name)
+    value = object.__send__(name)
+    if ActiveSupport::TimeWithZone === value
+      value.extend Betterdocs::JsonTimeWithZone
+    end
+    value
   end
 
   def add_to_collector(collector)

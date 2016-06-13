@@ -40,8 +40,11 @@ class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
 
   def compute_value(object)
     value = object.__send__(name)
-    if !value.nil? && represent_with
+    value.nil? and return
+    if represent_with
       represent_with.hashify(value)
+    elsif ActiveSupport::TimeWithZone === value
+      value.extend Betterdocs::JsonTimeWithZone
     else
       value
     end

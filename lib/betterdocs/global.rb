@@ -9,8 +9,29 @@ module Betterdocs
 
       dsl_accessor :api_prefix,          'api'             # Prefix that denotes the api namespace in URLs
 
+      dsl_accessor :controllers_dir do
+        Betterdocs.rails.root.join('app/controllers')
+      end
+
       dsl_accessor :api_controllers do
-        Dir[Rails.root.join("app/controllers/#{api_prefix}/**/*_controller.rb")]
+        Dir[controllers_dir + "#{api_prefix}/**/*_controller.rb"]
+      end
+
+      private def handle_url(prefix, url)
+        if url
+          uri = URI.parse(url)
+          __send__("#{prefix}_protocol", uri.scheme || 'http')
+          host = uri.host || 'localhost'
+          port = uri.port and host = "#{host}:#{port}"
+          platform_host host
+          __send__("#{prefix}_host", host)
+        else
+          [ __send__("#{prefix}_protocol"), __send__("#{prefix}_host") ] * '://'
+        end
+      end
+
+      def platform_url(url = nil)
+        handle_url(:platform, url)
       end
 
       dsl_accessor :platform_protocol,   'http'               # Not used atm
@@ -21,9 +42,17 @@ module Betterdocs
 
       dsl_accessor :api_host   do platform_host end           # Hostname of the API (eventuallly with port number)
 
+      def api_url(url = nil)
+        handle_url(:api, url)
+      end
+
       dsl_accessor :asset_protocol do platform_protocol end   # Reserved
 
       dsl_accessor :asset_host do platform_host end           # Rails asset host
+
+      def asset_url(url = nil)
+        handle_url(:asset, url)
+      end
 
       dsl_accessor :api_default_format,  'json'
 
@@ -31,7 +60,7 @@ module Betterdocs
         "#{api_protocol}://#{api_host}/#{api_prefix}"
       end
 
-      dsl_accessor :api_url_options do
+      def api_url_options
         { protocol: api_protocol, host: api_host, format: api_default_format }
       end
 
@@ -44,25 +73,30 @@ module Betterdocs
       dsl_accessor :ignore do [] end                        # All lines of the .gitignore file as an array
 
       def assets=(hash)
-        @assets = hash
+        @assets&.clear
+        assets(hash)
       end
 
       def assets(hash = nil)
         @assets ||= {}
-        hash and @assets.update(hash)
+        if hash
+          hash.each do |path, to|
+            asset path, to: to
+          end
+        end
         @assets
       end
-      private :assets
 
       # Defines an asset for the file at +path+. If +to+ was given it will be
       # copied to this path (it includes the basename) below
       # +templates_directory+ in the output, otherwise it will be copied
       # directly to +templates_directory+.
       def asset(path, to: :root)
+        @assets ||= {}
         if destination = to.ask_and_send(:to_str)
-          assets[path.to_s] = destination
+          @assets[path.to_s] = destination
         elsif to == :root
-          assets[path.to_s] = to
+          @assets[path.to_s] = to
         else
           raise ArgumentError, "keyword argument to needs to be a string or :root"
         end
@@ -108,19 +142,21 @@ module Betterdocs
       end
 
       def all_docs
-        Dir[api_prefix.to_s + '/**/*_controller.rb'].each_with_object([]) do |cf, all|
-          controller_name = cf.sub(/\.rb$/, '').camelcase
-          controller =
-            begin
-              controller_name.constantize
-            rescue NameError => e
-              STDERR.puts "Skipping #{cf.inspect}, #{e.class}: #{e}"
-              next
+        Dir.chdir controllers_dir do
+          Dir["#{api_prefix}/**/*_controller.rb"].each_with_object([]) do |cf, all|
+            controller_name = cf.sub(/\.rb$/, '').camelcase
+            controller =
+              begin
+                controller_name.constantize
+              rescue NameError => e
+                STDERR.puts "Skipping #{cf.inspect}, #{e.class}: #{e}"
+                next
+              end
+            if docs = controller.ask_and_send(:docs)
+              all << docs
+            else
+              STDERR.puts "Skipping #{cf.inspect}, #{controller_name.inspect} doesn't respond to :docs method"
             end
-          if docs = controller.ask_and_send(:docs)
-            all << docs
-          else
-            STDERR.puts "Skipping #{cf.inspect}, #{controller_name.inspect} doesn't respond to :docs method"
           end
         end
       end
@@ -131,7 +167,7 @@ module Betterdocs
 
       def sections
         @sections and return @sections
-        Dir.chdir Rails.root.join('app/controllers') do
+        Dir.chdir controllers_dir do
           actions.each_with_object(@sections = {}) do |action, sections|
             sections[action.section] ||= Section.new(action.section)
             sections[action.section] << action

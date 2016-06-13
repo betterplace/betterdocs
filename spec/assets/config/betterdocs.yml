@@ -1,0 +1,16 @@
+---
+project_name:        My Example Project
+api_host:            api.example.com:3000
+api_protocol:        https
+platform_host:       site.example.com
+platform_protocol:   http
+asset_host:          "https://assets.example.com"
+api_prefix:          api
+templates_directory: documentation/templates
+output_directory:    api_docs
+assets:
+  'app/views/api_v4/documentation/assets/CHANGELOG.md': :root
+  'app/assets/images/logos/logo.png':                   images/logo.png
+ignore:
+  - .DS_Store
+publish_git: 'git@github.com:foo/bar.git'
