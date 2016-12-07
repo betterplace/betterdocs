@@ -39,7 +39,7 @@ RSpec.describe Betterdocs::JsonParamsRepresenter do
   end
 
   it 'can be converted into a ActionController::Parameters instance' do
-    expect(object.as_json).to be_a ActionController::Parameters
+    expect(object.as_json).to be_a HashWithIndifferentAccess
   end
 
   it 'it can be turned into a hash' do

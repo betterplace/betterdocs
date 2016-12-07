@@ -4,7 +4,7 @@ module Betterdocs::JsonParamsRepresenter
 
   module ClassMethods
     def build_result_object
-      ActionController::Parameters.new
+      {}.with_indifferent_access
     end
 
     def hashify(object)
