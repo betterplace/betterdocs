@@ -20,6 +20,7 @@ GemHadar do
   dependency 'rails',          '>=3', '<6'
   dependency 'term-ansicolor', '~>1.3'
   dependency 'complex_config', '~>0.5'
+  dependency 'infobar'
   development_dependency 'simplecov'
   development_dependency 'rspec'
 end

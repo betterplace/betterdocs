@@ -1,11 +1,13 @@
+require 'infobar'
+require 'fileutils'
+require 'term/ansicolor'
+
 module Betterdocs
   module Generator
     class Markdown
       include ::Betterdocs::Generator::ConfigShortcuts
-      require 'fileutils'
-      include FileUtils::Verbose
-      require 'term/ansicolor'
       include Term::ANSIColor
+      include FileUtils
 
       def initialize(only: nil)
         only and @only = Regexp.new(only)
@@ -29,45 +31,58 @@ module Betterdocs
       end
 
       def configure_for_creation
-        STDERR.puts "Setting asset_host to #{Betterdocs::Global.asset_host.inspect}."
+        infobar.puts color(40, "Setting asset_host to #{Betterdocs::Global.asset_host.inspect}.")
         Betterdocs.rails.configuration.action_controller.asset_host = Betterdocs::Global.asset_host
         options = {
           host:     Betterdocs::Global.api_host,
           protocol: Betterdocs::Global.api_protocol
         }
-        STDERR.puts "Setting default_url_options to #{options.inspect}."
+        infobar.puts color(40, "Setting default_url_options to #{options.inspect}.")
         Betterdocs.rails.application.routes.default_url_options = options
         self
       end
 
       def create_sections(dirname)
+        Infobar(total: sections.size)
         cd dirname do
           for section in sections.values
+            infobar.progress(
+              message: "Section #{section.name.to_s.inspect} %c/%t in %te ETA %e @%E",
+              force:   true
+            )
             if @only
               @only =~ section.name or next
             end
-            STDERR.puts on_color(33, "Creating section #{section.name.inspect}.")
             render_to "sections/#{section.name}.md", section_template, section.instance_eval('binding')
           end
         end
+        infobar.finish
+        infobar.newline
         self
       end
 
       def create_readme(dirname)
         name = 'README.md'
         cd dirname do
-          STDERR.puts on_color(33, "Creating readme.")
+          infobar.puts color(40, "Creating readme.")
           render_to name, readme_template, binding
         end
         self
       end
 
       def create_assets
+        Infobar(total: config.assets.size)
         config.each_asset do |src, dst|
-          STDERR.puts on_color(33, "Creating asset #{dst.inspect} from #{src.inspect}.")
+          infobar.progress(
+            message: "Asset #{File.basename(src).inspect} %c/%t in %te ETA %e @%E",
+            force:   true
+          )
           mkdir_p File.dirname(dst)
           cp src, dst
         end
+        infobar.finish
+        infobar.newline
+        self
       end
 
       private
@@ -75,18 +90,10 @@ module Betterdocs
       def fail_while_rendering(template, exception)
         message = blink(color(231, on_color(
           124, " *** ERROR #{exception.class}: #{exception.message.inspect} in template ***")))
-        STDERR.puts message
-        Timeout.timeout(5, Timeout::Error) do
-          STDERR.print "Output long error message? (yes/NO) "
-          if STDIN.gets =~ /\Ay/i
-            STDERR.puts color(88, on_color(136, template)), message,
-              color(136, (%w[Backtrace:] + exception.backtrace) * "\n"),
-              message
-          end
-        end
-      rescue Timeout::Error
-        STDERR.puts "Nope…"
-      ensure
+        infobar.puts message
+        infobar.puts color(88, on_color(136, template)), message,
+          color(136, (%w[Backtrace:] + exception.backtrace) * "\n"),
+          message
         exit 1
       end
 
@@ -105,7 +112,7 @@ module Betterdocs
       end
 
       def read_template(filename)
-        STDERR.puts "Now reading #{filename.inspect}."
+        infobar.puts color(40, "Now reading #{filename.inspect}.")
         File.read(filename)
       end
 
@@ -117,7 +124,7 @@ module Betterdocs
         path = File.expand_path(template_subpath, default_templates_directory)
         File.file?(path) and return read_template(path)
           message = "#{template_subpath.inspect} missing"
-        STDERR.puts " *** #{message}"
+        infobar.puts " *** #{message}"
         "[#{message}]"
       end
 
