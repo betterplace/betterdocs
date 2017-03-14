@@ -6,6 +6,7 @@
 .ruby-version
 .rvmrc
 .utilsrc
+.yardoc
 Gemfile.lock
 coverage
 errors.lst
