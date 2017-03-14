@@ -4,4 +4,4 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'byebug'
+gem 'byebug', platform: 'mri'
