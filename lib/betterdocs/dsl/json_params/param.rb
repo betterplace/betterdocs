@@ -1,3 +1,5 @@
+require 'betterdocs/dsl/naming'
+
 class Betterdocs::Dsl::JsonParams::Param < Betterdocs::Dsl::Representer
   extend Tins::DSLAccessor
   include Betterdocs::Dsl::Common
