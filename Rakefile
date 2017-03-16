@@ -14,13 +14,14 @@ GemHadar do
     '.ruby-version', '.AppleDouble', 'tags', '.DS_Store', '.utilsrc',
     '.bundle', '.byebug_history', 'errors.lst', '.yardoc'
   readme      'README.md'
-  title       "#{name.camelize} -- "
+  title       "#{name.camelize}"
 
   dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<6'
   dependency 'term-ansicolor', '~>1.3'
   dependency 'complex_config', '~>0.5'
   dependency 'infobar'
+  dependency 'mize'
   development_dependency 'simplecov'
   development_dependency 'rspec'
 end

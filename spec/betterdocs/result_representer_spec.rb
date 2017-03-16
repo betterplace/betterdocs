@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Betterdocs::ResultRepresenter do
+describe Betterdocs::ResultRepresenter do
   module MySubRepresenter
     include Betterdocs::ResultRepresenter
 

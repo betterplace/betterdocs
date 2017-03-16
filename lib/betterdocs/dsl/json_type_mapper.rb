@@ -3,7 +3,7 @@ module Betterdocs::Dsl::JsonTypeMapper
 
   def derive_json_type_from(klass)
     Class === klass or klass = klass.class
-    result = {
+    {
       TrueClass  => 'boolean',
       FalseClass => 'boolean',
       NilClass   => 'null',

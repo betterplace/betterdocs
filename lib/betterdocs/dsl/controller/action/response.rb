@@ -26,18 +26,15 @@ class Betterdocs::Dsl::Controller::Action::Response
   end
 
   def representer
-    if data
-      data.ask_and_send(:representer) ||
-        data.singleton_class.ancestors.find { |c|
-        Betterdocs::ResultRepresenter >= c && c.respond_to?(:docs)
-        # Actually it's more like
-        #   Betterdocs::ResultRepresenter >= c && !c.singleton_class?
-        # in newer rubies.
-        # But singleton_class? is broken and private in ruby 2.1.x not
-        # existant in <= ruby 2.0.x and finally works in ruby 2.2.x.
-        # What a mess!
-      }
-    end
+    data or return
+    data.ask_and_send(:representer) || inherited_representer(data)
+  end
+
+  private\
+  def inherited_representer(data)
+    data.singleton_class.ancestors.find { |c|
+      Betterdocs::ResultRepresenter >= c && c.respond_to?(:docs)
+    }
   end
 
   def to_json(*a)

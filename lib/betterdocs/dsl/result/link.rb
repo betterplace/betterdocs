@@ -29,6 +29,7 @@ class Betterdocs::Dsl::Result::Link < Betterdocs::Dsl::Representer
     }
     templated and link['templated'] = true
     result['links'].push(link)
+    self
   end
 
   def add_to_collector(collector)

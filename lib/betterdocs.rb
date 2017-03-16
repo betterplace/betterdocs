@@ -1,4 +1,5 @@
 require 'tins/xt'
+require 'mize'
 require 'rails'
 
 module Betterdocs
@@ -14,6 +15,7 @@ end
 
 require 'betterdocs/version'
 require 'betterdocs/dsl'
+require 'betterdocs/sanitizer'
 require 'betterdocs/result_representer'
 require 'betterdocs/result_representer_collector'
 require 'betterdocs/controller_collector'

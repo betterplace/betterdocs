@@ -15,11 +15,12 @@ class Betterdocs::Dsl::Controller::Action::Param
 
   dsl_accessor :description, 'TODO'
 
+  # This value should be used to construct an example URL.
   dsl_accessor :use_in_url, true
 
   alias use_in_url? use_in_url
 
   def to_s
-    value
+    value.to_s
   end
 end

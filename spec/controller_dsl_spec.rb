@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'controller dsl' do
+describe 'controller dsl' do
   let :docs do
     Betterdocs::ControllerCollector.new
   end
