@@ -13,6 +13,7 @@ module Betterdocs::ResultRepresenter
         assign_links      result, object
       end
     end
+
     def doc(type, name, **options, &block)
       docs.add_element(self, type, name, options, &block)
     end
@@ -59,10 +60,6 @@ module Betterdocs::ResultRepresenter
     def link(name, **options, &block)
       d = doc(:link, name, **options, &block) and links << d
       self
-    end
-
-    def api_url_for(options = {})
-      Betterdocs::Global.url_for(options)
     end
   end
 end

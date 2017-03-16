@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'pathname'
 
-RSpec.describe Betterdocs::Global do
+describe Betterdocs::Global do
   let :rails do
     double(
       root: Pathname.pwd + 'spec/assets',
-      env: double(development?: true)
+      env:  double(development?: true)
     )
   end
 

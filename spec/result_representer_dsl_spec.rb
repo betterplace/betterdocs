@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'representer dsl' do
+describe 'representer dsl' do
   let :docs do
     Betterdocs::ResultRepresenterCollector.new
   end
@@ -151,7 +151,6 @@ EOT
         url { 'http://foo.bar/map' }
       end
     end
-
 
     module Person
       include Betterdocs::ResultRepresenter

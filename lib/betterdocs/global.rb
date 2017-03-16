@@ -4,6 +4,7 @@ module Betterdocs
   module Global
     class << self
       extend Tins::DSLAccessor
+      extend ComplexConfig::Provider::Shortcuts
 
       dsl_accessor :project_name,        'Project'         # Name of the project
 
@@ -72,6 +73,11 @@ module Betterdocs
 
       dsl_accessor :ignore do [] end                        # All lines of the .gitignore file as an array
 
+      def default_sanitize(code = nil)
+        code and @default_sanitize = eval(code)
+        @default_sanitize
+      end
+
       def assets=(hash)
         @assets&.clear
         assets(hash)
@@ -79,11 +85,7 @@ module Betterdocs
 
       def assets(hash = nil)
         @assets ||= {}
-        if hash
-          hash.each do |path, to|
-            asset path, to: to
-          end
-        end
+        hash&.each { |path, to| asset path, to: to }
         @assets
       end
 
@@ -116,7 +118,7 @@ module Betterdocs
       end
 
       def configuration_file
-        complex_config.betterdocs
+        cc.betterdocs
       rescue ComplexConfig::ConfigurationFileMissing
       end
 
@@ -127,7 +129,6 @@ module Betterdocs
       end
 
       def configure(config = configuration_file, &block)
-        Betterdocs.rails.env.development? or return
         config and configure_via_yaml(config)
         block  and instance_eval(&block)
         self

@@ -4,6 +4,6 @@ The <%= project_name %> API
 API ready for use
 -----------------
 
-<%- for secion in sections >
-- [<%=section.name.to_s.camelcase](<%= section(section.name) %>.md)
-
+<%- for section in sections -%>
+- [<%= section.name.to_s.camelcase %>](<%= section(section.name) %>.md)
+<%- end -%>

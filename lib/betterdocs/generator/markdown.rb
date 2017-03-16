@@ -78,7 +78,7 @@ module Betterdocs
             force:   true
           )
           mkdir_p File.dirname(dst)
-          cp src, dst
+          cp Betterdocs.rails.root.join(src), dst
         end
         infobar.finish
         infobar.newline
@@ -128,15 +128,15 @@ module Betterdocs
         "[#{message}]"
       end
 
+      memoize method:
       def readme_template
         provide_template 'README.md.erb'
       end
-      memoize_method :readme_template
 
+      memoize method:
       def section_template
         provide_template 'section.md.erb'
       end
-      memoize_method :section_template
 
       def prepare_dir(dirname)
         dirname.present? or raise ArgumentError,

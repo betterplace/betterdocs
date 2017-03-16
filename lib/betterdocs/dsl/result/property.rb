@@ -14,7 +14,9 @@ class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
 
   dsl_accessor :example, 'TODO'
 
-  dsl_accessor :types do [] end
+  dsl_accessor :types
+
+  dsl_accessor :sanitize do Betterdocs::Global.default_sanitize end
 
   def initialize(representer, name, options, &block)
     super
@@ -36,6 +38,7 @@ class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
   def assign(result, object)
     assign?(object) or return
     result[actual_property_name] = compute_value(object)
+    self
   end
 
   def compute_value(object)
@@ -46,8 +49,12 @@ class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
     elsif ActiveSupport::TimeWithZone === value
       value.extend Betterdocs::JsonTimeWithZone
     else
-      value
+      sanitizer.sanitize(value)
     end
+  end
+
+  def sanitizer
+    Betterdocs::Sanitizer.new(&sanitize)
   end
 
   def add_to_collector(collector)

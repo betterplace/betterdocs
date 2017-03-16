@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Betterdocs::JsonParamsRepresenter do
+describe Betterdocs::JsonParamsRepresenter do
   module MyJsonParams
     include Betterdocs::JsonParamsRepresenter
 
