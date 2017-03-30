@@ -126,7 +126,11 @@ are optional.
 <%- if links = action.response.full?(:links) -%>
   <%- for link in links.group_by(&:nesting_name).values.reduce(&:concat) -%>
     <tr>
-      <th align="left"><%= link.full_name %></th>
+<th align="left">
+
+<%= link.full_name %>
+
+</th>
 <td>
 
 <%= link.description %>
