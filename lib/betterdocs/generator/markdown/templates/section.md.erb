@@ -122,7 +122,6 @@ are optional.
     <th>Linkname</th>
     <th>Description</th>
   </tr>
-
 <%- if links = action.response.full?(:links) -%>
   <%- for link in links.group_by(&:nesting_name).values.reduce(&:concat) -%>
     <tr>
