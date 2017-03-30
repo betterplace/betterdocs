@@ -22,7 +22,11 @@
     <th align="left"><%= param.name %></th>
     <td><code><%= param.value %></code></td>
     <td><%= param.required ? 'yes' : 'no' %></td>
-    <td><%= param.description %></td>
+<td>
+
+<%= param.description %>
+
+</td>
   </tr>
 <%- end -%>
 </table>
@@ -55,9 +59,13 @@ are optional.
   <tr>
     <th align="left"><%= param.name %></th>
     <td><code><%= param.value %></code></td>
-    <td><%= param.types * ?| -%></td>
+    <td><code><%= param.types * ?| -%></code></td>
     <td><%= param.required ? 'yes' : 'no' %></td>
-    <td><%= param.description %></td>
+<td>
+
+<%= param.description %>
+
+</td>
   </tr>
   <%- end -%>
 </table>
@@ -91,9 +99,13 @@ are optional.
       <%- else -%>
       <th align="left"><%= property.full_name %></th>
       <%- end -%>
-      <td><%= property.types * ' &#124; ' %></td>
-      <td><%= property.example %></td>
-      <td><%= property.description %></td>
+      <td><code><%= property.types * ' &#124; ' %></code></td>
+      <td><code><%= property.example %></code></td>
+<td>
+
+<%= property.description %>
+
+</td>
     </tr>
     <%- end -%>
   </table>
@@ -115,7 +127,11 @@ are optional.
   <%- for link in links.group_by(&:nesting_name).values.reduce(&:concat) -%>
     <tr>
       <th align="left"><%= link.full_name %></th>
-      <td><%= link.description %></td>
+<td>
+
+<%= link.description %>
+
+</td>
     </tr>
   <%- end -%>
 <%- else -%>

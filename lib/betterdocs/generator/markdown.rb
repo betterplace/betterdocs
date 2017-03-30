@@ -47,7 +47,7 @@ module Betterdocs
         cd dirname do
           for section in sections.values
             infobar.progress(
-              message: "Section #{section.name.to_s.inspect} %c/%t in %te ETA %e @%E",
+              message: " Section #{section.name.to_s.inspect} %c/%t in %te ETA %e @%E ",
               force:   true
             )
             if @only
@@ -56,7 +56,7 @@ module Betterdocs
             render_to "sections/#{section.name}.md", section_template, section.instance_eval('binding')
           end
         end
-        infobar.finish
+        infobar.finish message: ' %t sections created in %te, completed @%E '
         infobar.newline
         self
       end
@@ -74,13 +74,13 @@ module Betterdocs
         Infobar(total: config.assets.size)
         config.each_asset do |src, dst|
           infobar.progress(
-            message: "Asset #{File.basename(src).inspect} %c/%t in %te ETA %e @%E",
+            message: " Asset #{File.basename(src).inspect} %c/%t in %te ETA %e @%E ",
             force:   true
           )
           mkdir_p File.dirname(dst)
           cp Betterdocs.rails.root.join(src), dst
         end
-        infobar.finish
+        infobar.finish message: ' %t assets created in %te, completed @%E '
         infobar.newline
         self
       end
