@@ -75,6 +75,7 @@ are optional.
 
 <%- if properties = action.response.full?(:properties) -%>
   <%- for (representer, properties) in properties.group_by(&:nesting_name) -%>
+
     <%- if properties.first.nesting_name.blank? -%>
 ### Root Attributes
     <%- else -%>
