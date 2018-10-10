@@ -2,6 +2,8 @@ class Betterdocs::Dsl::Controller::Action::Response
   include Betterdocs::Dsl::Common
   extend Tins::DSLAccessor
 
+  class Error < StandardError; end
+
   def initialize(name = :default, &block)
     @name = name.to_sym
     @data_block = block || proc {}
@@ -15,6 +17,10 @@ class Betterdocs::Dsl::Controller::Action::Response
 
   def data
     @data ||= instance_eval(&@data_block)
+  rescue => e
+    error = Error.new("#{e.class}: #{e}")
+    error.set_backtrace e.backtrace.grep(/^#{Betterdocs.rails.root}/)
+    raise error
   end
 
   def properties

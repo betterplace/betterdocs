@@ -22,6 +22,7 @@ GemHadar do
   dependency 'complex_config', '~>0.5'
   dependency 'infobar'
   dependency 'mize'
+  development_dependency 'rake'
   development_dependency 'simplecov'
   development_dependency 'rspec'
 end

@@ -88,11 +88,14 @@ module Betterdocs
       private
 
       def fail_while_rendering(template, exception)
-        message = blink(color(231, on_color(
-          124, " *** ERROR #{exception.class}: #{exception.message.inspect} in template ***")))
-        infobar.puts message
-        infobar.puts color(88, on_color(136, template)), message,
-          color(136, (%w[Backtrace:] + exception.backtrace) * "\n"),
+        message = color(
+          231,
+          on_color( 124, " *** ERROR #{exception.class}: #{exception.message.inspect} in template ***")
+        )
+        unless Betterdocs::Dsl::Controller::Action::Response::Error === exception
+          infobar.puts color(88, on_color(136, template))
+        end
+        infobar.puts color(136, (%w[Location:] + exception.backtrace) * "\n"),
           message
         exit 1
       end
