@@ -62,8 +62,6 @@ are optional.
     <td><code><%= param.types * ?| -%></code></td>
     <td>
       <%=
-        puts param.name
-        puts param.required.inspect
         case param.required
         when String then param.required
         when true then 'yes'

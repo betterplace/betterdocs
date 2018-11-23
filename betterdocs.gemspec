@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# stub: betterdocs 0.6.5 ruby lib
+# stub: betterdocs 0.6.6 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "betterdocs".freeze
-  s.version = "0.6.5"
+  s.version = "0.6.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
