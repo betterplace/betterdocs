@@ -60,7 +60,17 @@ are optional.
     <th align="left"><%= param.name %></th>
     <td><code><%= param.value %></code></td>
     <td><code><%= param.types * ?| -%></code></td>
-    <td><%= param.required ? 'yes' : 'no' %></td>
+    <td>
+      <%=
+        puts param.name
+        puts param.required.inspect
+        case param.required
+        when String then param.required
+        when true then 'yes'
+        else 'no'
+        end
+      %>
+    </td>
 <td>
 
 <%= param.description %>
