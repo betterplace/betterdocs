@@ -6,7 +6,7 @@ Betterdocs API Documentation
 DESCRIPTION
 -----------
 
-This library can be used to document a rails based API.
+This library can be used to document a Rails-based API.
 
 LICENSE
 -------
@@ -40,12 +40,12 @@ This api generator requires that you follow the [representer pattern](http://nic
         end
 
         response do
-          generate_fake_result_with_representer 
+          generate_fake_result_with_representer
         end
       end
       # :nocov:
       def index
-        render json: real_result_with_representer 
+        render json: real_result_with_representer
       end
 
       # :nocov: Documentation
@@ -68,7 +68,7 @@ This api generator requires that you follow the [representer pattern](http://nic
       end
       # :nocov:
       def show
-        render json: real_result_with_representer 
+        render json: real_result_with_representer
       end
     end
 

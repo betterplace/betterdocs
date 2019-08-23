@@ -4,6 +4,6 @@ before_install:
 
 rvm:
   - 2.4.3
-  - 2.5.0
+  - 2.6.3
 
 sudo: false
