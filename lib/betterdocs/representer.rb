@@ -30,7 +30,7 @@ module Betterdocs::Representer
     end
 
     def doc(type, name, **options, &block)
-      docs.add_element(self, type, name, options, &block)
+      docs.add_element(self, type, name, **options, &block)
     end
 
     def object_name(*) end

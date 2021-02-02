@@ -1,3 +1,5 @@
+require 'active_support/time_with_zone'
+
 require 'betterdocs/dsl/representer'
 require 'betterdocs/dsl/common'
 require 'betterdocs/dsl/naming'
