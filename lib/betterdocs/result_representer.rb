@@ -15,7 +15,7 @@ module Betterdocs::ResultRepresenter
     end
 
     def doc(type, name, **options, &block)
-      docs.add_element(self, type, name, options, &block)
+      docs.add_element(self, type, name, **options, &block)
     end
 
     def docs

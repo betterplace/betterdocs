@@ -25,9 +25,7 @@ class Betterdocs::Dsl::JsonParams::Param < Betterdocs::Dsl::Representer
 
   def compute_value(object)
     value = object.__send__(name)
-    if ActiveSupport::TimeWithZone === value
-      value.extend Betterdocs::JsonTimeWithZone
-    end
+    value.respond_to?(:iso8601) and value.extend Betterdocs::JsonTimeWithZone
     value
   end
 

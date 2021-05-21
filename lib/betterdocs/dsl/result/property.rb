@@ -46,7 +46,7 @@ class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
     value.nil? and return
     if represent_with
       represent_with.hashify(value)
-    elsif ActiveSupport::TimeWithZone === value
+    elsif value.respond_to?(:iso8601)
       value.extend Betterdocs::JsonTimeWithZone
     else
       sanitizer.sanitize(value)
