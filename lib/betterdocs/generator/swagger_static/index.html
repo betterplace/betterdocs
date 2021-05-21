@@ -1,0 +1,66 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Swagger UI</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.8.1/swagger-ui.css"
+      type="text/css"
+      charset="UTF-8"
+    />
+    <style>
+      html {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.8.1/swagger-ui-bundle.js"
+      charset="UTF-8"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.8.1/swagger-ui-standalone-preset.js"
+      charset="UTF-8"
+    ></script>
+    <script>
+      window.onload = function () {
+        fetch("./swagger.json")
+          .then(resp => resp.json())
+          .then(spec => {
+            const ui = SwaggerUIBundle({
+              spec: spec,
+              dom_id: "#swagger-ui",
+              deepLinking: true,
+              presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset,
+              ],
+              plugins: [SwaggerUIBundle.plugins.DownloadUrl],
+              layout: "BaseLayout",
+            });
+            window.ui = ui;
+          });
+      };
+    </script>
+  </body>
+</html>
