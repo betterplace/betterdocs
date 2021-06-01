@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
-# stub: betterdocs 0.7.0 ruby lib
+# stub: betterdocs 0.7.1 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "betterdocs".freeze
-  s.version = "0.7.0"
+  s.version = "0.7.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["betterplace Developers".freeze]
-  s.date = "2021-05-21"
+  s.date = "2021-06-01"
   s.description = "This library provides tools to generate API documention for a web site's REST-ful JSON API.".freeze
   s.email = "developers@betterplace.org".freeze
   s.extra_rdoc_files = ["README.md".freeze, "lib/betterdocs.rb".freeze, "lib/betterdocs/controller_collector.rb".freeze, "lib/betterdocs/dsl.rb".freeze, "lib/betterdocs/dsl/common.rb".freeze, "lib/betterdocs/dsl/controller.rb".freeze, "lib/betterdocs/dsl/controller/action.rb".freeze, "lib/betterdocs/dsl/controller/action/param.rb".freeze, "lib/betterdocs/dsl/controller/action/response.rb".freeze, "lib/betterdocs/dsl/controller/controller.rb".freeze, "lib/betterdocs/dsl/controller/controller_base.rb".freeze, "lib/betterdocs/dsl/json_params.rb".freeze, "lib/betterdocs/dsl/json_params/param.rb".freeze, "lib/betterdocs/dsl/json_type_mapper.rb".freeze, "lib/betterdocs/dsl/naming.rb".freeze, "lib/betterdocs/dsl/representer.rb".freeze, "lib/betterdocs/dsl/result.rb".freeze, "lib/betterdocs/dsl/result/collection_property.rb".freeze, "lib/betterdocs/dsl/result/link.rb".freeze, "lib/betterdocs/dsl/result/property.rb".freeze, "lib/betterdocs/generator/config_shortcuts.rb".freeze, "lib/betterdocs/generator/markdown.rb".freeze, "lib/betterdocs/global.rb".freeze, "lib/betterdocs/json_params_representer.rb".freeze, "lib/betterdocs/json_params_representer_collector.rb".freeze, "lib/betterdocs/json_time_with_zone.rb".freeze, "lib/betterdocs/mix_into_controller.rb".freeze, "lib/betterdocs/railtie.rb".freeze, "lib/betterdocs/rake_tasks.rb".freeze, "lib/betterdocs/representer.rb".freeze, "lib/betterdocs/result_representer.rb".freeze, "lib/betterdocs/result_representer_collector.rb".freeze, "lib/betterdocs/sanitizer.rb".freeze, "lib/betterdocs/section.rb".freeze, "lib/betterdocs/version.rb".freeze]
