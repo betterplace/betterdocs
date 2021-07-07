@@ -3,6 +3,7 @@
 .DS_Store
 .bundle
 .byebug_history
+.history
 .ruby-version
 .rvmrc
 .utilsrc
