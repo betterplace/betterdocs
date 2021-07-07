@@ -1,6 +1,6 @@
 module Betterdocs
   # Betterdocs version
-  VERSION         = '0.6.8'
+  VERSION         = '0.7.1'
   VERSION_ARRAY   = VERSION.split('.').map(&:to_i) # :nodoc:
   VERSION_MAJOR   = VERSION_ARRAY[0] # :nodoc:
   VERSION_MINOR   = VERSION_ARRAY[1] # :nodoc:

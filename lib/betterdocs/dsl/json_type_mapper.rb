@@ -13,7 +13,7 @@ module Betterdocs::Dsl::JsonTypeMapper
       String     => 'string',
     }.find { |match_class, json_type|
       match_class >= klass and break json_type
-    } || 'undefined'
+    } or raise TypeError, "Invalid type #{klass} encountered. Use a type that can be mapped to JSON instead."
   end
 
   def map_types(types)

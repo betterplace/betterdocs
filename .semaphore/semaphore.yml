@@ -1,0 +1,26 @@
+version: v1.0
+name: Betterdocs pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Unit Tests"
+    task:
+      env_vars:
+        # Matches the configuration used in sem-service
+        - name: RAILS_ENV
+          value: test
+      jobs:
+      - name: RSpec
+        commands:
+          - checkout
+
+          # Setup ruby
+          - sem-version ruby $(awk '/^ruby/ { print $2 }' .tool-versions)
+
+          # Setup gems
+          - bundle config set path 'vendor/bundle'
+          - bundle install
+          - bundle exec rake spec
