@@ -18,6 +18,8 @@ class Betterdocs::Dsl::Result::Property < Betterdocs::Dsl::Representer
 
   dsl_accessor :types
 
+  dsl_accessor :optional
+
   dsl_accessor :sanitize do Betterdocs::Global.default_sanitize end
 
   def initialize(representer, name, options, &block)

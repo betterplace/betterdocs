@@ -39,7 +39,7 @@ module Betterdocs
         Betterdocs.rails.configuration.action_controller.asset_host = Betterdocs::Global.asset_host
         options = {
           host: Betterdocs::Global.api_host,
-          protocol: Betterdocs::Global.api_protocol,
+          protocol: Betterdocs::Global.api_protocol
         }
         infobar.puts color(40, "Setting default_url_options to #{options.inspect}.")
         Betterdocs.rails.application.routes.default_url_options = options
@@ -58,7 +58,7 @@ module Betterdocs
         sections.values.each do |section|
           infobar.progress(
             message: " Section #{section.name.to_s.inspect} %c/%t in %te ETA %e @%E ",
-            force: true,
+            force: true
           )
           @only =~ section.name or next if @only
 
@@ -74,7 +74,7 @@ module Betterdocs
         config.each_swagger_asset do |src, dst|
           infobar.progress(
             message: " Asset #{File.basename(src).inspect} %c/%t in %te ETA %e @%E ",
-            force: true,
+            force: true
           )
           mkdir_p File.dirname(dst)
           cp Betterdocs.rails.root.join(src), dst
@@ -125,9 +125,9 @@ module Betterdocs
             offset: { type: 'integer' },
             total_pages: { type: 'integer' },
             current_page: { type: 'integer' },
-            per_page: { type: 'integer' },
+            per_page: { type: 'integer' }
           },
-          required: %w[total_entries offset current_page per_page total_pages data],
+          required: %w[total_entries offset current_page per_page total_pages data]
         }
       end
 
@@ -159,9 +159,9 @@ module Betterdocs
             backtrace: { type: 'array', items: { type: 'string' } },
             message: { type: 'string' },
             errors: { type: 'object' },
-            links: { type: 'array', items: { type: 'string' } },
+            links: { type: 'array', items: { type: 'string' } }
           },
-          required: %w[name status status_code reason backtrace message links],
+          required: %w[name status status_code reason backtrace message links]
         }
       end
 
@@ -198,7 +198,7 @@ module Betterdocs
       def get_request_definition(params)
         schema = { type: 'object', properties: {}, required: [] }
         params.each do |param|
-          schema[:properties][param.name] = get_schema(param.types, nil, param.description)
+          schema[:properties][param.name] = get_schema(param.types, nil, param.description, nil)
           schema[:required].push(param.name) if param.required == true || param.required == 'yes'
         end
         schema
@@ -237,10 +237,10 @@ module Betterdocs
         description.include?('DEPRECATED')
       end
 
-      def get_schema(types, sub_cls, description)
+      def get_schema(types, sub_cls, description, optional)
         type, nullable = get_type(types)
         deprecated = get_deprecated_from_description(description)
-        res = { description: description, type: type, nullable: nullable, deprecated: deprecated }
+        res = { description: description, type: type, nullable: nullable, deprecated: deprecated, optional: optional }
         case type
         when 'array'
           items = { type: 'string' }
@@ -269,9 +269,10 @@ module Betterdocs
             properties: {
               rel: { type: 'string', enum: [] },
               href: { type: 'string' },
+              templated: { type: 'boolean' }
             },
-            required: %w[rel href],
-          },
+            required: %w[rel href]
+          }
         }
         enum = definition[:properties][:links][:items][:properties][:rel][:enum]
         enum.push(value) unless enum.include?(value)
@@ -291,7 +292,8 @@ module Betterdocs
           sub_cls = get_dto_name(subs[p.nesting_name])
           cls = sub_cls || resp_cls
           definition = initialise_definition(definitions, cls)
-          definition[:properties][p.public_name] = get_schema(p.types, get_dto_name(p.sub_representer?), p.description)
+          definition[:properties][p.public_name] =
+            get_schema(p.types, get_dto_name(p.sub_representer?), p.description, p.optional)
         end
         (response.full?(:links) || []).each do |l|
           sub_cls = get_dto_name(subs[l.nesting_name])
@@ -302,13 +304,16 @@ module Betterdocs
 
       def get_schema_ref(name)
         {
-          "$ref": "#/components/schemas/#{name}",
+          "$ref": "#/components/schemas/#{name}"
         }
       end
 
       def add_required_to_definitions(definitions)
         definitions.each do |def_key, d|
-          req = d[:properties].select { |_k, v| v.key?(:nullable) }.keys
+          req = d[:properties].select { |_k, v| v.key?(:nullable) && !v[:optional] }.keys
+          d[:properties].each do |p|
+            p.delete(:optional)
+          end
           definitions[def_key][:required] = req unless req.empty?
         end
       end
