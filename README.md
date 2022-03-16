@@ -22,88 +22,92 @@ This api generator requires that you follow the [representer pattern](http://nic
 
 ## Controller
 
-    class ThingsController < ApplicationController
-      # :nocov: Documentation
-      doc :action do
-        section     :things_list
-        title       'A List of things ⇄ [Details](things_details.md)'
-        description to <<-end
-          This action shows a list of things. **Markdown** can be used.
-        end
-
-        param :order do
-          description to <<-end
-            Optional parameter to order the list.
-          end
-          required    no
-          value       'created_at:ASC'
-        end
-
-        response do
-          generate_fake_result_with_representer
-        end
-      end
-      # :nocov:
-      def index
-        render json: real_result_with_representer
-      end
-
-      # :nocov: Documentation
-      doc :action do
-        section     :things_details
-        title       'Things Details ⇄ [List](things_list.md)'
-        description to <<-end
-          The details of a thing. You must give an id for the thing
-        end
-
-        param :thing_id do
-          description 'The id of the thing you want to see. Required.'
-          required    yes # this is the default
-          value       38
-        end
-
-        response do
-          generate_fake_details_response_with_representer
-        end
-      end
-      # :nocov:
-      def show
-        render json: real_result_with_representer
-      end
+```ruby
+class ThingsController < ApplicationController
+  # :nocov: Documentation
+  doc :action do
+    section     :things_list
+    title       'A List of things ⇄ [Details](things_details.md)'
+    description to <<-end
+      This action shows a list of things. **Markdown** can be used.
     end
+
+    param :order do
+      description to <<-end
+        Optional parameter to order the list.
+      end
+      required    no
+      value       'created_at:ASC'
+    end
+
+    response do
+      generate_fake_result_with_representer
+    end
+  end
+  # :nocov:
+  def index
+    render json: real_result_with_representer
+  end
+
+  # :nocov: Documentation
+  doc :action do
+    section     :things_details
+    title       'Things Details ⇄ [List](things_list.md)'
+    description to <<-end
+      The details of a thing. You must give an id for the thing
+    end
+
+    param :thing_id do
+      description 'The id of the thing you want to see. Required.'
+      required    yes # this is the default
+      value       38
+    end
+
+    response do
+      generate_fake_details_response_with_representer
+    end
+  end
+  # :nocov:
+  def show
+    render json: real_result_with_representer
+  end
+end
+```
 
 ## Representer
 
 Betterdocs comes with its own representer class. It is not documented
 yet but works kind of like [ROAR](https://github.com/apotonick/roar).
 
-    module ThingsRepresenter
+```ruby
+module ThingsRepresenter
 
-      extend ActiveSupport::Concern
-      include Betterdocs::Representer
+  extend ActiveSupport::Concern
+  include Betterdocs::Representer
 
-      property :microfleem_count, if: -> { has_microfleems? }, as: :number_of_fleems do
-        description 'If we have microfleems, return the count'
-        types       Integer
-        example     '5000'
-      end
+  property :microfleem_count, if: -> { has_microfleems? }, as: :number_of_fleems do
+    description 'If we have microfleems, return the count'
+    types       Integer
+    example     '5000'
+  end
 
-      property :title, as: :name do
-        description to <<-end
-          Represent the internal field "title" as the name of the thing
-        end
-        types       String
-        example     'my_name'
-      end
-
-      link :self do
-        description to <<-end
-          Link to this resource itself
-          (<a href="opinion_details.md">things details</a>)
-        end
-        url { thing_url(id) }
-      end
+  property :title, as: :name do
+    description to <<-end
+      Represent the internal field "title" as the name of the thing
     end
+    types       String
+    example     'my_name'
+  end
+
+  link :self do
+    description to <<-end
+      Link to this resource itself
+      (<a href="opinion_details.md">things details</a>)
+    end
+    url { thing_url(id) }
+  end
+end
+```
 
 AUTHORS
 -------
