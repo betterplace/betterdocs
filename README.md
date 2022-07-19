@@ -109,6 +109,11 @@ module ThingsRepresenter
 end
 ```
 
+RELEASING
+---------
+
+Edit `Rakefile` and run `rake` (because we use gemhadar).
+
 AUTHORS
 -------
 Florian Frank <flori@ping.de>

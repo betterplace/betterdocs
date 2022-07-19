@@ -6,7 +6,7 @@ GemHadar do
   name        'betterdocs'
   author      'betterplace Developers'
   email       'developers@betterplace.org'
-  homepage    "http://github.com/betterplace/#{name}"
+  homepage    "https://github.com/betterplace/#{name}"
   summary     'Betterplace API documentation library'
   description "This library provides tools to generate API documention for a web site's REST-ful JSON API."
   test_dir    'spec'
@@ -17,7 +17,7 @@ GemHadar do
   title       "#{name.camelize}"
 
   dependency 'tins',           '~>1.3', '>=1.3.5'
-  dependency 'rails',          '>=3', '<7'
+  dependency 'rails',          '>=3', '<8'
   dependency 'term-ansicolor', '~>1.3'
   dependency 'complex_config', '~>0.5'
   dependency 'infobar'
