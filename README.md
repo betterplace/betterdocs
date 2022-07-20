@@ -109,6 +109,11 @@ module ThingsRepresenter
 end
 ```
 
+RELEASING
+---------
+
+Edit `Rakefile` and `VERSION` and run `rake` (because we use gemhadar). Commit changes, run `rake gem:push` and `git push --tags`.
+
 AUTHORS
 -------
 Florian Frank <flori@ping.de>
