@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   end
 
   if s.respond_to? :add_runtime_dependency then
-    s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 1.11.0"])
+    s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 1.12.0"])
     s.add_development_dependency(%q<rake>.freeze, [">= 0"])
     s.add_development_dependency(%q<simplecov>.freeze, [">= 0"])
     s.add_development_dependency(%q<rspec>.freeze, [">= 0"])
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency(%q<infobar>.freeze, [">= 0"])
     s.add_runtime_dependency(%q<mize>.freeze, [">= 0"])
   else
-    s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.11.0"])
+    s.add_dependency(%q<gem_hadar>.freeze, ["~> 1.12.0"])
     s.add_dependency(%q<rake>.freeze, [">= 0"])
     s.add_dependency(%q<simplecov>.freeze, [">= 0"])
     s.add_dependency(%q<rspec>.freeze, [">= 0"])
