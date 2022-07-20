@@ -112,7 +112,7 @@ end
 RELEASING
 ---------
 
-Edit `Rakefile` and run `rake` (because we use gemhadar).
+Edit `Rakefile` and `VERSION` and run `rake` (because we use gemhadar). Commit changes, run `rake gem:push` and `git push --tags`.
 
 AUTHORS
 -------
