@@ -102,7 +102,7 @@ module Betterdocs
 
       def render_to(filename, template, binding)
         File.open(filename, 'w') do |output|
-          rendered = ERB.new(template, nil, '-').result(binding)
+          rendered = ERB.new(template, trim_mode: '-').result(binding)
           output.write rendered
         end
         self
