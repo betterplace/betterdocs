@@ -22,6 +22,8 @@ This api generator requires that you follow the [representer pattern](http://nic
 
 ## Controller
 
+betterdocs comes with a DSL for the (Rails) controllers - see examples below.
+
 ```ruby
 class ThingsController < ApplicationController
   # :nocov: Documentation
@@ -99,6 +101,7 @@ module ThingsRepresenter
     example     'my_name'
   end
 
+  # Add a link to the links list in the resulting JSON.
   link :self do
     description to <<-end
       Link to this resource itself
@@ -108,6 +111,12 @@ module ThingsRepresenter
   end
 end
 ```
+
+GENERATING
+----------
+
+`rake doc:api:push` will push the documentation onto a git branch.
+`rake doc:api:swagger` will call Swagger.
 
 RELEASING
 ---------
