@@ -17,8 +17,12 @@ class Betterdocs::Dsl::Controller::Action::Response
 
   def data
     @data ||= instance_eval(&@data_block)
+    if hash = @data.ask_and_send(:to_hash)
+      hash[:data].present? or raise Error, "result for #{controller}##{action} is empty"
+    end
+    @data
   rescue => e
-    error = Error.new("#{e.class}: #{e}")
+    error = e.is_a?(Error) ? e : Error.new("#{e.class}: #{e}")
     error.set_backtrace e.backtrace.grep(/^#{Betterdocs.rails.root}/)
     raise error
   end

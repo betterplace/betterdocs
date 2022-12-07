@@ -17,15 +17,18 @@ describe Betterdocs::Dsl::Controller::Action::Response do
     double(
       'Result',
       representer: representer,
-      to_json: '{ "the": "result" }'
+      to_hash: { data: %w[ fake-it ] }
     )
   end
 
   let :response do
     data = result_data
-    described_class.new do
+    object = described_class.new do
       data
     end
+    allow(object).to receive(:controller).and_return('TheController')
+    allow(object).to receive(:action).and_return('in_action')
+    object
   end
 
   let :param_value do
@@ -35,6 +38,11 @@ describe Betterdocs::Dsl::Controller::Action::Response do
   it 'has params' do
     allow(response).to receive(:param).with(:test).and_return param_value
     expect(response.params[:test]).to eq 'foo'
+  end
+
+  it 'complains about missing data in example responses' do
+    allow(result_data).to receive(:to_hash).and_return('data' => [])
+    expect { response.data }.to raise_error(Betterdocs::Dsl::Controller::Action::Response::Error)
   end
 
   it 'has data' do
@@ -54,6 +62,6 @@ describe Betterdocs::Dsl::Controller::Action::Response do
   end
 
   it 'can be converted into a JSON document' do
-    expect(response.to_json).to eq '{ "the": "result" }'
+    expect(JSON(response.to_json)).to eq("data" => %w[ fake-it ])
   end
 end
