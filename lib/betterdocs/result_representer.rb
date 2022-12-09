@@ -5,6 +5,7 @@ module Betterdocs::ResultRepresenter
   extend ActiveSupport::Concern
   include Betterdocs::Dsl::Common
   include Betterdocs::Representer
+  include Betterdocs::Responding
 
   module ClassMethods
     def hashify(object)

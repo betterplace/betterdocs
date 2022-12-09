@@ -2,7 +2,6 @@ require 'action_controller'
 require 'betterdocs/responding'
 
 module Betterdocs::Representer
-  include Betterdocs::Responding
   extend ActiveSupport::Concern
 
   def as_json(*)
