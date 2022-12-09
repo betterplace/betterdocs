@@ -18,7 +18,7 @@ describe Betterdocs::Dsl::Controller::Action::Response do
       'Result',
       representer: representer,
       to_hash: { data: %w[ fake-it ] }
-    )
+    ).extend Betterdocs::Responding
   end
 
   let :response do
@@ -41,8 +41,21 @@ describe Betterdocs::Dsl::Controller::Action::Response do
   end
 
   it 'complains about missing data in example responses' do
-    allow(result_data).to receive(:to_hash).and_return('data' => [])
+    allow(result_data).to receive(:to_hash).and_return(data: [])
     expect { response.data }.to raise_error(Betterdocs::Dsl::Controller::Action::Response::Error)
+  end
+
+  context 'foo' do
+    let :result_data do
+      double
+    end
+
+    it "complains about data that isn't Betterdocs::Responding" do
+      expect { response.data }.to raise_error(
+        Betterdocs::Dsl::Controller::Action::Response::Error,
+        /is not Betterdocs::Responding/
+      )
+    end
   end
 
   it 'has data' do

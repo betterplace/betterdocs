@@ -14,8 +14,10 @@ module Betterdocs
 end
 
 require 'betterdocs/version'
+require 'betterdocs/responding'
 require 'betterdocs/dsl'
 require 'betterdocs/sanitizer'
+require 'betterdocs/representer'
 require 'betterdocs/result_representer'
 require 'betterdocs/result_representer_collector'
 require 'betterdocs/controller_collector'

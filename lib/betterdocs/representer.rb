@@ -1,6 +1,8 @@
 require 'action_controller'
+require 'betterdocs/responding'
 
 module Betterdocs::Representer
+  include Betterdocs::Responding
   extend ActiveSupport::Concern
 
   def as_json(*)
@@ -8,6 +10,8 @@ module Betterdocs::Representer
       c != singleton_class && c < Betterdocs::Representer
     end.hashify(self)
   end
+
+  alias to_hash as_json
 
   def to_json(*a)
     JSON::generate(as_json, *a)

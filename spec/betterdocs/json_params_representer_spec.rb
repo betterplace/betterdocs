@@ -71,9 +71,4 @@ describe Betterdocs::JsonParamsRepresenter do
       expect(param.required).to eq true
     end
   end
-
-  it 'foos' do
-    puts docs.to_s
-    skip
-  end
 end

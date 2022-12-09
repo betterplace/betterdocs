@@ -17,8 +17,13 @@ class Betterdocs::Dsl::Controller::Action::Response
 
   def data
     @data ||= instance_eval(&@data_block)
-    if hash = @data.ask_and_send(:to_hash)
-      hash[:data].present? or raise Error, "result for #{controller}##{action} is empty"
+    @data.is_a? Betterdocs::Responding or
+      raise Error, "result #{@data.class} is not Betterdocs::Responding"
+    hash = @data.to_hash
+    if hash.key?(:data) && hash[:data].empty?
+      raise Error, "result data for action #{controller}##{action} is empty"
+    elsif hash.empty?
+      raise Error, "result for action #{controller}##{action} is empty"
     end
     @data
   rescue => e
@@ -48,7 +53,12 @@ class Betterdocs::Dsl::Controller::Action::Response
   end
 
   def to_json(*a)
+    data.nil? and raise Error, "result for action #{controller}##{action} was nil"
+    unless data.is_a?(Betterdocs::Responding)
+      infobar.puts "#{data.class}".red
+      infobar.puts "Result of type #{data.class} for action #{controller}##{action} is not hash / Betterdocs::Representer"
+    end
     my_data = data.ask_and_send(:to_hash) || data
-    my_data.to_json(*a)
+    data.to_json(*a)
   end
 end
