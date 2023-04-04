@@ -176,7 +176,7 @@ module Betterdocs
           (?<host>[a-z.]+)/
           (?<lang>[a-z]{2})/api_
           (?<ver>v[0-9]+)/
-          (?<path>[\w/]+\.json?)
+          (?<path>[\w/-]+\.json?)
         }x.match(request).named_captures.transform_keys(&:to_sym)
         slugs[:params] = []
         split = slugs[:path].split('/')
