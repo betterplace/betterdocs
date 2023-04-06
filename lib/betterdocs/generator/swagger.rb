@@ -367,7 +367,7 @@ module Betterdocs
           end
           ok = { schema: schema }
           unless action.response.nil?
-            add_example(ok, 'example', JSON.parse(JSON.pretty_generate(action.response, quirks_mode: true)))
+            add_example(ok, 'example', JSON.parse(JSON.pretty_generate(action.response.to_json, quirks_mode: true)))
           end
           p[:responses] =
             { "200": wrap_content_object(ok, 'OK'),
