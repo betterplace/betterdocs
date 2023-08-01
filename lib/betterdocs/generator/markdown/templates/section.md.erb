@@ -154,7 +154,7 @@ are optional.
 ## Response Example
 
 ```json
-<%= JSON.pretty_generate(action.response, quirks_mode: true) %>
+<%= JSON.pretty_generate(action.response.data.as_json, quirks_mode: true) %>
 ```
 
 <%- end -%>
