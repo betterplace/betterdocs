@@ -12,7 +12,7 @@ GemHadar do
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
     '.ruby-version', '.AppleDouble', 'tags', '.DS_Store', '.utilsrc',
-    '.bundle', '.byebug_history', 'errors.lst', '.yardoc', '.history'
+    '.bundle', 'errors.lst', '.yardoc', '.history'
   readme      'README.md'
   title       "#{name.camelize}"
 
@@ -25,6 +25,7 @@ GemHadar do
   development_dependency 'rake'
   development_dependency 'simplecov'
   development_dependency 'rspec'
+  development_dependency 'debug'
 end
 
 task :default => :spec
