@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<rspec>.freeze, [">= 0".freeze])
   s.add_development_dependency(%q<debug>.freeze, [">= 0".freeze])
   s.add_runtime_dependency(%q<tins>.freeze, ["~> 1.3".freeze, ">= 1.3.5".freeze])
-  s.add_runtime_dependency(%q<rails>.freeze, [">= 3".freeze, "< 8".freeze])
+  s.add_runtime_dependency(%q<rails>.freeze, [">= 3".freeze, "<= 8".freeze])
   s.add_runtime_dependency(%q<term-ansicolor>.freeze, ["~> 1.3".freeze])
   s.add_runtime_dependency(%q<complex_config>.freeze, ["~> 0.5".freeze])
   s.add_runtime_dependency(%q<infobar>.freeze, [">= 0".freeze])
