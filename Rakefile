@@ -17,7 +17,7 @@ GemHadar do
   title       "#{name.camelize}"
 
   dependency 'tins',           '~>1.3', '>=1.3.5'
-  dependency 'rails',          '>=3', '<8'
+  dependency 'rails',          '>=3', '<9'
   dependency 'term-ansicolor', '~>1.3'
   dependency 'complex_config', '~>0.5'
   dependency 'infobar'
