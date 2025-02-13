@@ -117,7 +117,7 @@ EOT
       expect(action.params).to have_key :quux
       expect(action.json_params).to have_key :baz
       expect(action.url).to eq 'http://foo/bar'
-      expect(docs.to_s.sub(%r(.*(betterdocs/.*)), '\1')).to eq(<<EOT)
+      expect(docs.to_s.sub(%r(.*(?=spec/)), '')).to eq(<<EOT)
 MyTestController
 
 url: http://foo/bar
@@ -135,7 +135,7 @@ quux(=3): TODO
 
 my description
 
-betterdocs/spec/controller_dsl_spec.rb:23
+spec/controller_dsl_spec.rb:23
 
 EOT
     end
