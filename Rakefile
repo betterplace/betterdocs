@@ -16,6 +16,8 @@ GemHadar do
   readme      'README.md'
   title       "#{name.camelize}"
 
+  licenses    << 'Apache-2.0'
+
   dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<9'
   dependency 'term-ansicolor', '~>1.3'
