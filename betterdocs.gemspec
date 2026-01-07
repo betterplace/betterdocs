@@ -16,13 +16,13 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/betterplace/betterdocs".freeze
   s.licenses = ["Apache-2.0".freeze]
   s.rdoc_options = ["--title".freeze, "Betterdocs".freeze, "--main".freeze, "README.md".freeze]
-  s.rubygems_version = "3.6.7".freeze
+  s.rubygems_version = "3.6.9".freeze
   s.summary = "Betterplace API documentation library".freeze
   s.test_files = ["spec/assets/app/controllers/api/foos_controller.rb".freeze, "spec/betterdocs/dsl/controller/action/param_spec.rb".freeze, "spec/betterdocs/dsl/controller/action/response_spec.rb".freeze, "spec/betterdocs/dsl/json_type_mapper_spec.rb".freeze, "spec/betterdocs/dsl/result/collection_property_spec.rb".freeze, "spec/betterdocs/dsl/result/link_spec.rb".freeze, "spec/betterdocs/dsl/result/property_spec.rb".freeze, "spec/betterdocs/generator/markdown_spec.rb".freeze, "spec/betterdocs/global_spec.rb".freeze, "spec/betterdocs/json_params_representer_spec.rb".freeze, "spec/betterdocs/result_representer_spec.rb".freeze, "spec/betterdocs/sanitizer_spec.rb".freeze, "spec/controller_dsl_spec.rb".freeze, "spec/result_representer_dsl_spec.rb".freeze, "spec/spec_helper.rb".freeze]
 
   s.specification_version = 4
 
-  s.add_development_dependency(%q<gem_hadar>.freeze, ["~> 1.20".freeze])
+  s.add_development_dependency(%q<gem_hadar>.freeze, [">= 2.16.3".freeze])
   s.add_development_dependency(%q<rake>.freeze, [">= 0".freeze])
   s.add_development_dependency(%q<simplecov>.freeze, [">= 0".freeze])
   s.add_development_dependency(%q<rspec>.freeze, [">= 0".freeze])
