@@ -51,7 +51,7 @@ describe Betterdocs::JsonParamsRepresenter do
   end
 
   it 'can check a parameter hash' do
-    skip
+    skip 'TODO'
   end
 
   it 'can return all the documented parameters as a hash' do
