@@ -1,5 +1,13 @@
 # Changes
 
+## 2026-01-08 v0.15.0
+
+- Added `CHANGES.md` changelog file and integrated it into the gem build
+  process
+- Updated `Rakefile` to configure `CHANGES.md` as the changelog filename for
+  gem building
+- Updated CI configuration to test against Ruby **4.0** and manage dependencies
+
 ## 2025-02-13 v0.14.0
 
 - Renamed `COPYING` file to `LICENSE`
