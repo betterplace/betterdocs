@@ -18,6 +18,10 @@ GemHadar do
 
   licenses    << 'Apache-2.0'
 
+  changelog do
+    filename 'CHANGES.md'
+  end
+
   dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<9'
   dependency 'term-ansicolor', '~>1.3'
