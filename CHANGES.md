@@ -1,5 +1,19 @@
 # Changes
 
+## 2026-01-28 v0.15.1
+
+- Updated CI/CD configuration to use **ubuntu2404** image for Semaphore CI
+- Refactored Rails integration by removing the top-level `RakeTasks` module and
+  moving rake task loading into `Betterdocs::Railtie#rake_tasks`
+- Updated development dependency `gem_hadar` from **2.16.3** to **2.17.0**
+- Modified `.all_images.yml` to use parallel bundle install with
+  `--jobs=$(getconf _NPROCESSORS_ONLN)`
+    - Added `rm -vf Gemfile.lock` cleanup in `before` and `after` sections for consistent builds
+- Updated gemspec file lists to include `.tool-versions` and exclude `lib/betterdocs/rake_tasks.rb`
+- Replaced `simplecov` with `gem_hadar/simplecov` in `spec/spec_helper.rb`
+- Updated `s.extra_rdoc_files` and `s.files` in gemspec to reflect current file structure
+- Updated Ruby version to **3.4.8** in `.tool-versions` file
+
 ## 2026-01-08 v0.15.0
 
 - Added `CHANGES.md` changelog file and integrated it into the gem build
