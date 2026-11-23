@@ -11,4 +11,3 @@ RSpec.configure do |c|
     Betterdocs::Global.configure
   end
 end
-

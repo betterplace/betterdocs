@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::Dsl::JsonTypeMapper do
   let :jtm do Betterdocs::Dsl::JsonTypeMapper end
 

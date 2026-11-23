@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'representer dsl' do
   let :docs do
     Betterdocs::ResultRepresenterCollector.new

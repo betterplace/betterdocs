@@ -1,2 +1,3 @@
 --color
 --backtrace
+-rspec_helper

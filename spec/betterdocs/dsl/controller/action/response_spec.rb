@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::Dsl::Controller::Action::Response do
   let :docs do
     double(

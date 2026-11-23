@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::ResultRepresenter do
   module MySubRepresenter
     include Betterdocs::ResultRepresenter

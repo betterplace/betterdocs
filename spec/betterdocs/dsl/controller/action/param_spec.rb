@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::Dsl::Controller::Action::Param do
   let :param do
     described_class.new('test') do

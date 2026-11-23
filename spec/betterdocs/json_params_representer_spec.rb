@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::JsonParamsRepresenter do
   module MyJsonParams
     include Betterdocs::JsonParamsRepresenter

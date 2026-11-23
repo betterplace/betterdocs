@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::Dsl::Result::Property do
   let :result do
     {}

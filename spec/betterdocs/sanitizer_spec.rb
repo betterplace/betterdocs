@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::Sanitizer do
   let :sanitizer do
     described_class.new do |text|

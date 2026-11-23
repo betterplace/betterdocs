@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'controller dsl' do
   let :docs do
     Betterdocs::ControllerCollector.new
@@ -9,6 +7,9 @@ describe 'controller dsl' do
     double(application: double(routes: double(url_for: 'http://foo/bar')))
   end
 
+  #
+  # Controller
+  #
   let :controller do
     Module.new do
       class << self
@@ -18,7 +19,6 @@ describe 'controller dsl' do
 
         alias to_s name
       end
-
 
       def foo
       end

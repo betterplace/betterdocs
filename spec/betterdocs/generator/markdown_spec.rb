@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Betterdocs::Generator::Markdown do
   let :rails do
     double(
