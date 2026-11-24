@@ -123,6 +123,12 @@ RELEASING
 
 Edit `Rakefile` and `VERSION` and run `rake` (because we use gemhadar). Commit changes, run `rake gem:push` and `git push --tags`.
 
+LINKS
+-----
+
+- **Source**: https://github.com/betterplace/betterdocs
+- **Documentation**: https://betterplace.github.io/betterdocs/
+
 AUTHORS
 -------
 Florian Frank <flori@ping.de>
@@ -139,4 +145,3 @@ TODO
 - Automatically document error result documents
 - Use private flag action/controller to skip docu creation by default. Make it
   configurable to create private API as well.
-

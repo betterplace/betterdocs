@@ -20,6 +20,10 @@ GemHadar do
     filename 'CHANGES.md'
   end
 
+  github_workflows(
+    'static.yml' => {}
+  )
+
   dependency 'json',           '>= 3', '< 4'
   dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<9'

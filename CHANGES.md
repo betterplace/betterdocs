@@ -12,7 +12,13 @@
 - Removed vim modeline comments from `Gemfile` and `Rakefile`.
 - Consolidated `require 'spec_helper'` into `.rspec` via
   `-rspec_helper`, removing the redundant line from all 11
-  spec files.
+   spec files.
+
+### Build & CI
+- Added a GitHub Pages workflow (`.github/workflows/static.yml`)
+  to deploy YARD docs from `doc/` on push to `master` and via
+  `workflow_dispatch`; registered via `github_workflows('static.yml'
+  => {})` in `Rakefile`.
 
 ### Testing
 - Added `json_params_representer_collector_spec.rb` with 9
@@ -20,9 +26,11 @@
   line and branch coverage.
 
 ### Documentation
+- Added a `LINKS` section to `README.md` with links to the
+  source repository and the hosted YARD API reference
+  (https://betterplace.github.io/betterdocs/).
 - Restructured `CHANGES.md` history into categorized
   `### Breaking` / `Features` / `Fixes` / `Improvements` /
-  `Build & CI` / `Testing` / `Documentation` subsections.
 
 ## 2026-01-28 v0.15.1
 
