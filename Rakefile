@@ -10,7 +10,7 @@ GemHadar do
   test_dir    'spec'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', 'coverage', '.rvmrc',
     '.ruby-version', '.AppleDouble', 'tags', '.DS_Store', '.utilsrc',
-    '.bundle', 'errors.lst', '.yardoc', '.history'
+    '.bundle', 'errors.lst', '.yardoc', '.history', 'doc'
   readme      'README.md'
   title       "#{name.camelize}"
 

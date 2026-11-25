@@ -1,4 +1,6 @@
 module Betterdocs
+  # Rails integration: runs `Betterdocs::Global.configure` during
+  # app initialization and loads any `.rake` tasks from the tasks dir.
   class Railtie < Rails::Railtie
     initializer 'betterdocs.configure_rails_initialization' do
       Betterdocs::Global.configure

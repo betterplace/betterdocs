@@ -2,12 +2,22 @@ require 'tins/xt'
 require 'mize'
 require 'rails'
 
+# Document-as-code gem for generating Markdown and OpenAPI 3.0.2
+# documentation from Ruby DSL annotations on Rails API controllers
+# and response objects.
+#
+# @see Betterdocs::Global
+# @see Betterdocs::Representer
 module Betterdocs
   class << self
+    # Returns the top-level `::Rails` module.
+    #
+    # @return [Module] the `Rails` module
     def rails
       ::Rails
     end
 
+    # Alias of `proc`, exposed for DSL readability in documentation blocks.
     alias trait proc
     public :trait
   end

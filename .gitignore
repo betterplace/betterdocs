@@ -9,6 +9,7 @@
 .yardoc
 Gemfile.lock
 coverage
+doc
 errors.lst
 pkg
 tags

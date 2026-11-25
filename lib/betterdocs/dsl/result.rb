@@ -1,5 +1,7 @@
 module Betterdocs
   module Dsl
+    # Namespace for result DSL elements. Contains {Property},
+    # {CollectionProperty}, and {Link}.
     module Result
     end
   end

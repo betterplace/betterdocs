@@ -1,4 +1,6 @@
 module Betterdocs
+  # The DSL namespace for Betterdocs. Contains the controller, result,
+  # and JSON params DSL modules used for documenting API endpoints.
   module Dsl
   end
 end
