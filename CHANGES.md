@@ -1,5 +1,13 @@
 # Changes
 
+## 2026-11-26 v0.17.1
+
+### Improvements
+
+- Widened the `json` gem dependency to include version **2** (now `>= 2`, `<
+  4`) in `Rakefile` and `betterdocs.gemspec` to improve compatibility with
+  projects using older supported `json` versions.
+
 ## 2026-11-26 v0.17.0
 
 ### Improvements
