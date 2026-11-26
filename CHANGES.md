@@ -1,5 +1,38 @@
 # Changes
 
+## 2026-11-26 v0.17.0
+
+### Improvements
+- Added YARD documentation to all `lib/` files, covering 179 methods, 21
+  modules, and 19 classes.
+- Documented all 32 `dsl_accessor`s using a uniform `@!method` and `@overload`
+  pattern.
+- Normalized `@note` default phrasing to four canonical forms.
+- Fixed `@return` and `@param` type inaccuracies in collectors and
+  `representer` `ClassMethods#doc`.
+- Rewrote `responding.rb` documentation to clarify it is an empty marker
+  module.
+- Updated `sanitizer.rb` documentation to detail the property serialization
+  path and stored-XSS security implications.
+- Corrected `mix_into_controller.rb` `@param` type to cite only `:action`.
+- Updated `@return` tags in `handle_url`, `platform_url`, `api_url`, and
+  `asset_url` to document `nil` return values instead of `void`.
+- Refactored `memoize` calls to use explicit method names (e.g., `memoize
+  method: :name`).
+- Standardized private method definitions by replacing `private def` with `def`
+  followed by `private :`.
+- Removed unused `rescue NameError => e` blocks in two collectors.
+- Updated `to_json` in `response.rb` to use `ask_and_send_or_self(:to_hash)`.
+
+### Build & CI
+- Added `doc/` to `.gitignore` and the `Rakefile` `ignore` list.
+- Regenerated `betterdocs.gemspec` to remove `.codeclimate.yml` from `s.files`.
+- Removed Code Climate configuration and badge.
+
+### Documentation
+- Removed the Code Climate GPA badge from `README.md`.
+- Deleted the `.codeclimate.yml` configuration file.
+
 ## 2026-11-24 v0.16.0
 
 ### Features
