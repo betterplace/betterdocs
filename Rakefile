@@ -24,7 +24,7 @@ GemHadar do
     'static.yml' => {}
   )
 
-  dependency 'json',           '>= 3', '< 4'
+  dependency 'json',           '>= 2', '< 4'
   dependency 'tins',           '~>1.3', '>=1.3.5'
   dependency 'rails',          '>=3', '<9'
   dependency 'term-ansicolor', '~>1.3'
